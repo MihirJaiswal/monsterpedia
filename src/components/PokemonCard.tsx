@@ -40,7 +40,7 @@ const PokemonCard: React.FC<PokemonCardProps> = ({ name, spriteUrl, types = [], 
 
   return (
     <Link href={`/pokemon/${name.toLowerCase()}`} passHref>
-      <div className="relative h-full w-full py-4 px-6 bg-white rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-30 border border-gray-100">
+      <div className="relative h-full w-full py-4 px-6 bg-white rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-30 border border-gray-100 transform transition-transform hover:scale-105 ">
         {spriteUrl ? (
           <>
             <div className="flex flex-col items-center justify-center">
@@ -56,10 +56,7 @@ const PokemonCard: React.FC<PokemonCardProps> = ({ name, spriteUrl, types = [], 
                     </div>
                   </div>
                 </div>
-                <Image
-                  width={80}
-                  height={80}
-                  loading='lazy'
+                <img
                   src={spriteUrl} 
                   alt={name} 
                   className="w-full h-full object-cover object-center relative"
@@ -67,7 +64,7 @@ const PokemonCard: React.FC<PokemonCardProps> = ({ name, spriteUrl, types = [], 
               </div>
               <p 
                 className={`text-center font-bold text-[#011434] uppercase ${
-                    name.length > 8 ? 'text-sm' : 'text-base'
+                    name.length > 10 ? 'text-xs' : 'text-base'
                 }`}
               >
                 {name}

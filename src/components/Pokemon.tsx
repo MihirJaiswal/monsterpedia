@@ -18,6 +18,11 @@ interface PokemonDetail {
   name: string;
   sprites: {
     front_default: string;
+    other: {
+      'official-artwork': {
+        front_default: string;
+      };
+    };
   };
   types: PokemonType[];
 }
@@ -131,8 +136,6 @@ const Pokemon = () => {
     setDisplayedCount(prevCount => prevCount + 30); // Increase the number of Pokémon to display
   };
 
- 
-
   const typeColors: { [key: string]: string } = {
     normal: '#A8A878', 
     fire: '#F08030',   
@@ -207,7 +210,7 @@ const Pokemon = () => {
             <PokemonCard
               key={index}
               name={p.name}
-              spriteUrl={pokemonDetail?.sprites.front_default}
+              spriteUrl={pokemonDetail?.sprites.other['official-artwork'].front_default}
               types={pokemonDetail?.types}
               index={index}
             />
