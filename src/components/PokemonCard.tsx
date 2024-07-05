@@ -1,4 +1,6 @@
+import React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 
 interface PokemonType {
   type: {
@@ -37,7 +39,7 @@ const PokemonCard: React.FC<PokemonCardProps> = ({ name, spriteUrl, types = [], 
   };
 
   return (
-    <Link href={`/pokemon/${index + 1}`}>
+    <Link href={`/pokemon/${name.toLowerCase()}`} passHref>
       <div className="relative h-full w-full py-4 px-6 bg-white rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-30 border border-gray-100">
         {spriteUrl ? (
           <>
@@ -54,26 +56,32 @@ const PokemonCard: React.FC<PokemonCardProps> = ({ name, spriteUrl, types = [], 
                     </div>
                   </div>
                 </div>
-                <img 
+                <Image
+                  width={80}
+                  height={80}
+                  loading='lazy'
                   src={spriteUrl} 
                   alt={name} 
-                  className="w-32 h-32 object-cover object-center relative"
+                  className="w-full h-full object-cover object-center relative"
                 />
               </div>
               <p 
                 className={`text-center font-bold text-[#011434] uppercase ${
                     name.length > 8 ? 'text-sm' : 'text-base'
                 }`}
-                >
+              >
                 {name}
-                </p>
+              </p>
               <div className="flex gap-2 mt-2">
                 {types.map((type, idx) => (
-                  <img
+                  <Image
+                    width={20}
+                    height={20}
                     key={idx}
                     src={typeImages[type.type.name] || '/types/default.png'} // Fallback image
                     alt={type.type.name}
                     className="w-8 h-8 object-cover"
+                    loading='lazy'
                     title={type.type.name}
                   />
                 ))}

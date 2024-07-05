@@ -1,6 +1,6 @@
 'use client'
 import { useState, useEffect } from 'react';
-import PokemonCard from './PokemonCard'; // Adjust the path as necessary
+import PokemonCard from './PokemonCard';
 import { FaSearch, FaFilter } from 'react-icons/fa';
 
 interface Pokemon {
@@ -85,9 +85,9 @@ const Pokemon = () => {
         setLoading(true);
         let allPokemons: Pokemon[] = [];
         let totalFetched = 0;
-        const batchSize = 100; // Adjust batch size for fetching
+        const batchSize = 100; 
 
-        while (totalFetched < 1025) { // Total number of Pokémon
+        while (totalFetched < 1025) { 
           const listResponse = await fetch(`https://pokeapi.co/api/v2/pokemon?limit=${batchSize}&offset=${totalFetched}`);
           if (!listResponse.ok) {
             throw new Error(`Failed to fetch Pokémon list: ${listResponse.statusText}`);
@@ -131,9 +131,30 @@ const Pokemon = () => {
     setDisplayedCount(prevCount => prevCount + 30); // Increase the number of Pokémon to display
   };
 
-  if (loading) {
-    return <div className="p-6 bg-gray-900 min-h-screen text-white flex items-center justify-center">Loading...</div>;
-  }
+ 
+
+  const typeColors: { [key: string]: string } = {
+    normal: '#A8A878', 
+    fire: '#F08030',   
+    water: '#6890F0', 
+    grass: '#78C850',  
+    electric: '#F8D030', 
+    ice: '#98D8D8',    
+    fighting: '#C03028', 
+    poison: '#A040A0', 
+    ground: '#E0C068',
+    flying: '#A890F0', 
+    psychic: '#F85888',
+    bug: '#A8B820',    
+    rock: '#B8A038',  
+    ghost: '#705898',  
+    dragon: '#7038F8', 
+    dark: '#705848',   
+    steel: '#B8B8D0',  
+    fairy: '#F0B6BC'  
+  };
+
+  const hasMorePokemons = displayedCount < filteredPokemonList.length;
 
   return (
     <div className="relative p-6 bg-hero bg-cover bg-center min-h-screen">
@@ -167,13 +188,18 @@ const Pokemon = () => {
         {types.map((type, index) => (
           <button
             key={index}
-            className={`px-4 py-2 rounded-lg shadow-md border border-black ${selectedType === type ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700'} transition duration-300`}
+            className={`px-4 py-2 rounded-lg shadow-md border border-black transition duration-300`}
+            style={{
+              backgroundColor: selectedType === type ? typeColors[type] : '#E0E0E0',
+              color: selectedType === type ? '#FFFFFF' : '#000000'
+            }}
             onClick={() => setSelectedType(type === selectedType ? '' : type)}
           >
             {type.charAt(0).toUpperCase() + type.slice(1)}
           </button>
         ))}
       </div>
+
       <div className="relative flex flex-wrap justify-center gap-6 py-10 mb-6">
         {displayedPokemonList.map((p, index) => {
           const pokemonDetail = pokemonDetails[p.name];
@@ -188,14 +214,16 @@ const Pokemon = () => {
           );
         })}
       </div>
-      <div className="relative text-center">
-        <button
-          onClick={loadMorePokemons}
-          className="bg-blue-500 text-white py-2 px-6 rounded-lg shadow-md hover:bg-blue-600 transition duration-300"
-        >
-          Load More
-        </button>
-      </div>
+      {hasMorePokemons && (
+        <div className="relative text-center">
+          <button
+            onClick={loadMorePokemons}
+            className="bg-blue-500 text-white py-2 px-6 rounded-lg shadow-md hover:bg-blue-600 transition duration-300"
+          >
+            Load More
+          </button>
+        </div>
+      )}
     </div>
   );
 };
