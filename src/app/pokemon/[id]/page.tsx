@@ -1,12 +1,9 @@
 import axios from 'axios';
 import { notFound } from 'next/navigation';
-import Image from 'next/image';
-import PokemonImage from '../../../components/PokemonImage';
-import TypeWeakness from '../../../components/TypeWeakness';
-import Pokedex from '@/components/Pokedex';
+import PokemonDetailClient from '../../../components/PokemonPage';
 
 interface PokemonDetail {
-  id: number; // Add this field to use for National Dex number
+  id: number;
   species: {
     url: string;
   };
@@ -16,11 +13,11 @@ interface PokemonDetail {
   base_experience: number;
   sprites: {
     front_default: string;
-    front_shiny: string; // Add shiny sprite
+    front_shiny: string;
     other: {
       'official-artwork': {
         front_default: string;
-        front_shiny: string; // Add shiny sprite to official artwork
+        front_shiny: string;
       };
     };
   };
@@ -41,34 +38,54 @@ interface PokemonDetail {
       name: string;
     };
   }[];
+  moves: {
+    move: {
+      name: string;
+    };
+  }[];
+  evolution: {
+    species_name: string;
+    min_level: number | null;
+    trigger_name: string;
+    item: string | null;
+    image_url: string;
+  }[];
 }
 
-interface EvolutionDetail {
-  species_name: string;
-  min_level: number | null;
-  trigger_name: string;
-  item: string | null;
+interface SpeciesDetail {
+  evolution_chain: {
+    url: string;
+  };
+  flavor_text_entries: {
+    flavor_text: string;
+    language: {
+      name: string;
+    };
+  }[];
+  evolves_from_species: {
+    name: string;
+    url: string;
+  } | null;
+}
+
+interface EvolutionChainDetail {
+  chain: EvolutionChain;
 }
 
 interface EvolutionChain {
-  id: number;
-  chain: {
-    evolves_to: {
-      species: {
-        name: string;
-      };
-      evolves_to: {
-        species: {
-          name: string;
-        };
-        evolution_details: EvolutionDetail[];
-      }[];
-      evolution_details: EvolutionDetail[];
-    }[];
-    species: {
+  species: {
+    name: string;
+  };
+  evolution_details: {
+    min_level: number | null;
+    trigger: {
       name: string;
     };
-  };
+    item: {
+      name: string;
+    } | null;
+  }[];
+  evolves_to: EvolutionChain[];
 }
 
 interface Props {
@@ -77,149 +94,90 @@ interface Props {
   };
 }
 
-const typeImages: { [key: string]: string } = {
-  normal: '/types/normal.png',
-  fire: '/types/fire.png',
-  water: '/types/water.png',
-  grass: '/types/grass.png',
-  electric: '/types/electric.png',
-  ice: '/types/ice.png',
-  fighting: '/types/fighting.png',
-  poison: '/types/poison.png',
-  ground: '/types/ground.png',
-  flying: '/types/flying.png',
-  psychic: '/types/psychic.png',
-  bug: '/types/bug.png',
-  rock: '/types/rock.png',
-  ghost: '/types/ghost.png',
-  dragon: '/types/dragon.png',
-  dark: '/types/dark.png',
-  steel: '/types/steel.png',
-  fairy: '/types/fairy.png',
+// Helper function to fetch Pokémon data including official artwork
+const fetchPokemonData = async (name: string) => {
+  const response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${name}`);
+  return response.data;
 };
 
 export default async function PokemonPage({ params }: Props) {
-  const response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${params.id}`);
-  if (!response.data) {
+  try {
+    // Fetch Pokémon data
+    const response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${params.id}`);
+    if (!response.data) {
+      notFound();
+    }
+
+    const pokemon: PokemonDetail = response.data;
+
+    // Get species info for description and evolution chain
+    const speciesResponse = await axios.get(pokemon.species.url);
+    const species: SpeciesDetail = speciesResponse.data;
+
+    // Get description
+    const descriptionEntry = species.flavor_text_entries.find(entry => entry.language.name === 'en');
+    const description = descriptionEntry ? descriptionEntry.flavor_text : 'No description available.';
+
+    // Get evolution chain
+    const evolutionChainResponse = await axios.get(species.evolution_chain.url);
+    const evolutionChain: EvolutionChainDetail = evolutionChainResponse.data;
+
+    // Track seen Pokémon to avoid duplication
+    const seenPokemon = new Set<string>();
+
+    // Traverse the entire evolution chain and fetch images
+    const extractEvolutionLine = async (chain: EvolutionChain): Promise<PokemonDetail['evolution']> => {
+      let evolutions: PokemonDetail['evolution'] = [];
+
+      const traverseChain = async (currentChain: EvolutionChain | null) => {
+        if (!currentChain) return;
+
+        // Fetch Pokémon data and add to evolution list if not already seen
+        if (!seenPokemon.has(currentChain.species.name)) {
+          seenPokemon.add(currentChain.species.name);
+
+          const pokemonData = await fetchPokemonData(currentChain.species.name);
+          evolutions.push({
+            species_name: currentChain.species.name,
+            min_level: currentChain.evolution_details[0]?.min_level ?? null,
+            trigger_name: currentChain.evolution_details[0]?.trigger.name ?? '',
+            item: currentChain.evolution_details[0]?.item?.name ?? null,
+            image_url: pokemonData.sprites.other['official-artwork'].front_default,  // Use official artwork
+          });
+        }
+
+        // Traverse all evolutions
+        await Promise.all(currentChain.evolves_to.map(evolution => traverseChain(evolution)));
+      };
+
+      await traverseChain(chain);
+      return evolutions;
+    };
+
+    // Fetch full evolution line
+    const evolution = await extractEvolutionLine(evolutionChain.chain);
+
+    // If the Pokémon has a pre-evolution, add it to the start of the evolution line
+    if (species.evolves_from_species) {
+      const preEvolutionResponse = await axios.get(species.evolves_from_species.url);
+      const preEvolutionData = preEvolutionResponse.data;
+      const preEvolutionPokemon = await fetchPokemonData(preEvolutionData.name);
+
+      if (!seenPokemon.has(preEvolutionData.name)) {
+        evolution.unshift({
+          species_name: preEvolutionData.name,
+          min_level: null,
+          trigger_name: '',
+          item: null,
+          image_url: preEvolutionPokemon.sprites.other['official-artwork'].front_default,  // Use official artwork
+        });
+      }
+    }
+
+    // Pass the data to the client component
+    return <PokemonDetailClient pokemon={{ ...pokemon, description, moves: pokemon.moves, evolution }} />;
+  } catch (error) {
+    console.error(error);
     notFound();
   }
-
-  const pokemon: PokemonDetail = response.data;
-
-  // Get species info for evolution chain and description
-  const speciesResponse = await axios.get(pokemon.species.url);
-  const species = speciesResponse.data;
-
-  // Get evolution chain
-  const evolutionChainResponse = await axios.get(species.evolution_chain.url);
-  const evolutionChain: EvolutionChain = evolutionChainResponse.data;
-
-  // Get description
-  const descriptionEntry = species.flavor_text_entries.find((entry: any) => entry.language.name === 'en');
-  const description = descriptionEntry ? descriptionEntry.flavor_text : 'No description available.';
-
-  const getStatColor = (stat: number) => {
-    if (stat > 100) return 'bg-green-600';
-    if (stat > 70) return 'bg-yellow-600';
-    if (stat > 40) return 'bg-orange-600';
-    if (stat > 0) return 'bg-red-600';
-    if (stat === 0) return 'bg-gray-600';
-    return 'bg-red-600';
-  };
-
-  const getTotalStatColor = (total: number) => {
-    if (total > 500) return 'bg-blue-600';
-    if (total > 400) return 'bg-purple-600';
-    if (total > 300) return 'bg-teal-600';
-    return 'bg-pink-600';
-  };
-
-  const totalBaseStats = pokemon.stats.reduce((acc, stat) => acc + stat.base_stat, 0);
-
-  return (
-    <div> 
-    <div className="relative p-6 bg-hero bg-cover bg-center min-h-screen">
-    <div className="absolute inset-0 bg-bg2 bg-repeat-round bg-cover opacity-5 pointer-events-none"></div>
-      <div className='flex flex-col md:flex-row justify-center items-center mt-12'>
-      <div>
-        <PokemonImage sprites={pokemon.sprites} name={pokemon.name} />
-        <h1 className='text-4xl font-bold text-gray-950 mb-4 text-center'>
-          #{pokemon.id}
-        </h1>
-        <h1 className="text-4xl font-bold text-gray-950 mb-4 text-center">
-          {pokemon.name}
-        </h1>
-
-        <div className="flex justify-center gap-2 mb-4">
-          {pokemon.types.map((type, idx) => (
-            <Image
-              key={idx}
-              src={typeImages[type.type.name] || '/types/default.png'}
-              alt={type.type.name}
-              width={40}
-              height={40}
-              className="object-cover"
-            />
-          ))}
-        </div>
-
-        <div className="px-20 flex items-center justify-center">
-          <p className="text-center text-white mt-2 p-4 border border-white rounded-lg">{description}</p>
-        </div>
-      </div>
-      <div className="ml-10 rounded-lg shadow-lg p-6 max-w-md text-center relative overflow-hidden bg-white bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-20 border border-gray-100">
-        <div className="text-left mb-6">
-          <h2 className="text-2xl font-bold text-gray-950 mb-4">Stats</h2>
-          <ul className="space-y-2">
-            {pokemon.stats.map((stat, index) => (
-              <li key={index} className="flex items-center">
-                <span className="font-semibold text-gray-800 capitalize w-24">{stat.stat.name}:</span>
-                <div className="relative w-48 h-4 bg-gray-200 rounded-full overflow-hidden">
-                  <div className={`absolute h-full ${getStatColor(stat.base_stat)}`} style={{ width: `${stat.base_stat}%` }}></div>
-                </div>
-                <span className="ml-4 w-8 text-right">{stat.base_stat}</span>
-              </li>
-            ))}
-            <li className="flex items-center">
-              <span className="font-semibold text-gray-800 capitalize w-24">Total Base Stats:</span>
-              <div className="relative w-48 h-4 bg-gray-200 rounded-full overflow-hidden">
-                <div className={`absolute h-full ${getTotalStatColor(totalBaseStats)}`} style={{ width: `${(totalBaseStats / 600) * 100}%` }}></div>
-              </div>
-              <span className="w-16 ml-2 text-center text-white">{totalBaseStats}</span>
-            </li>
-          </ul>
-        </div>
-        <div className="text-left mb-6">
-          <h2 className="text-2xl font-bold text-gray-950 mb-4">Abilities</h2>
-          <ul className="space-y-1">
-            {pokemon.abilities.map((ability, index) => (
-              <li key={index} className="capitalize">
-                {ability.ability.name}
-                {ability.is_hidden && <span className="ml-2 text-sm text-gray-200">(Hidden)</span>}
-              </li>
-            ))}
-          </ul>
-        </div>
-      </div>
-    </div>
-    <div className='flex items-center justify-center'>
-    <hr className="my-12 border-gray-400 w-5/6 " />
-    </div>
-    <div className="text-left flex items-center justify-around m-4">
-     <div className=''>
-     <Pokedex 
-      name={pokemon.name}
-      height={pokemon.height}
-      weight={pokemon.weight}
-      spriteUrl={pokemon.sprites.front_default}
-      base_experience={pokemon.base_experience}
-      />
-     </div>
-    <div className=''>
-    <TypeWeakness types={pokemon.types} />
-    </div>
-    </div>
-  </div>
-  </div>
-  );
 }
