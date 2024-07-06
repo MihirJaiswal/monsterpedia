@@ -108,7 +108,8 @@ const PokemonPage: React.FC<Props> = ({ pokemon }) => {
   return (
     <div>
       <div className="relative p-6 bg-hero bg-cover bg-center min-h-screen">
-        <div className="absolute inset-0 bg-bg2 bg-repeat-round bg-contain opacity-5 pointer-events-none"></div>
+        <div className="absolute inset-0 bg-bg2 bg-repeat-round bg-contain opacity-5 pointer-events-none hidden md:block"></div>
+        <div className="absolute inset-0 bg-bg4 bg-repeat-round bg-contain opacity-10 pointer-events-none md:hidden"></div>
         <div className='flex flex-col items-center'>
           <div className="mb-4 grid grid-cols-2 md:flex gap-4 border border-white p-2 rounded-lg shadow-lg bg-white bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-40">
             <button

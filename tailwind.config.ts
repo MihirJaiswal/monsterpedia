@@ -10,6 +10,8 @@ const config: Config = {
     extend: {
       backgroundImage: {
         "card2":"radial-gradient(circle, #ff0007, #ff0045, #ff0072, #fe369a, #ea56bb, #cf66cc, #b173d6, #937dda, #6c7ed2, #477dc5, #227ab4, #0075a0 80%, rgba(0, 0, 0, 0) 100%);",
+        "bg4":"url('/backgrounds/11.png')",
+        "bg3":"url('/backgrounds/10.jpg')",
         "bg2" : "url('/backgrounds/3.jpg')",
         "bg1" : "url('/backgrounds/1.jpg')",
         "card":" radial-gradient(circle, #ff232d, #ea3597, #976dce, #3f85c3, #4d8898 60%, rgba(0, 0, 0, 0) 100%);",
