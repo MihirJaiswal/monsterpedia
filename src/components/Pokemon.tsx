@@ -1,7 +1,11 @@
 'use client';
 import { useState, useEffect } from 'react';
 import PokemonCard from './PokemonCard';
-import { FaSearch } from 'react-icons/fa';
+import {
+  FaSearch, FaLeaf, FaFire, FaTint, FaBolt, FaSnowflake, FaFistRaised,
+  FaSkullCrossbones, FaMountain, FaFeather, FaBrain, FaBug, FaGem,
+  FaGhost, FaDragon, FaMoon, FaCog, FaStar, FaBullseye
+} from 'react-icons/fa';
 
 interface Pokemon {
   name: string;
@@ -27,6 +31,10 @@ interface PokemonDetail {
   types: PokemonType[];
 }
 
+type PokemonTypeName = 'normal' | 'fire' | 'water' | 'grass' | 'electric' | 'ice' |
+  'fighting' | 'poison' | 'ground' | 'flying' | 'psychic' | 'bug' | 'rock' |
+  'ghost' | 'dragon' | 'dark' | 'steel' | 'fairy';
+
 const generations = [
   { name: 'Generation 1', limit: 151, offset: 0 },
   { name: 'Generation 2', limit: 100, offset: 151 },
@@ -39,11 +47,53 @@ const generations = [
   { name: 'Generation 9', limit: 103, offset: 905 },
 ];
 
-const types = [
+const types: PokemonTypeName[] = [
   'normal', 'fire', 'water', 'grass', 'electric', 'ice', 'fighting', 'poison',
   'ground', 'flying', 'psychic', 'bug', 'rock', 'ghost', 'dragon', 'dark',
   'steel', 'fairy'
 ];
+
+const typeIcons: Record<PokemonTypeName, JSX.Element | null> = {
+  normal: <FaBullseye/>,
+  fire: <FaFire />,
+  water: <FaTint />,
+  grass: <FaLeaf />,
+  electric: <FaBolt />,
+  ice: <FaSnowflake />,
+  fighting: <FaFistRaised />,
+  poison: <FaSkullCrossbones />,
+  ground: <FaMountain />,
+  flying: <FaFeather />,
+  psychic: <FaBrain />,
+  bug: <FaBug />,
+  rock: <FaGem />,
+  ghost: <FaGhost />,
+  dragon: <FaDragon />,
+  dark: <FaMoon />,
+  steel: <FaCog />,
+  fairy: <FaStar />
+};
+
+const typeGradients: Record<PokemonTypeName, string> = {
+  normal: 'bg-gradient-to-r from-gray-400 to-gray-600',
+  fire: 'bg-gradient-to-r from-orange-400 to-red-600',
+  water: 'bg-gradient-to-r from-blue-400 to-blue-600',
+  grass: 'bg-gradient-to-r from-green-400 to-green-600',
+  electric: 'bg-gradient-to-r from-yellow-400 to-yellow-600',
+  ice: 'bg-gradient-to-r from-cyan-400 to-blue-400',
+  fighting: 'bg-gradient-to-r from-red-600 to-red-800',
+  poison: 'bg-gradient-to-r from-purple-400 to-purple-600',
+  ground: 'bg-gradient-to-r from-yellow-600 to-brown-600',
+  flying: 'bg-gradient-to-r from-blue-300 to-blue-500',
+  psychic: 'bg-gradient-to-r from-pink-400 to-pink-600',
+  bug: 'bg-gradient-to-r from-green-600 to-green-800',
+  rock: 'bg-gradient-to-r from-yellow-700 to-brown-700',
+  ghost: 'bg-gradient-to-r from-purple-600 to-purple-800',
+  dragon: 'bg-gradient-to-r from-purple-500 to-blue-500',
+  dark: 'bg-gradient-to-r from-gray-700 to-black',
+  steel: 'bg-gradient-to-r from-gray-500 to-gray-700',
+  fairy: 'bg-gradient-to-r from-pink-300 to-pink-500'
+};
 
 const Pokemon = () => {
   const [pokemonList, setPokemonList] = useState<Pokemon[]>([]);
@@ -52,7 +102,7 @@ const Pokemon = () => {
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [displayedCount, setDisplayedCount] = useState<number>(30); // Number of Pokémon to display initially
   const [selectedGeneration, setSelectedGeneration] = useState<number | null>(null);
-  const [selectedType, setSelectedType] = useState<string>('');
+  const [selectedType, setSelectedType] = useState<PokemonTypeName | ''>(''); // Default type should be an empty string
 
   const fetchPokemonDetailsInBatches = async (pokemons: Pokemon[], batchSize: number) => {
     let detailsMap: { [key: string]: PokemonDetail } = {};
@@ -136,33 +186,12 @@ const Pokemon = () => {
     setDisplayedCount(prevCount => prevCount + 30); // Increase the number of Pokémon to display
   };
 
-  const typeColors: { [key: string]: string } = {
-    normal: '#A8A878', 
-    fire: '#F08030',   
-    water: '#6890F0', 
-    grass: '#78C850',  
-    electric: '#F8D030', 
-    ice: '#98D8D8',    
-    fighting: '#C03028', 
-    poison: '#A040A0', 
-    ground: '#E0C068',
-    flying: '#A890F0', 
-    psychic: '#F85888',
-    bug: '#A8B820',    
-    rock: '#B8A038',  
-    ghost: '#705898',  
-    dragon: '#7038F8', 
-    dark: '#705848',   
-    steel: '#B8B8D0',  
-    fairy: '#F0B6BC'  
-  };
-
   const hasMorePokemons = displayedCount < filteredPokemonList.length;
 
   return (
     <div className="relative p-6 bg-hero bg-cover bg-center min-h-screen">
       <div className="absolute inset-0 bg-bg1 bg-repeat bg-center opacity-5 hidden md:block"></div>
-      <div className="absolute inset-0 bg-bg3 bg-repeat bg-contain bg-center opacity-5 md:hidden"></div>
+      <div className="absolute inset-0 bg-bg3 bg-contain bg-repeat bg-center opacity-5 md:hidden"></div>
       <h1 className="relative text-4xl font-bold text-center mb-8 text-white">MonsterPedia Pokédex</h1>
       <div className="relative mb-6 flex flex-col items-center justify-center gap-4 md:flex-row md:gap-6">
         <div className="relative w-full max-w-md">
@@ -173,54 +202,49 @@ const Pokemon = () => {
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
-          <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500" />
+            <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500" />
         </div>
         <div className='flex gap-6'>
-        <div className="relative w-40 max-w-1/2">
-          <select
-            className="w-full text-black p-3 rounded-lg border border-gray-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-            value={selectedGeneration === null ? 'all' : selectedGeneration}
-            onChange={(e) => setSelectedGeneration(e.target.value === 'all' ? null : parseInt(e.target.value))}
-          >
-            <option value="all">All Generations</option>
-            {generations.map((gen, index) => (
-              <option key={index} value={index}>{gen.name}</option>
-            ))}
-          </select>
+          <div className="relative w-40 max-w-1/2">
+            <select
+              className="w-full text-black p-3 rounded-lg border border-gray-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              value={selectedGeneration === null ? 'all' : selectedGeneration}
+              onChange={(e) => setSelectedGeneration(e.target.value === 'all' ? null : parseInt(e.target.value))}
+            >
+              <option value="all">All Generations</option>
+              {generations.map((gen, index) => (
+                <option key={index} value={index}>{gen.name}</option>
+              ))}
+            </select>
+          </div>
+          {/* Mobile Type Selector */}
+          <div className="relative flex flex-col items-center md:hidden">
+            <select
+              className="w-full text-black p-3 rounded-lg border border-gray-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              value={selectedType}
+              onChange={(e) => setSelectedType(e.target.value as PokemonTypeName | '')}
+            >
+              <option value="">All Types</option>
+              {types.map((type, index) => (
+                <option key={index} value={type}>
+                  {type.charAt(0).toUpperCase() + type.slice(1)}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
-        {/* Mobile Type Selector */}
-      <div className="relative mb-6 flex flex-col items-center md:hidden">
-        <select
-          className="w-full text-black p-3 rounded-lg border border-gray-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-          value={selectedType}
-          onChange={(e) => setSelectedType(e.target.value)}
-        >
-          <option value="">All Types</option>
-          {types.map((type, index) => (
-            <option key={index} value={type}>
-              {type.charAt(0).toUpperCase() + type.slice(1)}
-            </option>
-          ))}
-        </select>
       </div>
-        </div>
-      </div>
-
-      
 
       {/* Desktop Type Selector */}
-      <div className="relative hidden md:flex flex-wrap justify-center gap-4 mb-6">
-        {types.map((type, index) => (
+      <div className="relative hidden px-24 md:grid grid-cols-9 justify-center gap-4 mb-6">
+        {types.map((type) => (
           <button
-            key={index}
-            className={`px-4 py-2 rounded-lg shadow-md border border-black transition duration-300`}
-            style={{
-              backgroundColor: selectedType === type ? typeColors[type] : '#E0E0E0',
-              color: selectedType === type ? '#FFFFFF' : '#000000'
-            }}
+            key={type}
+            className={`px-4 py-2 rounded-lg shadow-md border border-black transition duration-300 flex items-center gap-2 ${selectedType === type ? typeGradients[type] : 'bg-white rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-60 border border-gray-100 text-black'}`}
             onClick={() => setSelectedType(type === selectedType ? '' : type)}
           >
-            {type.charAt(0).toUpperCase() + type.slice(1)}
+            {typeIcons[type]}
+            <span>{type.charAt(0).toUpperCase() + type.slice(1)}</span>
           </button>
         ))}
       </div>
@@ -254,3 +278,4 @@ const Pokemon = () => {
 };
 
 export default Pokemon;
+
