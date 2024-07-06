@@ -32,8 +32,8 @@ const Pokedex: React.FC<PokemonProps> = ({ name, height, weight, base_experience
             />
           </div>
           <div className="md:mt-28">
-            <ul className="text-left space-y-2 mb-4 text-black font-extrabold p-4">
-              <h1 className="text-lg font-extrabold text-center mb-4 text-gray-800 capitalize underline">{name}</h1>
+            <ul className="text-left space-y-2 mb-4 text-black font-semibold p-4">
+              <h1 className="text-lg font-bold text-center mb-4 text-gray-800 capitalize">{name}</h1>
               <li><strong className="font-semibold text-gray-700">Height:</strong> {height / 10} m</li>
               <li><strong className="font-semibold text-gray-700">Weight:</strong> {weight / 10} kg</li>
               <li><strong className="font-semibold text-gray-700">Base Experience:</strong> {base_experience}</li>
