@@ -1,6 +1,9 @@
 import axios from 'axios';
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
+import PokemonImage from '../../../components/PokemonImage';
+import TypeWeakness from '../../../components/TypeWeakness';
+import Pokedex from '@/components/Pokedex';
 
 interface PokemonDetail {
   id: number; // Add this field to use for National Dex number
@@ -13,9 +16,11 @@ interface PokemonDetail {
   base_experience: number;
   sprites: {
     front_default: string;
+    front_shiny: string; // Add shiny sprite
     other: {
       'official-artwork': {
         front_default: string;
+        front_shiny: string; // Add shiny sprite to official artwork
       };
     };
   };
@@ -132,31 +137,17 @@ export default async function PokemonPage({ params }: Props) {
   const totalBaseStats = pokemon.stats.reduce((acc, stat) => acc + stat.base_stat, 0);
 
   return (
-    <div className="p-6 h-full bg-hero flex flex-col md:flex-row justify-center items-center">
+    <div> 
+    <div className="relative p-6 bg-hero bg-cover bg-center min-h-screen">
+    <div className="absolute inset-0 bg-bg2 bg-repeat-round bg-cover opacity-5 pointer-events-none"></div>
+      <div className='flex flex-col md:flex-row justify-center items-center mt-12'>
       <div>
-        <div className="relative w-52 h-52 mx-auto mb-4">
-          <div className="absolute inset-0 flex justify-center border-2 border-gray-300 items-center z-0 bg-bg2 rounded-full bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-10 opacity-40">
-            <div className="w-36 h-36 rounded-full border-2 border-gray-300 relative flex justify-center items-center">
-              <div className="w-32 h-32 rounded-full border-2 border-gray-300 relative flex justify-center items-center">
-                <div className="absolute w-full h-full flex items-center justify-center">
-                  <div className="absolute w-full h-[2px] bg-white transform rotate-45 left-2"></div>
-                  <div className="absolute w-10 h-10 rounded-full border-2 border-white flex justify-center items-center"></div>
-                  <div className="absolute w-full h-[2px] bg-white transform rotate-45 right-2"></div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <img
-            src={pokemon.sprites.other['official-artwork'].front_default}
-            alt={pokemon.name}
-            className="w-52 h-52 object-cover object-center relative"
-          />
-        </div>
+        <PokemonImage sprites={pokemon.sprites} name={pokemon.name} />
         <h1 className='text-4xl font-bold text-gray-950 mb-4 text-center'>
-        #{pokemon.id}
+          #{pokemon.id}
         </h1>
         <h1 className="text-4xl font-bold text-gray-950 mb-4 text-center">
-           {pokemon.name}
+          {pokemon.name}
         </h1>
 
         <div className="flex justify-center gap-2 mb-4">
@@ -176,7 +167,7 @@ export default async function PokemonPage({ params }: Props) {
           <p className="text-center text-white mt-2 p-4 border border-white rounded-lg">{description}</p>
         </div>
       </div>
-      <div className="ml-10 border border-gray-300 rounded-lg shadow-lg p-6 max-w-md text-center relative overflow-hidden">
+      <div className="ml-10 rounded-lg shadow-lg p-6 max-w-md text-center relative overflow-hidden bg-white bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-20 border border-gray-100">
         <div className="text-left mb-6">
           <h2 className="text-2xl font-bold text-gray-950 mb-4">Stats</h2>
           <ul className="space-y-2">
@@ -202,15 +193,33 @@ export default async function PokemonPage({ params }: Props) {
           <h2 className="text-2xl font-bold text-gray-950 mb-4">Abilities</h2>
           <ul className="space-y-1">
             {pokemon.abilities.map((ability, index) => (
-                            <li key={index} className="capitalize">
-                            {ability.ability.name}
-                            {ability.is_hidden && <span className="ml-2 text-sm text-gray-200">(Hidden)</span>}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-              );
-            }
-            
+              <li key={index} className="capitalize">
+                {ability.ability.name}
+                {ability.is_hidden && <span className="ml-2 text-sm text-gray-200">(Hidden)</span>}
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div className='flex items-center justify-center'>
+    <hr className="my-12 border-gray-400 w-5/6 " />
+    </div>
+    <div className="text-left flex items-center justify-around m-4">
+     <div className=''>
+     <Pokedex 
+      name={pokemon.name}
+      height={pokemon.height}
+      weight={pokemon.weight}
+      spriteUrl={pokemon.sprites.front_default}
+      base_experience={pokemon.base_experience}
+      />
+     </div>
+    <div className=''>
+    <TypeWeakness types={pokemon.types} />
+    </div>
+    </div>
+  </div>
+  </div>
+  );
+}
