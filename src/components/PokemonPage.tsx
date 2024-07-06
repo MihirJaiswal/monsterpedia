@@ -8,6 +8,7 @@ import Pokedex from './Pokedex';
 import Evolution from './Evolution';
 import MovesSection from './MovesSection'; // Ensure this path is correct
 
+
 interface PokemonDetail {
   id: number;
   name: string;
@@ -158,46 +159,48 @@ const PokemonPage: React.FC<Props> = ({ pokemon }) => {
                   ))}
                 </div>
 
-                <div className="md:px-20 flex items-center justify-center">
+                <div className="md:px-20 px-6 flex items-center justify-center">
                   <p className="text-center text-white mt-2 p-4 border border-white rounded-lg">{pokemon.description}</p>
                 </div>
               </div>
-              <div className="mx-4 my-6 rounded-lg shadow-lg p-4  px-6 md:px-3 py-4 m max-w-md text-center relative overflow-hidden bg-white bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-20 border border-gray-100">
-              {/* Stats Section */}
-              <div className="text-left mb-4 sm:mb-6">
-                <h2 className="text-xl sm:text-2xl font-bold text-gray-950 mb-3 sm:mb-4">Stats</h2>
-                <ul className="space-y-2 sm:space-y-3">
-                  {pokemon.stats.map((stat, index) => (
-                    <li key={index} className="flex items-center flex-wrap">
-                      <span className="font-semibold text-gray-800 capitalize w-24 sm:w-32">{stat.stat.name}:</span>
-                      <div className="relative w-36 h-4 sm:w-48 sm:h-5 bg-gray-200 rounded-full overflow-hidden">
-                        <div className={`absolute h-full ${getStatColor(stat.base_stat)}`} style={{ width: `${stat.base_stat}%` }}></div>
-                      </div>
-                      <span className="ml-2 sm:ml-4 w-16 sm:w-20 text-right">{stat.base_stat}</span>
-                    </li>
-                  ))}
-                  <li className="flex items-center flex-wrap">
-                    <span className="font-semibold text-gray-800 capitalize w-24 sm:w-32">Total:</span>
-                    <div className="relative w-36 h-4 sm:w-48 sm:h-5 bg-gray-200 rounded-full overflow-hidden">
-                      <div className={`absolute h-full ${getTotalStatColor(totalBaseStats)}`} style={{ width: `${(totalBaseStats / 600) * 100}%` }}></div>
-                    </div>
-                    <span className="w-16 sm:w-20 ml-2 sm:ml-4 text-right text-white">{totalBaseStats}</span>
-                  </li>
-                </ul>
-              </div>
-              {/* Abilities Section */}
-              <div className="text-left mb-4 sm:mb-6">
-                <h2 className="text-xl sm:text-2xl font-bold text-gray-950 mb-3 sm:mb-4">Abilities</h2>
-                <ul className="space-y-1 sm:space-y-2">
-                  {pokemon.abilities.map((ability, index) => (
-                    <li key={index} className="capitalize">
-                      {ability.ability.name}
-                      {ability.is_hidden && <span className="ml-1 sm:ml-2 text-xs sm:text-sm text-gray-200">(Hidden)</span>}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
+              <div className="mx-4 my-6 rounded-lg shadow-lg p-6 px-4 md:p-8 max-w-md text-center relative overflow-hidden bg-white bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-30 border border-gray-200">
+                  {/* Stats Section */}
+                  <div className="text-left mb-6">
+                    <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-4">Stats</h2>
+                    <ul className="space-y-4">
+                      {pokemon.stats.map((stat, index) => (
+                        <li key={index} className="flex items-center flex-wrap">
+                          <div className='flex items-center justify-center gap-2 md:gap-6'>
+                          <div className="font-semibold text-gray-800 capitalize w-24 sm:w-32">{stat.stat.name}:</div>
+                          <div className="relative flex-1 h-3 md:h-[12px] w-32 md:w-36 sm:h-5 bg-gray-300 rounded-full overflow-hidden mr-2">
+                            <div className={`absolute h-full ${getStatColor(stat.base_stat)}`} style={{ width: `${stat.base_stat}%` }}></div>
+                          </div>
+                          <div className="text-black">{stat.base_stat}</div>
+                          </div>
+                        </li>
+                      ))}
+                      <li className="flex items-center flex-wrap">
+                        <span className="font-semibold text-gray-800 capitalize w-24 sm:w-32">Total:</span>
+                        <div className="relative flex-1 h-3 md:h-[12px]  w-32 md:w-36 sm:h-5 bg-gray-300 rounded-full overflow-hidden mr-2">
+                          <div className={`absolute h-full ${getTotalStatColor(totalBaseStats)}`} style={{ width: `${(totalBaseStats / 600) * 100}%` }}></div>
+                        </div>
+                        <span className="text-gray-900">{totalBaseStats}</span>
+                      </li>
+                    </ul>
+                  </div>
+                  {/* Abilities Section */}
+                  <div className="text-left mb-6">
+                    <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-4">Abilities</h2>
+                    <ul className="space-y-3">
+                      {pokemon.abilities.map((ability, index) => (
+                        <li key={index} className="capitalize text-black">
+                          {ability.ability.name}
+                          {ability.is_hidden && <span className="ml-2 text-xs sm:text-sm text-gray-800">(Hidden)</span>}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
           </div>
           )}
             {activeSection === 'section2' && (
