@@ -1,6 +1,17 @@
-import axios from 'axios';
 import { notFound } from 'next/navigation';
 import PokemonDetailClient from '../../../components/PokemonPage';
+
+enum MoveMethod {
+  LEVEL_UP = 'level-up',
+  EGG = 'egg',
+  MACHINE = 'machine',
+}
+
+enum MoveType {
+  PHYSICAL = 'physical',
+  SPECIAL = 'special',
+  STATUS = 'status',
+}
 
 interface PokemonType {
   type: {
@@ -43,8 +54,8 @@ interface PokemonDetail {
   moves: {
     move: {
       name: string;
-      method: 'level-up' | 'egg' | 'tm';
-      type: 'physical' | 'special' | 'status';
+      method: MoveMethod;
+      type: MoveType;
       level?: number;
     };
   }[];
@@ -102,18 +113,20 @@ interface Props {
 
 const fetchMoveDetails = async (url: string) => {
   try {
-    const response = await axios.get(url);
-    return response.data;
+    const response = await fetch(url);
+    if (!response.ok) throw new Error(`Failed to fetch move details: ${response.statusText}`);
+    return await response.json();
   } catch (error) {
     console.error('Error fetching move details:', error);
     return null;
   }
 };
 
-const fetchPokemonData = async (name: string) => {
+const fetchPokemonData = async (name: string): Promise<PokemonDetail | null> => {
   try {
-    const response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${name}`);
-    const pokemonData = response.data;
+    const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${name}`);
+    if (!response.ok) throw new Error(`Failed to fetch Pokémon data: ${response.statusText}`);
+    const pokemonData = await response.json();
 
     const moves = await Promise.all(
       pokemonData.moves.map(async (moveEntry: any) => {
@@ -126,9 +139,9 @@ const fetchPokemonData = async (name: string) => {
         return {
           move: {
             name: moveEntry.move.name,
-            method: method as 'level-up' | 'egg' | 'tm',
-            type: type as 'physical' | 'special' | 'status',
-            level: method === 'level-up' ? level : undefined,
+            method: method as MoveMethod,
+            type: type as MoveType,
+            level: method === MoveMethod.LEVEL_UP ? level : undefined,
           },
         };
       })
@@ -136,7 +149,7 @@ const fetchPokemonData = async (name: string) => {
 
     return {
       ...pokemonData,
-      moves: moves.filter(move => move !== null),
+      moves: moves.filter(move => move !== null) as PokemonDetail['moves'],
     };
   } catch (error) {
     console.error('Error fetching Pokémon data:', error);
@@ -144,22 +157,35 @@ const fetchPokemonData = async (name: string) => {
   }
 };
 
+const fetchSpeciesData = async (url: string) => {
+  try {
+    const response = await fetch(url);
+    if (!response.ok) throw new Error(`Failed to fetch species data: ${response.statusText}`);
+    return await response.json();
+  } catch (error) {
+    console.error('Error fetching species data:', error);
+    return null;
+  }
+};
+
 export default async function PokemonPage({ params }: Props) {
   try {
-    const response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${params.id}`);
-    if (!response.data) {
-      console.error('No Pokémon data found.');
+    const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${params.id}`);
+    if (!response.ok) throw new Error(`Failed to fetch Pokémon data: ${response.statusText}`);
+
+    const pokemon: PokemonDetail = await response.json();
+    const species: SpeciesDetail = await fetchSpeciesData(pokemon.species.url);
+
+    if (!species) {
+      console.error('No species data found.');
       notFound();
     }
 
-    const pokemon: PokemonDetail = response.data;
-    const speciesResponse = await axios.get(pokemon.species.url);
-    const species: SpeciesDetail = speciesResponse.data;
-
     const descriptionEntry = species.flavor_text_entries.find(entry => entry.language.name === 'en');
     const description = descriptionEntry ? descriptionEntry.flavor_text : 'No description available.';
-    const evolutionChainResponse = await axios.get(species.evolution_chain.url);
-    const evolutionChain: EvolutionChainDetail = evolutionChainResponse.data;
+    const evolutionChainResponse = await fetch(species.evolution_chain.url);
+    if (!evolutionChainResponse.ok) throw new Error(`Failed to fetch evolution chain: ${evolutionChainResponse.statusText}`);
+    const evolutionChain: EvolutionChainDetail = await evolutionChainResponse.json();
 
     const seenPokemon = new Set<string>();
 
@@ -194,11 +220,12 @@ export default async function PokemonPage({ params }: Props) {
 
     const evolution = await extractEvolutionLine(evolutionChain.chain);
     if (species.evolves_from_species) {
-      const preEvolutionResponse = await axios.get(species.evolves_from_species.url);
-      const preEvolutionData = preEvolutionResponse.data;
-      const preEvolutionPokemon = await fetchPokemonData(preEvolutionData.name);
+      const preEvolutionResponse = await fetch(species.evolves_from_species.url);
+      if (!preEvolutionResponse.ok) throw new Error(`Failed to fetch pre-evolution data: ${preEvolutionResponse.statusText}`);
+      const preEvolutionData = await preEvolutionResponse.json();
+      const preEvolutionPokemon = await fetchPokemonData(preEvolutionData?.name ?? '');
 
-      if (!seenPokemon.has(preEvolutionData.name)) {
+      if (preEvolutionData && preEvolutionPokemon && !seenPokemon.has(preEvolutionData.name)) {
         evolution.unshift({
           species_name: preEvolutionData.name,
           min_level: null,
@@ -215,6 +242,7 @@ export default async function PokemonPage({ params }: Props) {
       console.error('No detailed Pokémon data found.');
       notFound();
     }
+
     return <PokemonDetailClient pokemon={{ ...detailedPokemon, description, evolution }} />;
   } catch (error) {
     console.error('Error fetching Pokémon data:', error);
