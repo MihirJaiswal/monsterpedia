@@ -123,7 +123,6 @@ const fetchPokemonData = async (name: string) => {
         const method = moveEntry.version_group_details[0]?.move_learn_method.name;
         const type = moveDetails.damage_class.name;
         const level = moveEntry.version_group_details[0]?.level_learned_at;
-
         return {
           move: {
             name: moveEntry.move.name,
@@ -147,8 +146,6 @@ const fetchPokemonData = async (name: string) => {
 
 export default async function PokemonPage({ params }: Props) {
   try {
-    console.log(`Fetching data for Pokémon ID: ${params.id}`);
-
     const response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${params.id}`);
     if (!response.data) {
       console.error('No Pokémon data found.');
@@ -156,15 +153,11 @@ export default async function PokemonPage({ params }: Props) {
     }
 
     const pokemon: PokemonDetail = response.data;
-    console.log('Basic Pokémon data:', pokemon);
-
     const speciesResponse = await axios.get(pokemon.species.url);
     const species: SpeciesDetail = speciesResponse.data;
 
     const descriptionEntry = species.flavor_text_entries.find(entry => entry.language.name === 'en');
     const description = descriptionEntry ? descriptionEntry.flavor_text : 'No description available.';
-    console.log('Description:', description);
-
     const evolutionChainResponse = await axios.get(species.evolution_chain.url);
     const evolutionChain: EvolutionChainDetail = evolutionChainResponse.data;
 
@@ -200,8 +193,6 @@ export default async function PokemonPage({ params }: Props) {
     };
 
     const evolution = await extractEvolutionLine(evolutionChain.chain);
-    console.log('Evolution line:', evolution);
-
     if (species.evolves_from_species) {
       const preEvolutionResponse = await axios.get(species.evolves_from_species.url);
       const preEvolutionData = preEvolutionResponse.data;
@@ -224,9 +215,6 @@ export default async function PokemonPage({ params }: Props) {
       console.error('No detailed Pokémon data found.');
       notFound();
     }
-
-    console.log('Detailed Pokémon data:', detailedPokemon);
-
     return <PokemonDetailClient pokemon={{ ...detailedPokemon, description, evolution }} />;
   } catch (error) {
     console.error('Error fetching Pokémon data:', error);

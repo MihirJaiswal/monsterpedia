@@ -45,6 +45,9 @@ interface PokemonDetail {
   moves: {
     move: {
       name: string;
+      method: 'level-up' | 'egg' | 'machine';
+      type: 'physical' | 'special' | 'status';
+      level?: number;
     };
   }[];
   evolution: {
@@ -101,7 +104,6 @@ const PokemonPage: React.FC<Props> = ({ pokemon }) => {
   };
 
   const totalBaseStats = pokemon.stats.reduce((acc, stat) => acc + stat.base_stat, 0);
-
   return (
     <div>
       <div className="relative p-6 bg-hero bg-cover bg-center min-h-screen">
