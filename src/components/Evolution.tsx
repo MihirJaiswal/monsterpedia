@@ -2,6 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { FaArrowRight } from 'react-icons/fa'; // Importing the arrow icon
+import { FaArrowDown } from 'react-icons/fa';
 
 // Define the Pokémon type interface
 interface PokemonType {
@@ -53,7 +54,7 @@ const Evolution: React.FC<EvolutionProps> = ({ evolution }) => {
   }
 
   return (
-    <div className="mt-12 flex items-center justify-center">
+    <div className="mt-12 flex flex-col md:flex-row items-center justify-center gap-4">
       {evolution.map((evo, index) => (
         <React.Fragment key={index}>
           {index > 0 && (
@@ -65,7 +66,13 @@ const Evolution: React.FC<EvolutionProps> = ({ evolution }) => {
                 {evolution[index].item && <div>(Item: {evolution[index].item})</div>}
                 {evolution[index].trigger_name && <div>- {evolution[index].trigger_name}</div>}
               </div>
-              <FaArrowRight size={24} className="text-gray-800" />
+              <div className="flex items-center">
+                {/* Icon visible on medium screens and above */}
+                <FaArrowRight size={24} className="hidden md:block text-gray-800" />
+                
+                {/* Icon visible on screens smaller than medium */}
+                <FaArrowDown size={24} className="block md:hidden text-gray-800" />
+              </div>
             </div>
           )}
           <Link href={`/pokemon/${evo.species_name}`} passHref>

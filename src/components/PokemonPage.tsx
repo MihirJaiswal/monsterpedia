@@ -109,27 +109,27 @@ const PokemonPage: React.FC<Props> = ({ pokemon }) => {
       <div className="relative p-6 bg-hero bg-cover bg-center min-h-screen">
         <div className="absolute inset-0 bg-bg2 bg-repeat-round bg-contain opacity-5 pointer-events-none"></div>
         <div className='flex flex-col items-center'>
-          <div className="mb-4 flex gap-4 border border-white p-2 rounded-lg shadow-lg bg-white bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-30">
+          <div className="mb-4 grid grid-cols-2 md:flex gap-4 border border-white p-2 rounded-lg shadow-lg bg-white bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-40">
             <button
-              className={`px-4 py-2 rounded-lg transition-colors duration-300 ${activeSection === 'section1' ? 'bg-white text-gray-900 font-semibold' : ' text-gray-800'}`}
+              className={`px-4 py-2 rounded-lg transition-colors duration-300 ${activeSection === 'section1' ? 'bg-white text-gray-900 font-semibold' : ' text-black'}`}
               onClick={() => setActiveSection('section1')}
             >
               Overview
             </button>
             <button
-              className={`px-4 py-2 rounded-lg transition-colors duration-300 ${activeSection === 'section2' ? 'bg-white text-gray-900 font-semibold' : ' text-gray-800'}`}
+              className={`px-4 py-2 rounded-lg transition-colors duration-300 ${activeSection === 'section2' ? 'bg-white text-gray-900 font-semibold' : ' text-black'}`}
               onClick={() => setActiveSection('section2')}
             >
               Pokedex
             </button>
             <button
-              className={`px-4 py-2 rounded-lg transition-colors duration-300 ${activeSection === 'section3' ? 'bg-white text-gray-900 font-semibold' : ' text-gray-800'}`}
+              className={`px-4 py-2 rounded-lg transition-colors duration-300 ${activeSection === 'section3' ? 'bg-white text-gray-900 font-semibold' : ' text-black'}`}
               onClick={() => setActiveSection('section3')}
             >
               Moves
             </button>
             <button
-              className={`px-4 py-2 rounded-lg transition-colors duration-300 ${activeSection === 'section4' ? 'bg-white text-gray-900 font-semibold' : ' text-gray-800'}`}
+              className={`px-4 py-2 rounded-lg transition-colors duration-300 ${activeSection === 'section4' ? 'bg-white text-gray-900 font-semibold' : ' text-black'}`}
               onClick={() => setActiveSection('section4')}
             >
               Evolution
@@ -158,48 +158,50 @@ const PokemonPage: React.FC<Props> = ({ pokemon }) => {
                   ))}
                 </div>
 
-                <div className="px-20 flex items-center justify-center">
+                <div className="md:px-20 flex items-center justify-center">
                   <p className="text-center text-white mt-2 p-4 border border-white rounded-lg">{pokemon.description}</p>
                 </div>
               </div>
-              <div className="ml-10 rounded-lg shadow-lg px-6 pt-4 max-w-md text-center relative overflow-hidden bg-white bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-20 border border-gray-100">
-                <div className="text-left mb-6">
-                  <h2 className="text-2xl font-bold text-gray-950 mb-4">Stats</h2>
-                  <ul className="space-y-2">
-                    {pokemon.stats.map((stat, index) => (
-                      <li key={index} className="flex items-center">
-                        <span className="font-semibold text-gray-800 capitalize w-24">{stat.stat.name}:</span>
-                        <div className="relative w-48 h-4 bg-gray-200 rounded-full overflow-hidden">
-                          <div className={`absolute h-full ${getStatColor(stat.base_stat)}`} style={{ width: `${stat.base_stat}%` }}></div>
-                        </div>
-                        <span className="ml-4 w-8 text-right">{stat.base_stat}</span>
-                      </li>
-                    ))}
-                    <li className="flex items-center">
-                      <span className="font-semibold text-gray-800 capitalize w-24">Total Base Stats:</span>
-                      <div className="relative w-48 h-4 bg-gray-200 rounded-full overflow-hidden">
-                        <div className={`absolute h-full ${getTotalStatColor(totalBaseStats)}`} style={{ width: `${(totalBaseStats / 600) * 100}%` }}></div>
+              <div className="mx-4 my-6 rounded-lg shadow-lg p-4  px-6 md:px-3 py-4 m max-w-md text-center relative overflow-hidden bg-white bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-20 border border-gray-100">
+              {/* Stats Section */}
+              <div className="text-left mb-4 sm:mb-6">
+                <h2 className="text-xl sm:text-2xl font-bold text-gray-950 mb-3 sm:mb-4">Stats</h2>
+                <ul className="space-y-2 sm:space-y-3">
+                  {pokemon.stats.map((stat, index) => (
+                    <li key={index} className="flex items-center flex-wrap">
+                      <span className="font-semibold text-gray-800 capitalize w-24 sm:w-32">{stat.stat.name}:</span>
+                      <div className="relative w-36 h-4 sm:w-48 sm:h-5 bg-gray-200 rounded-full overflow-hidden">
+                        <div className={`absolute h-full ${getStatColor(stat.base_stat)}`} style={{ width: `${stat.base_stat}%` }}></div>
                       </div>
-                      <span className="w-16 ml-2 text-center text-white">{totalBaseStats}</span>
+                      <span className="ml-2 sm:ml-4 w-16 sm:w-20 text-right">{stat.base_stat}</span>
                     </li>
-                  </ul>
-                </div>
-                <div className="text-left mb-6">
-                  <h2 className="text-2xl font-bold text-gray-950 mb-4">Abilities</h2>
-                    <ul className="space-y-1">
-                    {pokemon.abilities.map((ability, index) => (
+                  ))}
+                  <li className="flex items-center flex-wrap">
+                    <span className="font-semibold text-gray-800 capitalize w-24 sm:w-32">Total:</span>
+                    <div className="relative w-36 h-4 sm:w-48 sm:h-5 bg-gray-200 rounded-full overflow-hidden">
+                      <div className={`absolute h-full ${getTotalStatColor(totalBaseStats)}`} style={{ width: `${(totalBaseStats / 600) * 100}%` }}></div>
+                    </div>
+                    <span className="w-16 sm:w-20 ml-2 sm:ml-4 text-right text-white">{totalBaseStats}</span>
+                  </li>
+                </ul>
+              </div>
+              {/* Abilities Section */}
+              <div className="text-left mb-4 sm:mb-6">
+                <h2 className="text-xl sm:text-2xl font-bold text-gray-950 mb-3 sm:mb-4">Abilities</h2>
+                <ul className="space-y-1 sm:space-y-2">
+                  {pokemon.abilities.map((ability, index) => (
                     <li key={index} className="capitalize">
-                    {ability.ability.name}
-                    {ability.is_hidden && <span className="ml-2 text-sm text-gray-200">(Hidden)</span>}
+                      {ability.ability.name}
+                      {ability.is_hidden && <span className="ml-1 sm:ml-2 text-xs sm:text-sm text-gray-200">(Hidden)</span>}
                     </li>
-                    ))}
-                    </ul>
-                    </div>
-                    </div>
-                    </div>
-                    )}
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </div>
+          )}
             {activeSection === 'section2' && (
-              <div className='section2 flex flex-col md:flex-row justify-between items-center mt-4 gap-44'>
+              <div className='section2 flex flex-col md:flex-row justify-between items-center mt-4 md:gap-44 gap-12'>
                 <div>
                   <Pokedex
                     name={pokemon.name}

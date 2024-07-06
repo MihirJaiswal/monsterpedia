@@ -73,7 +73,7 @@ const MovesSection: React.FC<MovesSectionProps> = ({ moves }) => {
 
   return (
     <div>
-      <div className="mt-4 flex justify-center gap-12">
+      <div className="mt-4 flex flex-col md:flex-row justify-center gap-12">
         {renderTable('Level-Up Moves', sortedLevelUpMoves)}
         {renderTable('Egg Moves', moves.filter(move => move.move.method === 'egg'))}
         {renderTable('TM Moves', moves.filter(move => move.move.method === 'machine'))}

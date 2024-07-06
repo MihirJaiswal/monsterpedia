@@ -44,10 +44,10 @@ const PokemonCard: React.FC<PokemonCardProps> = ({ name, spriteUrl, types = [], 
         {spriteUrl ? (
           <>
             <div className="flex flex-col items-center justify-center">
-              <div className="relative w-36 h-36 mx-auto mb-4">
+              <div className="relative md:w-36 md:h-36 w-28 md:mx-auto mb-4">
                 <div className="absolute inset-0 flex justify-center items-center z-0 bg-card rounded-full bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-10 opacity-40">
-                  <div className="w-36 h-36 rounded-full relative flex justify-center items-center">
-                    <div className="w-32 h-32 rounded-full border border-gray-300 relative flex justify-center items-center">
+                  <div className="md:w-36 md:h-36 rounded-full relative flex justify-center items-center">
+                    <div className="md:w-32 md:h-32 rounded-full border border-gray-300 relative flex justify-center items-center">
                       <div className="absolute w-full h-full flex items-center justify-center">
                         <div className="absolute w-full h-[1px] bg-gray-300 transform rotate-45 left-2"></div>
                         <div className="absolute w-10 h-10 rounded-full border border-white flex justify-center items-center"></div>

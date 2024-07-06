@@ -1,7 +1,7 @@
-'use client'
+'use client';
 import { useState, useEffect } from 'react';
 import PokemonCard from './PokemonCard';
-import { FaSearch, FaFilter } from 'react-icons/fa';
+import { FaSearch } from 'react-icons/fa';
 
 interface Pokemon {
   name: string;
@@ -163,20 +163,21 @@ const Pokemon = () => {
     <div className="relative p-6 bg-hero bg-cover bg-center min-h-screen">
       <div className="absolute inset-0 bg-bg1 bg-repeat bg-center opacity-5"></div>
       <h1 className="relative text-4xl font-bold text-center mb-8 text-white">MonsterPedia Pokédex</h1>
-      <div className="relative mb-6 flex justify-center items-center gap-4">
-        <div className="relative">
+      <div className="relative mb-6 flex flex-col items-center justify-center gap-4 md:flex-row md:gap-6">
+        <div className="relative w-full max-w-md">
           <input
             type="text"
             placeholder="Search Pokémon..."
-            className="w-full text-black max-w-md p-3 pl-10 rounded-lg border border-gray-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full text-black p-3 pl-10 rounded-lg border border-gray-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
           <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500" />
         </div>
-        <div className="relative">
+        <div className='flex gap-6'>
+        <div className="relative w-40 max-w-1/2">
           <select
-            className="w-full text-black max-w-md p-3 rounded-lg border border-gray-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full text-black p-3 rounded-lg border border-gray-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
             value={selectedGeneration === null ? 'all' : selectedGeneration}
             onChange={(e) => setSelectedGeneration(e.target.value === 'all' ? null : parseInt(e.target.value))}
           >
@@ -186,8 +187,28 @@ const Pokemon = () => {
             ))}
           </select>
         </div>
+        {/* Mobile Type Selector */}
+      <div className="relative mb-6 flex flex-col items-center md:hidden">
+        <select
+          className="w-full text-black p-3 rounded-lg border border-gray-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+          value={selectedType}
+          onChange={(e) => setSelectedType(e.target.value)}
+        >
+          <option value="">All Types</option>
+          {types.map((type, index) => (
+            <option key={index} value={type}>
+              {type.charAt(0).toUpperCase() + type.slice(1)}
+            </option>
+          ))}
+        </select>
       </div>
-      <div className="relative mb-6 flex flex-wrap justify-center gap-4 px-20 mt-12">
+        </div>
+      </div>
+
+      
+
+      {/* Desktop Type Selector */}
+      <div className="relative hidden md:flex flex-wrap justify-center gap-4 mb-6">
         {types.map((type, index) => (
           <button
             key={index}
@@ -203,7 +224,7 @@ const Pokemon = () => {
         ))}
       </div>
 
-      <div className="relative flex flex-wrap justify-center gap-6 py-10 mb-6">
+      <div className="relative grid grid-cols-2 gap-6 md:flex md:flex-wrap md:justify-center md:gap-6 py-10 mb-6">
         {displayedPokemonList.map((p, index) => {
           const pokemonDetail = pokemonDetails[p.name];
           return (
