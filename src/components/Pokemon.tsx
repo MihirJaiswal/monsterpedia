@@ -1,6 +1,7 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import PokemonCard from './PokemonCard';
+import ShimmerCard from './ShimmerCard';
 import {
   FaSearch, FaLeaf, FaFire, FaTint, FaBolt, FaSnowflake, FaFistRaised,
   FaSkullCrossbones, FaMountain, FaFeather, FaBrain, FaBug, FaGem,
@@ -100,11 +101,12 @@ const Pokemon = () => {
   const [pokemonDetails, setPokemonDetails] = useState<{ [key: string]: PokemonDetail }>({});
   const [loading, setLoading] = useState<boolean>(true);
   const [searchTerm, setSearchTerm] = useState<string>('');
-  const [displayedCount, setDisplayedCount] = useState<number>(30); // Number of Pokémon to display initially
+  const [displayedCount, setDisplayedCount] = useState<number>(30);
   const [selectedGeneration, setSelectedGeneration] = useState<number | null>(null);
-  const [selectedType, setSelectedType] = useState<PokemonTypeName | ''>(''); // Default type should be an empty string
+  const [selectedType, setSelectedType] = useState<PokemonTypeName | ''>('');
+  const [filterLoading, setFilterLoading] = useState<boolean>(false); // New state for filter loading
 
-  const fetchPokemonDetailsInBatches = async (pokemons: Pokemon[], batchSize: number) => {
+  const fetchPokemonDetailsInBatches = useCallback(async (pokemons: Pokemon[], batchSize: number) => {
     let detailsMap: { [key: string]: PokemonDetail } = {};
 
     for (let i = 0; i < pokemons.length; i += batchSize) {
@@ -132,7 +134,7 @@ const Pokemon = () => {
 
       setPokemonDetails((prevDetails) => ({ ...prevDetails, ...detailsMap }));
     }
-  };
+  }, []);
 
   useEffect(() => {
     async function fetchData() {
@@ -140,9 +142,9 @@ const Pokemon = () => {
         setLoading(true);
         let allPokemons: Pokemon[] = [];
         let totalFetched = 0;
-        const batchSize = 100; 
+        const batchSize = 100;
 
-        while (totalFetched < 1025) { 
+        while (totalFetched < 1025) {
           const listResponse = await fetch(`https://pokeapi.co/api/v2/pokemon?limit=${batchSize}&offset=${totalFetched}`);
           if (!listResponse.ok) {
             throw new Error(`Failed to fetch Pokémon list: ${listResponse.statusText}`);
@@ -154,7 +156,6 @@ const Pokemon = () => {
 
         setPokemonList(allPokemons);
 
-        // Fetch details of Pokémon in batches
         await fetchPokemonDetailsInBatches(allPokemons, 20);
       } catch (error) {
         console.error(error);
@@ -164,7 +165,7 @@ const Pokemon = () => {
     }
 
     fetchData();
-  }, []);
+  }, [fetchPokemonDetailsInBatches]);
 
   const filteredPokemonList = pokemonList
     .filter(pokemon => pokemon.name.toLowerCase().includes(searchTerm.toLowerCase()))
@@ -180,13 +181,24 @@ const Pokemon = () => {
       return index >= offset && index < offset + limit;
     });
 
-  const displayedPokemonList = filteredPokemonList.slice(0, displayedCount); // Only show Pokémon up to the displayedCount
+  const displayedPokemonList = filteredPokemonList.slice(0, displayedCount);
 
   const loadMorePokemons = () => {
-    setDisplayedCount(prevCount => prevCount + 30); // Increase the number of Pokémon to display
+    setDisplayedCount(prevCount => prevCount + 30);
   };
 
   const hasMorePokemons = displayedCount < filteredPokemonList.length;
+
+  const handleFilterChange = (type: PokemonTypeName | '', generation: number | null) => {
+    setFilterLoading(true); // Set loading to true
+    setSelectedType(type);
+    setSelectedGeneration(generation);
+
+    // Use a timeout to simulate delay
+    setTimeout(() => {
+      setFilterLoading(false); // Set loading to false after a short delay
+    }, 1000); // Adjust the delay as needed
+  };
 
   return (
     <div className="relative p-6 bg-hero bg-cover bg-center min-h-screen">
@@ -202,14 +214,14 @@ const Pokemon = () => {
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
-            <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500" />
+          <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500" />
         </div>
         <div className='flex gap-6'>
           <div className="relative w-40 max-w-1/2">
             <select
               className="w-full text-black p-3 rounded-lg border border-gray-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
               value={selectedGeneration === null ? 'all' : selectedGeneration}
-              onChange={(e) => setSelectedGeneration(e.target.value === 'all' ? null : parseInt(e.target.value))}
+              onChange={(e) => handleFilterChange(selectedType, e.target.value === 'all' ? null : parseInt(e.target.value))}
             >
               <option value="all">All Generations</option>
               {generations.map((gen, index) => (
@@ -222,7 +234,7 @@ const Pokemon = () => {
             <select
               className="w-full text-black p-3 rounded-lg border border-gray-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
               value={selectedType}
-              onChange={(e) => setSelectedType(e.target.value as PokemonTypeName | '')}
+              onChange={(e) => handleFilterChange(e.target.value as PokemonTypeName | '', selectedGeneration)}
             >
               <option value="">All Types</option>
               {types.map((type, index) => (
@@ -241,7 +253,7 @@ const Pokemon = () => {
           <button
             key={type}
             className={`px-4 py-2 rounded-lg shadow-md border border-black transition duration-300 flex items-center gap-2 ${selectedType === type ? typeGradients[type] : 'bg-white rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-60 border border-gray-100 text-black'}`}
-            onClick={() => setSelectedType(type === selectedType ? '' : type)}
+            onClick={() => handleFilterChange(type === selectedType ? '' : type, selectedGeneration)}
           >
             {typeIcons[type]}
             <span>{type.charAt(0).toUpperCase() + type.slice(1)}</span>
@@ -249,19 +261,25 @@ const Pokemon = () => {
         ))}
       </div>
 
-      <div className="relative grid grid-cols-2 gap-6 md:flex md:flex-wrap md:justify-center md:gap-6 py-10 mb-6">
-        {displayedPokemonList.map((p, index) => {
-          const pokemonDetail = pokemonDetails[p.name];
-          return (
-            <PokemonCard
-              key={index}
-              name={p.name}
-              spriteUrl={pokemonDetail?.sprites.other['official-artwork'].front_default}
-              types={pokemonDetail?.types}
-              index={index}
-            />
-          );
-        })}
+      <div className="relative grid grid-cols-2 gap-6 md:grid-cols-6 md:gap-6 py-10 mb-6 md:px-24">
+        {filterLoading ? (
+          Array.from({ length: displayedCount }).map((_, index) => (
+            <ShimmerCard key={index} />
+          ))
+        ) : (
+          displayedPokemonList.map((p, index) => {
+            const pokemonDetail = pokemonDetails[p.name];
+            return (
+              <PokemonCard
+                key={index}
+                name={p.name}
+                spriteUrl={pokemonDetail?.sprites.other['official-artwork'].front_default}
+                types={pokemonDetail?.types}
+                index={index}
+              />
+            );
+          })
+        )}
       </div>
       {hasMorePokemons && (
         <div className="relative text-center">
@@ -278,4 +296,3 @@ const Pokemon = () => {
 };
 
 export default Pokemon;
-

@@ -1,8 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { FaBullseye } from "react-icons/fa";
-import { FaStar } from 'react-icons/fa';
+import { FaBullseye, FaStar } from 'react-icons/fa';
 
 interface PokemonImageProps {
   sprites: {
@@ -10,7 +9,7 @@ interface PokemonImageProps {
     other: {
       'official-artwork': {
         front_default: string;
-        front_shiny: string; // Add shiny sprite from official artwork
+        front_shiny: string;
       };
     };
   };
@@ -19,8 +18,12 @@ interface PokemonImageProps {
 
 const PokemonImage = ({ sprites, name }: PokemonImageProps) => {
   const [isShiny, setIsShiny] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const toggleShiny = () => setIsShiny(!isShiny);
+
+  const handleImageLoad = () => setLoading(false);
+  const handleImageError = () => setLoading(false); // Optionally handle image load errors
 
   return (
     <div className="flex flex-col items-center">
@@ -36,10 +39,17 @@ const PokemonImage = ({ sprites, name }: PokemonImageProps) => {
             </div>
           </div>
         </div>
+        {loading && (
+          <div className="absolute inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 rounded-full">
+            <p className="text-white text-lg">Loading...</p>
+          </div>
+        )}
         <img
           src={isShiny ? sprites.other['official-artwork'].front_shiny : sprites.other['official-artwork'].front_default}
           alt={name}
-          className={`w-52 h-52 object-cover object-center relative transition-transform duration-500`}
+          className={`w-52 h-52 object-cover object-center relative transition-transform duration-500 ${loading ? 'opacity-0' : 'opacity-100'}`}
+          onLoad={handleImageLoad}
+          onError={handleImageError}
         />
       </div>
       <div className="flex justify-center ">
@@ -47,12 +57,8 @@ const PokemonImage = ({ sprites, name }: PokemonImageProps) => {
           onClick={toggleShiny}
           className="text-white border border-white p-2 rounded-lg flex items-center gap-2 mb-6"
         >
-           {
-            isShiny ? 'Original'  : 'Shiny'
-         }
-        {
-          isShiny ? <FaBullseye/> : <FaStar />
-        } 
+          {isShiny ? 'Original' : 'Shiny'}
+          {isShiny ? <FaBullseye /> : <FaStar />}
         </button>
       </div>
     </div>

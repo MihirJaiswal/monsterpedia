@@ -40,51 +40,52 @@ const PokemonCard: React.FC<PokemonCardProps> = ({ name, spriteUrl, types = [], 
 
   return (
     <Link href={`/pokemon/${name.toLowerCase()}`} passHref>
-      <div className="relative h-full w-full py-4 px-6 bg-white rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-30 border border-gray-100 transform transition-transform hover:scale-105 ">
+      <div className="relative h-full w-full py-4 px-6 bg-white rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-30 border border-gray-100 transform transition-transform hover:scale-105 cursor-pointer">
         {spriteUrl ? (
-          <>
-            <div className="flex flex-col items-center justify-center">
-              <div className="relative md:w-36 md:h-36 w-28 md:mx-auto mb-4">
-                <div className="absolute inset-0 flex justify-center items-center z-0 bg-card rounded-full bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-10 opacity-40">
-                  <div className="md:w-36 md:h-36 rounded-full relative flex justify-center items-center">
-                    <div className="md:w-32 md:h-32 rounded-full border border-gray-300 relative flex justify-center items-center">
-                      <div className="absolute w-full h-full flex items-center justify-center">
-                        <div className="absolute w-full h-[1px] bg-gray-300 transform rotate-45 left-2"></div>
-                        <div className="absolute w-10 h-10 rounded-full border border-white flex justify-center items-center"></div>
-                        <div className="absolute w-full h-[1px] bg-gray-300 transform rotate-45 right-2"></div>
-                      </div>
+          <div className="flex flex-col items-center justify-center">
+            <div className="relative md:w-36 md:h-36 w-28 md:mx-auto mb-4">
+              <div className="absolute inset-0 flex justify-center items-center z-0 bg-card rounded-full bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-10 opacity-40">
+                <div className="md:w-36 md:h-36 rounded-full relative flex justify-center items-center">
+                  <div className="md:w-32 md:h-32 rounded-full border border-gray-300 relative flex justify-center items-center">
+                    <div className="absolute w-full h-full flex items-center justify-center">
+                      <div className="absolute w-full h-[1px] bg-gray-300 transform rotate-45 left-2"></div>
+                      <div className="absolute w-10 h-10 rounded-full border border-white flex justify-center items-center"></div>
+                      <div className="absolute w-full h-[1px] bg-gray-300 transform rotate-45 right-2"></div>
                     </div>
                   </div>
                 </div>
-                <img
-                  src={spriteUrl} 
-                  alt={name} 
-                  className="w-full h-full object-cover object-center relative"
-                />
               </div>
-              <p 
-                className={`text-center font-bold text-[#011434] uppercase ${
-                    name.length > 10 ? 'text-xs' : 'text-base'
-                }`}
-              >
-                {name}
-              </p>
-              <div className="flex gap-2 mt-2">
-                {types.map((type, idx) => (
-                  <Image
-                    width={20}
-                    height={20}
-                    key={idx}
-                    src={typeImages[type.type.name] || '/types/default.png'} // Fallback image
-                    alt={type.type.name}
-                    className="w-8 h-8 object-cover"
-                    loading='lazy'
-                    title={type.type.name}
-                  />
-                ))}
-              </div>
+              <Image
+                src={spriteUrl}
+                alt={name}
+                width={144} // 36 * 4 for better resolution
+                height={144} // 36 * 4 for better resolution
+                className="w-full h-full object-cover object-center relative"
+                loading="lazy"
+              />
             </div>
-          </>
+            <p
+              className={`text-center font-bold text-[#011434] uppercase ${
+                name.length > 10 ? 'text-xs' : 'text-base'
+              }`}
+            >
+              {name}
+            </p>
+            <div className="flex gap-2 mt-2">
+              {types.map((type, idx) => (
+                <Image
+                  key={idx}
+                  src={typeImages[type.type.name] || '/types/default.png'}
+                  alt={type.type.name}
+                  width={32} // Adjust size as needed
+                  height={32} // Adjust size as needed
+                  className="w-8 h-8 object-cover"
+                  loading="lazy"
+                  title={type.type.name}
+                />
+              ))}
+            </div>
+          </div>
         ) : (
           <p className="text-lg font-semibold text-gray-500">Loading...</p>
         )}

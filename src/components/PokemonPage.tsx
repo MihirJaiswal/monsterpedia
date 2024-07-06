@@ -1,13 +1,12 @@
-// src/components/PokemonPage.tsx
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import PokemonImage from './PokemonImage';
 import TypeWeakness from './TypeWeakness';
 import Pokedex from './Pokedex';
 import Evolution from './Evolution';
 import MovesSection from './MovesSection'; // Ensure this path is correct
-
+import Shimmer from './Shimmer'; // Import the shimmer component
 
 interface PokemonDetail {
   id: number;
@@ -87,6 +86,12 @@ interface Props {
 
 const PokemonPage: React.FC<Props> = ({ pokemon }) => {
   const [activeSection, setActiveSection] = useState<'section1' | 'section2' | 'section3' | 'section4'>('section1');
+  const [loading, setLoading] = useState<boolean>(true);
+
+  // Simulate data fetching for demonstration
+  useEffect(() => {
+    setTimeout(() => setLoading(false), 1000); // Simulate loading for 1 second
+  }, []);
 
   const getStatColor = (stat: number) => {
     if (stat > 100) return 'bg-green-600';
@@ -105,6 +110,9 @@ const PokemonPage: React.FC<Props> = ({ pokemon }) => {
   };
 
   const totalBaseStats = pokemon.stats.reduce((acc, stat) => acc + stat.base_stat, 0);
+
+  if (loading) return <Shimmer />; // Show shimmer while loading
+
   return (
     <div>
       <div className="relative p-6 bg-hero bg-cover bg-center min-h-screen">
@@ -139,7 +147,7 @@ const PokemonPage: React.FC<Props> = ({ pokemon }) => {
           </div>
 
           {activeSection === 'section1' && (
-            <div className='section1 flex flex-col md:flex-row justify-center items-center mt-12'>
+            <div className='section1 flex flex-col md:flex-row justify-between items-center mt-12'>
               <div>
                 <PokemonImage sprites={pokemon.sprites} name={pokemon.name} />
                 
@@ -160,11 +168,11 @@ const PokemonPage: React.FC<Props> = ({ pokemon }) => {
                   ))}
                 </div>
 
-                <div className="md:px-20 px-6 flex items-center justify-center">
+                <div className="md:px-32 px-6 flex items-center justify-center">
                   <p className="text-center text-white mt-2 p-4 border border-white rounded-lg">{pokemon.description}</p>
                 </div>
               </div>
-              <div className="mx-4 my-6 rounded-lg shadow-lg p-6 px-4 md:p-8 max-w-md text-center relative overflow-hidden bg-white bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-30 border border-gray-200">
+              <div className="mx-4 w-full my-6 rounded-lg shadow-lg p-6 px-4 md:p-8 max-w-md text-center relative overflow-hidden bg-white bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-30 border border-gray-200">
                   {/* Stats Section */}
                   <div className="text-left mb-6">
                     <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-4">Stats</h2>
@@ -182,10 +190,10 @@ const PokemonPage: React.FC<Props> = ({ pokemon }) => {
                       ))}
                       <li className="flex items-center flex-wrap">
                         <span className="font-semibold text-gray-800 capitalize w-24 sm:w-32">Total:</span>
-                        <div className="relative flex-1 h-3 md:h-[12px]  w-32 md:w-36 sm:h-5 bg-gray-300 rounded-full overflow-hidden mr-2">
+                        <div className="relative flex-1 h-3 md:h-[12px] w-32 md:w-32 sm:h-5 bg-gray-300 rounded-full overflow-hidden mr-8">
                           <div className={`absolute h-full ${getTotalStatColor(totalBaseStats)}`} style={{ width: `${(totalBaseStats / 600) * 100}%` }}></div>
                         </div>
-                        <span className="text-gray-900">{totalBaseStats}</span>
+                        <span className="text-gray-900 mr-8">{totalBaseStats}</span>
                       </li>
                     </ul>
                   </div>
