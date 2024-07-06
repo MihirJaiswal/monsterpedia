@@ -23,7 +23,7 @@ const Pokedex: React.FC<PokemonProps> = ({ name, height, weight, base_experience
           loading="lazy"
           className="w-[32rem] h-auto mx-auto mb-4 rounded-lg"
         />
-        <div className="absolute top-12 left-20 md:top-20 md:left-52 flex flex-col items-center">
+        <div className="absolute top-12 left-20 md:top-20 md:left-56 flex flex-col items-center">
           <div className="p-4">
             <img
               src={spriteUrl}
@@ -33,7 +33,7 @@ const Pokedex: React.FC<PokemonProps> = ({ name, height, weight, base_experience
           </div>
           <div className="md:mt-28">
             <ul className="text-left space-y-2 mb-4 text-black font-semibold p-4">
-              <h1 className="text-lg font-bold text-center mb-4 text-gray-800 capitalize">{name}</h1>
+              <h1 className="text-lg font-bold text-center mb-3 text-gray-800 capitalize">{name}</h1>
               <li><strong className="font-semibold text-gray-700">Height:</strong> {height / 10} m</li>
               <li><strong className="font-semibold text-gray-700">Weight:</strong> {weight / 10} kg</li>
               <li><strong className="font-semibold text-gray-700">Base Experience:</strong> {base_experience}</li>

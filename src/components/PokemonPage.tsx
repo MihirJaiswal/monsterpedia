@@ -107,27 +107,27 @@ const PokemonPage: React.FC<Props> = ({ pokemon }) => {
       <div className="relative p-6 bg-hero bg-cover bg-center min-h-screen">
         <div className="absolute inset-0 bg-bg2 bg-repeat-round bg-contain opacity-5 pointer-events-none"></div>
         <div className='flex flex-col items-center'>
-          <div className="mb-4 flex gap-4 bg-gray-200 p-2 rounded-lg shadow-lg">
+          <div className="mb-4 flex gap-4 border border-white p-2 rounded-lg shadow-lg bg-white bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-30">
             <button
-              className={`px-4 py-2 rounded-lg transition-colors duration-300 ${activeSection === 'section1' ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-800'}`}
+              className={`px-4 py-2 rounded-lg transition-colors duration-300 ${activeSection === 'section1' ? 'bg-white text-gray-900 font-semibold' : ' text-gray-800'}`}
               onClick={() => setActiveSection('section1')}
             >
               Overview
             </button>
             <button
-              className={`px-4 py-2 rounded-lg transition-colors duration-300 ${activeSection === 'section2' ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-800'}`}
+              className={`px-4 py-2 rounded-lg transition-colors duration-300 ${activeSection === 'section2' ? 'bg-white text-gray-900 font-semibold' : ' text-gray-800'}`}
               onClick={() => setActiveSection('section2')}
             >
               Pokedex
             </button>
             <button
-              className={`px-4 py-2 rounded-lg transition-colors duration-300 ${activeSection === 'section3' ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-800'}`}
+              className={`px-4 py-2 rounded-lg transition-colors duration-300 ${activeSection === 'section3' ? 'bg-white text-gray-900 font-semibold' : ' text-gray-800'}`}
               onClick={() => setActiveSection('section3')}
             >
               Moves
             </button>
             <button
-              className={`px-4 py-2 rounded-lg transition-colors duration-300 ${activeSection === 'section4' ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-800'}`}
+              className={`px-4 py-2 rounded-lg transition-colors duration-300 ${activeSection === 'section4' ? 'bg-white text-gray-900 font-semibold' : ' text-gray-800'}`}
               onClick={() => setActiveSection('section4')}
             >
               Evolution
@@ -203,7 +203,7 @@ const PokemonPage: React.FC<Props> = ({ pokemon }) => {
                     name={pokemon.name}
                     height={pokemon.height}
                     weight={pokemon.weight}
-                    spriteUrl={pokemon.sprites.front_default}
+                    spriteUrl={pokemon.sprites.other['official-artwork']?.front_default || pokemon.sprites.front_default} // Use optional chaining and fallback
                     base_experience={pokemon.base_experience}
                   />
                 </div>
