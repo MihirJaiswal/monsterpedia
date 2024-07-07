@@ -76,7 +76,7 @@ const Pokedex: React.FC<PokemonProps> = ({ name, height, weight, base_experience
             height={120}
             quality={100}
             loading="lazy"
-            className="w-32 h-32"
+            className="w-40 h-40"
           />
         </div>
         <div className="text-center mt-4">

@@ -180,7 +180,7 @@ const PokemonPage: React.FC<Props> = ({ pokemon }) => {
         </div>
 
         {/* Main Content Area with margin */}
-        <div className="md:ml-64 flex-1 p-6">
+        <div className="md:ml-64 flex-1 ">
           {/* Content Sections */}
           {activeSection === 'section1' && (
             <div className="section1 flex flex-col md:flex-row justify-between items-center mt-4">
@@ -214,7 +214,7 @@ const PokemonPage: React.FC<Props> = ({ pokemon }) => {
                       <li key={index} className="flex items-center flex-wrap">
                         <div className="flex items-center justify-center gap-2 md:gap-6">
                           <div className="font-semibold text-gray-800 capitalize w-24 sm:w-32">{stat.stat.name}:</div>
-                          <div className="relative flex-1 h-3 md:h-[12px] w-32 md:w-36 sm:h-5 bg-gray-300 rounded-full overflow-hidden mr-2">
+                          <div className="relative flex-1 h-3 md:h-[12px] w-32 md:w-36 sm:h-5 bg-gray-300 rounded-full overflow-hidden md:mr-2">
                             <div className={`absolute h-full ${getStatColor(stat.base_stat)}`} style={{ width: `${stat.base_stat}%` }}></div>
                           </div>
                           <div className="text-black">{stat.base_stat}</div>
@@ -223,10 +223,10 @@ const PokemonPage: React.FC<Props> = ({ pokemon }) => {
                     ))}
                     <li className="flex items-center flex-wrap">
                       <span className="font-semibold text-gray-800 capitalize w-24 sm:w-32">Total:</span>
-                      <div className="relative flex-1 h-3 md:h-[12px] w-32 md:w-32 sm:h-5 bg-gray-300 rounded-full overflow-hidden mr-8">
+                      <div className="relative flex-1 h-3 md:h-[12px] w-32 md:w-32 sm:h-5 bg-gray-300 rounded-full overflow-hidden mr-2 md:mr-8">
                         <div className={`absolute h-full ${getTotalStatColor(totalBaseStats)}`} style={{ width: `${(totalBaseStats / 600) * 100}%` }}></div>
                       </div>
-                      <span className="text-gray-900 mr-8">{totalBaseStats}</span>
+                      <span className="text-gray-900 mr-4  md:mr-8">{totalBaseStats}</span>
                     </li>
                   </ul>
                 </div>
