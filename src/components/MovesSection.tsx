@@ -29,9 +29,11 @@ const MovesSection: React.FC<MovesSectionProps> = ({ moves }) => {
   const renderMove = (move: Move, index: number) => (
     <tr key={index} className="border-b border-gray-200">
       <td className="py-2 px-4 capitalize text-gray-900">{move.move.name}</td>
-      <td className="py-2 px-4">
-        {move.move.level !== undefined ? `${move.move.level}` : ''}
-      </td>
+      {move.move.method === 'level-up' && (
+        <td className="py-2 px-4">
+          {move.move.level}
+        </td>
+      )}
       <td className="py-2 px-4">
         <Image
           src={moveTypeImages[move.move.type] || '/types/default.png'} // Fallback image
@@ -45,23 +47,27 @@ const MovesSection: React.FC<MovesSectionProps> = ({ moves }) => {
   );
 
   const renderTable = (title: string, filteredMoves: Move[]) => (
-    <div className="mt-8">
-      <h3 className="text-2xl font-semibold mb-4 text-gray-200">{title}</h3>
+    <div className="flex flex-col">
+      <h3 className="text-2xl font-semibold mb-4 text-gray-800 p-4">{title}</h3>
       <div className="overflow-x-auto text-black">
-        <table className="min-w-full bg-white border border-gray-300">
-          <thead>
-            <tr>
-              <th className="py-2 px-4 bg-gray-100 text-left">Move</th>
-              {
-                title === 'Level-Up Moves' ? <th className="py-2 px-4 bg-gray-100 text-left">Level</th> : ""
-              }
-              <th className="py-2 px-4 bg-gray-100 text-center">Type</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredMoves.map(renderMove)}
-          </tbody>
-        </table>
+        {filteredMoves.length === 0 ? (
+          <p className="text-center text-gray-600 py-4">No moves available</p>
+        ) : (
+          <table className="min-w-full bg-white border border-gray-300">
+            <thead>
+              <tr>
+                <th className="py-2 px-4 bg-gray-100 text-left">Move</th>
+                <th className={`py-2 px-4 bg-gray-100 text-left ${title === 'Level-Up Moves' ? 'block' : 'hidden'}`}>
+                  Level
+                </th>
+                <th className="py-2 px-4 bg-gray-100 text-center">Type</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredMoves.map(renderMove)}
+            </tbody>
+          </table>
+        )}
       </div>
     </div>
   );
@@ -73,10 +79,16 @@ const MovesSection: React.FC<MovesSectionProps> = ({ moves }) => {
 
   return (
     <div>
-      <div className="mt-4 flex flex-col md:flex-row justify-center gap-12">
-        {renderTable('Level-Up Moves', sortedLevelUpMoves)}
-        {renderTable('Egg Moves', moves.filter(move => move.move.method === 'egg'))}
-        {renderTable('TM Moves', moves.filter(move => move.move.method === 'machine'))}
+      <div className="flex flex-col md:flex-row justify-center gap-12">
+        <div className="flex-1 max-h-[85vh] overflow-y-auto bg-gray-100 md:p-4 rounded-lg shadow-lg">
+          {renderTable('Level-Up Moves', sortedLevelUpMoves)}
+        </div>
+        <div className="flex-1 max-h-[85vh] overflow-y-auto bg-gray-100 p-4 rounded-lg shadow-lg">
+          {renderTable('Egg Moves', moves.filter(move => move.move.method === 'egg'))}
+        </div>
+        <div className="flex-1 max-h-[85vh] overflow-y-auto bg-gray-100 p-4 rounded-lg shadow-lg">
+          {renderTable('TM Moves', moves.filter(move => move.move.method === 'machine'))}
+        </div>
       </div>
     </div>
   );

@@ -167,6 +167,15 @@ const Pokemon = () => {
     fetchData();
   }, [fetchPokemonDetailsInBatches]);
 
+  useEffect(() => {
+    setFilterLoading(true);
+    const timeoutId = setTimeout(() => {
+      setFilterLoading(false);
+    }, 500); // Simulate a 500ms delay for loading effect
+
+    return () => clearTimeout(timeoutId);
+  }, [searchTerm]);
+
   const filteredPokemonList = pokemonList
     .filter(pokemon => pokemon.name.toLowerCase().includes(searchTerm.toLowerCase()))
     .filter(pokemon => {

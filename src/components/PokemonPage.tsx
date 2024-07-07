@@ -114,47 +114,81 @@ const PokemonPage: React.FC<Props> = ({ pokemon }) => {
   if (loading) return <Shimmer />; // Show shimmer while loading
 
   return (
-    <div>
-      <div className="relative p-6 bg-hero bg-cover bg-center min-h-screen">
-        <div className="absolute inset-0 bg-bg2 bg-repeat-round bg-contain opacity-5 pointer-events-none hidden md:block"></div>
-        <div className="absolute inset-0 bg-bg4 bg-repeat-round bg-contain opacity-10 pointer-events-none md:hidden"></div>
-        <div className='flex flex-col items-center'>
-          <div className="mb-4 grid grid-cols-2 md:flex gap-4 border border-white p-2 rounded-lg shadow-lg bg-white bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-40">
-            <button
-              className={`px-4 py-2 rounded-lg transition-colors duration-300 ${activeSection === 'section1' ? 'bg-white text-gray-900 font-semibold' : ' text-black'}`}
-              onClick={() => setActiveSection('section1')}
-            >
-              Overview
-            </button>
-            <button
-              className={`px-4 py-2 rounded-lg transition-colors duration-300 ${activeSection === 'section2' ? 'bg-white text-gray-900 font-semibold' : ' text-black'}`}
-              onClick={() => setActiveSection('section2')}
-            >
-              Pokedex
-            </button>
-            <button
-              className={`px-4 py-2 rounded-lg transition-colors duration-300 ${activeSection === 'section3' ? 'bg-white text-gray-900 font-semibold' : ' text-black'}`}
-              onClick={() => setActiveSection('section3')}
-            >
-              Moves
-            </button>
-            <button
-              className={`px-4 py-2 rounded-lg transition-colors duration-300 ${activeSection === 'section4' ? 'bg-white text-gray-900 font-semibold' : ' text-black'}`}
-              onClick={() => setActiveSection('section4')}
-            >
-              Evolution
-            </button>
-          </div>
+    <div className="relative p-6 bg-hero bg-cover bg-center min-h-screen">
+      <div className="absolute inset-0 bg-bg2 bg-repeat-round bg-contain opacity-5 pointer-events-none hidden md:block"></div>
+      <div className="absolute inset-0 bg-bg4 bg-repeat-round bg-contain opacity-10 pointer-events-none md:hidden"></div>
+      <div className="flex flex-col md:flex-row justify-around">
+        {/* Mobile Navigation */}
+        <div className="mb-4 grid grid-cols-2 md:hidden gap-4 border border-white p-2 rounded-lg shadow-lg bg-white bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-40">
+          <button
+            className={`px-4 py-2 rounded-lg transition-colors duration-300 ${activeSection === 'section1' ? 'bg-white text-gray-900 font-semibold' : ' text-black'}`}
+            onClick={() => setActiveSection('section1')}
+          >
+            Overview
+          </button>
+          <button
+            className={`px-4 py-2 rounded-lg transition-colors duration-300 ${activeSection === 'section2' ? 'bg-white text-gray-900 font-semibold' : ' text-black'}`}
+            onClick={() => setActiveSection('section2')}
+          >
+            Pokedex
+          </button>
+          <button
+            className={`px-4 py-2 rounded-lg transition-colors duration-300 ${activeSection === 'section3' ? 'bg-white text-gray-900 font-semibold' : ' text-black'}`}
+            onClick={() => setActiveSection('section3')}
+          >
+            Moves
+          </button>
+          <button
+            className={`px-4 py-2 rounded-lg transition-colors duration-300 ${activeSection === 'section4' ? 'bg-white text-gray-900 font-semibold' : ' text-black'}`}
+            onClick={() => setActiveSection('section4')}
+          >
+            Evolution
+          </button>
+        </div>
 
+        {/* Sidebar */}
+        <div className="fixed top-0 left-0 h-full w-64 hidden md:block">
+          <aside className="flex flex-col p-6 border border-gray-200 rounded-lg shadow-lg text-black bg-white bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-30 h-full">
+            <div className="absolute inset-0 bg-bg4 bg-cover opacity-5 pointer-events-none"></div>
+            <nav className="flex flex-col space-y-4">
+              <button
+                className={`py-3 px-5 rounded-lg text-left transition-transform transform hover:scale-105 focus:outline-none ${activeSection === 'section1' ? 'bg-white font-semibold shadow-md' : 'shadow-sm'}`}
+                onClick={() => setActiveSection('section1')}
+              >
+                Overview
+              </button>
+              <button
+                className={`py-3 px-5 rounded-lg text-left transition-transform transform hover:scale-105 focus:outline-none ${activeSection === 'section2' ? 'bg-white font-semibold shadow-md' : 'shadow-sm'}`}
+                onClick={() => setActiveSection('section2')}
+              >
+                Pokedex
+              </button>
+              <button
+                className={`py-3 px-5 rounded-lg text-left transition-transform transform hover:scale-105 focus:outline-none ${activeSection === 'section3' ? 'bg-white font-semibold shadow-md' : 'shadow-sm'}`}
+                onClick={() => setActiveSection('section3')}
+              >
+                Moves
+              </button>
+              <button
+                className={`py-3 px-5 rounded-lg text-left transition-transform transform hover:scale-105 focus:outline-none ${activeSection === 'section4' ? 'bg-white font-semibold shadow-md' : 'shadow-sm'}`}
+                onClick={() => setActiveSection('section4')}
+              >
+                Evolution
+              </button>
+            </nav>
+          </aside>
+        </div>
+
+        {/* Main Content Area with margin */}
+        <div className="md:ml-64 flex-1 p-6">
+          {/* Content Sections */}
           {activeSection === 'section1' && (
-            <div className='section1 flex flex-col md:flex-row justify-between items-center mt-12'>
+            <div className="section1 flex flex-col md:flex-row justify-between items-center mt-4">
               <div>
                 <PokemonImage sprites={pokemon.sprites} name={pokemon.name} />
-                
                 <h1 className="text-4xl font-bold text-gray-950 mb-4 text-center">
-                #{pokemon.id}  {pokemon.name}
+                  #{pokemon.id} {pokemon.name}
                 </h1>
-
                 <div className="flex justify-center gap-2 mb-4">
                   {pokemon.types.map((type, idx) => (
                     <Image
@@ -167,76 +201,75 @@ const PokemonPage: React.FC<Props> = ({ pokemon }) => {
                     />
                   ))}
                 </div>
-
                 <div className="md:px-32 px-6 flex items-center justify-center">
                   <p className="text-center text-white mt-2 p-4 border border-white rounded-lg">{pokemon.description}</p>
                 </div>
               </div>
               <div className="mx-4 w-full my-6 rounded-lg shadow-lg p-6 px-4 md:p-8 max-w-md text-center relative overflow-hidden bg-white bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-30 border border-gray-200">
-                  {/* Stats Section */}
-                  <div className="text-left mb-6">
-                    <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-4">Stats</h2>
-                    <ul className="space-y-4">
-                      {pokemon.stats.map((stat, index) => (
-                        <li key={index} className="flex items-center flex-wrap">
-                          <div className='flex items-center justify-center gap-2 md:gap-6'>
+                {/* Stats Section */}
+                <div className="text-left mb-6">
+                  <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-4">Stats</h2>
+                  <ul className="space-y-4">
+                    {pokemon.stats.map((stat, index) => (
+                      <li key={index} className="flex items-center flex-wrap">
+                        <div className="flex items-center justify-center gap-2 md:gap-6">
                           <div className="font-semibold text-gray-800 capitalize w-24 sm:w-32">{stat.stat.name}:</div>
                           <div className="relative flex-1 h-3 md:h-[12px] w-32 md:w-36 sm:h-5 bg-gray-300 rounded-full overflow-hidden mr-2">
                             <div className={`absolute h-full ${getStatColor(stat.base_stat)}`} style={{ width: `${stat.base_stat}%` }}></div>
                           </div>
                           <div className="text-black">{stat.base_stat}</div>
-                          </div>
-                        </li>
-                      ))}
-                      <li className="flex items-center flex-wrap">
-                        <span className="font-semibold text-gray-800 capitalize w-24 sm:w-32">Total:</span>
-                        <div className="relative flex-1 h-3 md:h-[12px] w-32 md:w-32 sm:h-5 bg-gray-300 rounded-full overflow-hidden mr-8">
-                          <div className={`absolute h-full ${getTotalStatColor(totalBaseStats)}`} style={{ width: `${(totalBaseStats / 600) * 100}%` }}></div>
                         </div>
-                        <span className="text-gray-900 mr-8">{totalBaseStats}</span>
                       </li>
-                    </ul>
-                  </div>
-                  {/* Abilities Section */}
-                  <div className="text-left mb-6">
-                    <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-4">Abilities</h2>
-                    <ul className="space-y-3">
-                      {pokemon.abilities.map((ability, index) => (
-                        <li key={index} className="capitalize text-black">
-                          {ability.ability.name}
-                          {ability.is_hidden && <span className="ml-2 text-xs sm:text-sm text-gray-800">(Hidden)</span>}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
+                    ))}
+                    <li className="flex items-center flex-wrap">
+                      <span className="font-semibold text-gray-800 capitalize w-24 sm:w-32">Total:</span>
+                      <div className="relative flex-1 h-3 md:h-[12px] w-32 md:w-32 sm:h-5 bg-gray-300 rounded-full overflow-hidden mr-8">
+                        <div className={`absolute h-full ${getTotalStatColor(totalBaseStats)}`} style={{ width: `${(totalBaseStats / 600) * 100}%` }}></div>
+                      </div>
+                      <span className="text-gray-900 mr-8">{totalBaseStats}</span>
+                    </li>
+                  </ul>
                 </div>
-          </div>
-          )}
-            {activeSection === 'section2' && (
-              <div className='section2 flex flex-col md:flex-row justify-between items-center mt-4 md:gap-44 gap-12'>
-                <div>
-                  <Pokedex
-                    name={pokemon.name}
-                    height={pokemon.height}
-                    weight={pokemon.weight}
-                    spriteUrl={pokemon.sprites.other['official-artwork']?.front_default || pokemon.sprites.front_default} // Use optional chaining and fallback
-                    base_experience={pokemon.base_experience}
-                  />
-                </div>
-                <div className='text-left'>
-                  <TypeWeakness types={pokemon.types} />
+                {/* Abilities Section */}
+                <div className="text-left mb-6">
+                  <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-4">Abilities</h2>
+                  <ul className="space-y-3">
+                    {pokemon.abilities.map((ability, index) => (
+                      <li key={index} className="capitalize text-black">
+                        {ability.ability.name}
+                        {ability.is_hidden && <span className="ml-2 text-xs sm:text-sm text-gray-800">(Hidden)</span>}
+                      </li>
+                    ))}
+                  </ul>
                 </div>
               </div>
-            )}
-            {activeSection === 'section3' && (
-              <MovesSection moves={pokemon.moves} />  // Use the new MovesSection component
-            )}
-            {activeSection === 'section4' && (
-              <Evolution evolution={pokemon.evolution} />
-            )}
-          </div>
+            </div>
+          )}
+          {activeSection === 'section2' && (
+            <div className="section2 flex flex-col md:flex-row justify-between items-center md:gap-44 gap-12">
+              <div>
+                <Pokedex
+                  name={pokemon.name}
+                  height={pokemon.height}
+                  weight={pokemon.weight}
+                  spriteUrl={pokemon.sprites.other['official-artwork']?.front_default || pokemon.sprites.front_default} // Use optional chaining and fallback
+                  base_experience={pokemon.base_experience}
+                />
+              </div>
+              <div className="text-left">
+                <TypeWeakness types={pokemon.types} />
+              </div>
+            </div>
+          )}
+          {activeSection === 'section3' && (
+            <MovesSection moves={pokemon.moves} /> // Use the new MovesSection component
+          )}
+          {activeSection === 'section4' && (
+            <Evolution evolution={pokemon.evolution} />
+          )}
         </div>
       </div>
+    </div>
   );
 };
 

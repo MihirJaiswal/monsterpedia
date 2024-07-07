@@ -1,8 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { FaArrowRight } from 'react-icons/fa'; // Importing the arrow icon
-import { FaArrowDown } from 'react-icons/fa';
+import { FaArrowRight, FaArrowDown } from 'react-icons/fa';
 
 // Define the Pokémon type interface
 interface PokemonType {
@@ -60,11 +59,11 @@ const Evolution: React.FC<EvolutionProps> = ({ evolution }) => {
           {index > 0 && (
             <div className="flex flex-col items-center mx-4">
               <div className="text-center mb-2">
-                {evolution[index].min_level !== null && (
-                  <div>(Level: {evolution[index].min_level})</div>
+                {evo.min_level !== null && (
+                  <div>(Level: {evo.min_level})</div>
                 )}
-                {evolution[index].item && <div>(Item: {evolution[index].item})</div>}
-                {evolution[index].trigger_name && <div>- {evolution[index].trigger_name}</div>}
+                {evo.item && <div>(Item: {evo.item})</div>}
+                {evo.trigger_name && <div>- {evo.trigger_name}</div>}
               </div>
               <div className="flex items-center">
                 {/* Icon visible on medium screens and above */}
