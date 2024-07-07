@@ -23,7 +23,7 @@ const Pokedex: React.FC<PokemonProps> = ({ name, height, weight, base_experience
           height={600}
           quality={100}
           loading="lazy"
-          className="md:w-[32rem] h-auto mx-auto mb-4 rounded-lg"
+          className="md:w-[32rem] h-auto mx-auto rounded-lg"
         />
         <div className="absolute md:top-20 md:left-52 flex flex-col items-center">
           <div className="p-4">

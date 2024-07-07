@@ -43,9 +43,8 @@ const TypeWeakness = ({ types }: TypeWeaknessProps) => {
     .map(([type, multiplier]) => ({ type, multiplier }));
 
   return (
-    <div className="px-8 py-8 rounded-lg shadow-md bg-white bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-30 border border-gray-100">
-      <h2 className="text-xl font-bold mb-4">Type Effectiveness</h2>
-
+    <div className="px-8 py-6 rounded-lg shadow-md bg-white bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-30 border border-gray-100">
+  
       {/* Container for mobile responsive layout */}
       <div className="flex flex-col gap-6 md:flex-row md:gap-8">
         {/* Weaknesses */}

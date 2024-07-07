@@ -80,13 +80,13 @@ const MovesSection: React.FC<MovesSectionProps> = ({ moves }) => {
   return (
     <div>
       <div className="flex flex-col md:flex-row justify-center gap-12">
-        <div className="flex-1 max-h-[85vh] overflow-y-auto bg-gray-100 md:p-4 rounded-lg shadow-lg">
+        <div className="flex-1 max-h-[85vh] overflow-y-auto bg-white rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-30 border border-gray-100 p-4">
           {renderTable('Level-Up Moves', sortedLevelUpMoves)}
         </div>
-        <div className="flex-1 max-h-[85vh] overflow-y-auto bg-gray-100 p-4 rounded-lg shadow-lg">
+        <div className="flex-1 max-h-[85vh] overflow-y-auto p-4 bg-white rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-30 border border-gray-100">
           {renderTable('Egg Moves', moves.filter(move => move.move.method === 'egg'))}
         </div>
-        <div className="flex-1 max-h-[85vh] overflow-y-auto bg-gray-100 p-4 rounded-lg shadow-lg">
+        <div className="flex-1 max-h-[85vh] overflow-y-auto p-4 bg-white rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-30 border border-gray-100">
           {renderTable('TM Moves', moves.filter(move => move.move.method === 'machine'))}
         </div>
       </div>
