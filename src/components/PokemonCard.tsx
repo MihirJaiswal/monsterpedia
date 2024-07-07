@@ -57,7 +57,7 @@ const PokemonCard: React.FC<PokemonCardProps> = ({ name, spriteUrl, types = [], 
       onClick={handleClick}
     >
       {isNavigating ? (
-        <div className='flex flex-col items-center justify-center gap-4'>
+        <div className='flex flex-col items-center justify-center gap-4 mb-12'>
           <div className="relative md:w-36 md:h-36 w-28 md:mx-auto mb-4">
           <div className="absolute inset-0 flex justify-center items-center z-0 bg-card rounded-full bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-10 opacity-40">
                   <div className="md:w-36 md:h-36 rounded-full relative flex justify-center items-center">
