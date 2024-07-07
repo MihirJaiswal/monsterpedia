@@ -59,14 +59,16 @@ interface PokemonDetail {
       level?: number;
     };
   }[];
-  evolution: {
-    species_name: string;
-    min_level: number | null;
-    trigger_name: string;
-    item: string | null;
-    image_url: string;
-    types: PokemonType[];
-  }[];
+  evolution: EvolutionPath[];
+}
+
+interface EvolutionPath {
+  species_name: string;
+  min_level: number | null;
+  trigger_name: string;
+  item: string | null;
+  image_url: string;
+  types: PokemonType[];
 }
 
 interface SpeciesDetail {
@@ -168,6 +170,54 @@ const fetchSpeciesData = async (url: string) => {
   }
 };
 
+const extractEvolutionPaths = async (chain: EvolutionChain): Promise<EvolutionPath[][]> => {
+  const paths: EvolutionPath[][] = [];
+
+  const traverseChain = async (currentChain: EvolutionChain | null, currentPath: EvolutionPath[]) => {
+    if (!currentChain) return;
+
+    // Fetch Pokémon data
+    const pokemonData = await fetchPokemonData(currentChain.species.name);
+    if (!pokemonData) return;
+
+    // Create new path with the current Pokémon
+    const newPath = [
+      ...currentPath,
+      {
+        species_name: pokemonData.name,
+        min_level: currentChain.evolution_details[0]?.min_level ?? null,
+        trigger_name: currentChain.evolution_details[0]?.trigger.name ?? '',
+        item: currentChain.evolution_details[0]?.item?.name ?? null,
+        image_url: pokemonData.sprites.other['official-artwork'].front_default,
+        types: pokemonData.types,
+      },
+    ];
+
+    // If there are no further evolutions, finalize this path
+    if (currentChain.evolves_to.length === 0) {
+      paths.push(newPath);
+    } else {
+      // Recurse for each evolution
+      await Promise.all(currentChain.evolves_to.map(evolution => traverseChain(evolution, newPath)));
+    }
+  };
+
+  // Start traversing from the base chain
+  await traverseChain(chain, []);
+
+  // Ensure uniqueness of evolution paths
+  const uniquePaths = paths.map(path => {
+    const seenSpecies = new Set<string>();
+    return path.filter(evo => {
+      if (seenSpecies.has(evo.species_name)) return false;
+      seenSpecies.add(evo.species_name);
+      return true;
+    });
+  });
+
+  return uniquePaths;
+};
+
 export default async function PokemonPage({ params }: Props) {
   try {
     const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${params.id}`);
@@ -186,55 +236,29 @@ export default async function PokemonPage({ params }: Props) {
     const evolutionChainResponse = await fetch(species.evolution_chain.url);
     if (!evolutionChainResponse.ok) throw new Error(`Failed to fetch evolution chain: ${evolutionChainResponse.statusText}`);
     const evolutionChain: EvolutionChainDetail = await evolutionChainResponse.json();
+    console.log("rhe evo chain",evolutionChain)
 
     const seenPokemon = new Set<string>();
 
-    const extractEvolutionLine = async (chain: EvolutionChain): Promise<PokemonDetail['evolution']> => {
-      let evolutions: PokemonDetail['evolution'] = [];
-
-      const traverseChain = async (currentChain: EvolutionChain | null) => {
-        if (!currentChain) return;
-
-        if (!seenPokemon.has(currentChain.species.name)) {
-          seenPokemon.add(currentChain.species.name);
-
-          const pokemonData = await fetchPokemonData(currentChain.species.name);
-          if (!pokemonData) return;
-
-          evolutions.push({
-            species_name: currentChain.species.name,
-            min_level: currentChain.evolution_details[0]?.min_level ?? null,
-            trigger_name: currentChain.evolution_details[0]?.trigger.name ?? '',
-            item: currentChain.evolution_details[0]?.item?.name ?? null,
-            image_url: pokemonData.sprites.other['official-artwork'].front_default,
-            types: pokemonData.types,
-          });
-        }
-
-        await Promise.all(currentChain.evolves_to.map(evolution => traverseChain(evolution)));
-      };
-
-      await traverseChain(chain);
-      return evolutions;
-    };
-
-    const evolution = await extractEvolutionLine(evolutionChain.chain);
+    const evolutionPaths = await extractEvolutionPaths(evolutionChain.chain);
     if (species.evolves_from_species) {
       const preEvolutionResponse = await fetch(species.evolves_from_species.url);
-      if (!preEvolutionResponse.ok) throw new Error(`Failed to fetch pre-evolution data: ${preEvolutionResponse.statusText}`);
+  /*     if (!preEvolutionResponse.ok) throw new Error(`Failed to fetch pre-evolution data: ${preEvolutionResponse.statusText}`);
       const preEvolutionData = await preEvolutionResponse.json();
       const preEvolutionPokemon = await fetchPokemonData(preEvolutionData?.name ?? '');
-
-      if (preEvolutionData && preEvolutionPokemon && !seenPokemon.has(preEvolutionData.name)) {
-        evolution.unshift({
-          species_name: preEvolutionData.name,
-          min_level: null,
-          trigger_name: '',
-          item: null,
-          image_url: preEvolutionPokemon.sprites.other['official-artwork'].front_default,
-          types: preEvolutionPokemon.types,
+ */
+     /*  if (preEvolutionData && preEvolutionPokemon && !seenPokemon.has(preEvolutionData.name)) {
+        evolutionPaths.forEach(path => {
+          path.unshift({
+            species_name: preEvolutionData.name,
+            min_level: null,
+            trigger_name: '',
+            item: null,
+            image_url: preEvolutionPokemon.sprites.other['official-artwork'].front_default,
+            types: preEvolutionPokemon.types,
+          });
         });
-      }
+      } */
     }
 
     const detailedPokemon = await fetchPokemonData(pokemon.name);
@@ -243,7 +267,9 @@ export default async function PokemonPage({ params }: Props) {
       notFound();
     }
 
-    return <PokemonDetailClient pokemon={{ ...detailedPokemon, description, evolution }} />;
+    console.log('Evolution Paths:', evolutionPaths);
+
+    return <PokemonDetailClient pokemon={{ ...detailedPokemon, description, evolution: evolutionPaths.flat() }} />;
   } catch (error) {
     console.error('Error fetching Pokémon data:', error);
     notFound();
