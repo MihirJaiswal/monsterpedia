@@ -222,7 +222,7 @@ const PokemonPage: React.FC<Props> = ({ pokemon }) => {
     </>
 
         {/* Main Content Area with margin */}
-        <div className="md:ml-64 flex-1 ">
+        <div className="md:ml-64 flex-1 mt-8 md:mt-2">
           {/* Content Sections */}
           {activeSection === 'section1' && (
             <div className="section1 flex flex-col md:flex-row justify-between items-center mt-4">

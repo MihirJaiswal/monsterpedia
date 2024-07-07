@@ -69,12 +69,9 @@ const Pokedex: React.FC<PokemonProps> = ({ name, height, weight, base_experience
       <div className="md:hidden px-12 py-10 bg-white bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-10 border border-gray-100 rounded-lg shadow-xl max-w-xs mx-auto my-4 relative overflow-hidden">
         <div className="absolute inset-0 -z-10 bg-white rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-30 border border-gray-100"></div>
         <div className="flex justify-center items-center">
-          <Image
+          <img
             src={spriteUrl}
             alt={name}
-            width={120}
-            height={120}
-            quality={100}
             loading="lazy"
             className="w-40 h-40"
           />
