@@ -12,8 +12,7 @@ import{ usePathname } from 'next/navigation'
 import{ cn } from '@/lib/utils'
 import{ navigation } from '../../constant/index'
 import Hamburger from '../../public/hamburger.svg'
-
-
+import logo from '../../public/logo.png'
 
 function HomeMobileNav() {
     const pathname = usePathname();
@@ -33,7 +32,7 @@ function HomeMobileNav() {
       <SheetContent side='right' className='bg-mainb border-gray-700'>
       <Link href='/' className='flex items-center gap-1'>
      <Image
-      src=""
+      src={logo}
       width={42}
       height={42}
       alt='logo'

@@ -2,10 +2,7 @@ import Image from 'next/image'
 import React from 'react'
 import HomeNav from './HomeNav'
 import HomeMobileNav from './HomeMobileNav'
-
-
-
-
+import logo from '../../public/logo.png'
 
 const HomeHeader = () => {
   return (
@@ -14,7 +11,7 @@ const HomeHeader = () => {
         <a href="/" className='flex items-center w-[12rem] xl:mr-8'>
             <Image
             alt='logo'
-            src=""
+            src={logo}
             width={52}
             height={42}
             className='max-sm:size-10 m-2'

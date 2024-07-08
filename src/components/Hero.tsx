@@ -2,6 +2,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import Particles from './ui/Particles';
 import OrbitingCircles from './ui/orbiting-circles.';
+import Meteors from './ui/meteors';
 
 const Hero = () => {
     const Icons = {
@@ -33,8 +34,13 @@ const Hero = () => {
         <div className="fixed left-0 top-0 h-full w-36 bg-gray-300 bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-5  text-white shadow-md hidden md:block  border-r border-gray-600">
       {/* Empty sidebar for styling */}
     </div>
+ 
        <div  className="relative text-white overflow-hidden h-screen flex flex-col items-center justify-center">
+        
        <div className="relative flex h-[500px] w-full flex-col items-center justify-center overflow-hidden rounded-lg">
+       <div className="relative flex h-[500px] w-full ">
+      <Meteors number={7} />
+    </div>
     <div className='absolute flex flex-col items-center justify-center px-4'>
         <img src="/pokedex2.png" alt="" className='w-16 h-full' />
         
