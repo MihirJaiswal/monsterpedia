@@ -36,6 +36,7 @@ const TeamBuilder: React.FC = () => {
           7: 809, // Gen 7
           8: 898, // Gen 8
           9: 1010, // Gen 9
+          10: 1000, // Gen 10
         };
         const currentGeneration = 9; // Update this to the current generation
         const totalPokemon = generationCounts[currentGeneration] || 1010; // Fallback to the latest known total
@@ -110,7 +111,7 @@ const TeamBuilder: React.FC = () => {
   };
 
   return (
-    <div className="py-28 px-16">
+    <div className="py-28 px-4 md:px-16">
       <PokemonSelect
         pokemonList={pokemonList}
         filteredPokemonList={filteredPokemonList}

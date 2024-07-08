@@ -1,4 +1,3 @@
-'use client'
 import React, { useState } from 'react';
 import { FaSearch } from 'react-icons/fa';
 
@@ -48,7 +47,7 @@ const PokemonSelect: React.FC<PokemonSelectProps> = ({
   );
 
   return (
-    <div className="relative mb-4 w-96 mx-auto">
+    <div className="relative mb-4 md:w-96 mx-auto">
       <div className="relative mb-2">
         <input
           type="text"
