@@ -8,7 +8,8 @@ import Evolution from './Evolution';
 import MovesSection from './MovesSection'; // Ensure this path is correct
 import Shimmer from './Shimmer'; // Import the shimmer component
 import { FaBars, FaTimes } from 'react-icons/fa';
-
+import Link from 'next/link';
+import { FaArrowAltCircleLeft } from 'react-icons/fa';
 
 
 interface PokemonDetail {
@@ -157,7 +158,7 @@ const PokemonPage: React.FC<Props> = ({ pokemon }) => {
                 }`}
                 onClick={() => setActiveSection('section2')}
               >
-                Pokedex
+                Type Defense
               </button>
               <button
                 className={`py-3 px-5 rounded-lg text-left transition-transform transform hover:scale-105 focus:outline-none ${
@@ -175,6 +176,15 @@ const PokemonPage: React.FC<Props> = ({ pokemon }) => {
               >
                 Evolution
               </button>
+              <Link href='/pokedex'>
+            <button
+              className={`py-3 px-5 rounded-lg text-left transition-transform transform hover:scale-105 focus:outline-none ${
+                activeSection === 'section4' ? 'bg-white font-semibold shadow-md' : 'shadow-sm'
+              }`}
+            >
+                <div className='flex items-center justify-center gap-2'><span>Pokedex</span><p className='text-gray-800 text-lg'><FaArrowAltCircleLeft/></p></div>
+            </button>
+            </Link>
             </nav>
           </aside>
         </div>
@@ -199,7 +209,7 @@ const PokemonPage: React.FC<Props> = ({ pokemon }) => {
               }`}
               onClick={() => setActiveSection('section2')}
             >
-              Pokedex
+              Type Defense
             </button>
             <button
               className={`py-3 px-5 rounded-lg text-left transition-transform transform hover:scale-105 focus:outline-none ${
@@ -217,6 +227,15 @@ const PokemonPage: React.FC<Props> = ({ pokemon }) => {
             >
               Evolution
             </button>
+            <Link href='/pokedex'>
+            <button
+              className={`py-3 px-5 rounded-lg text-left transition-transform transform hover:scale-105 focus:outline-none ${
+                activeSection === 'section4' ? 'bg-white font-semibold shadow-md' : 'shadow-sm'
+              }`}
+            >
+               <div className='flex items-center justify-center gap-2'><span>Pokedex</span><p className='text-gray-800 text-lg'><FaArrowAltCircleLeft/></p></div>
+            </button>
+            </Link>
           </nav>
         </aside>
       </div>
