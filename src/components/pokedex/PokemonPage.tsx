@@ -178,11 +178,10 @@ const PokemonPage: React.FC<Props> = ({ pokemon }) => {
               </button>
               <Link href='/pokedex'>
             <button
-              className={`py-3 px-5 rounded-lg text-left transition-transform transform hover:scale-105 focus:outline-none ${
-                activeSection === 'section4' ? 'bg-white font-semibold shadow-md' : 'shadow-sm'
+              className={`py-3 px-5 rounded-lg text-left transition-transform transform hover:scale-105 focus:outline-none
               }`}
             >
-                <div className='flex items-center justify-center gap-2'><span>Pokedex</span><p className='text-gray-800 text-lg'><FaArrowAltCircleLeft/></p></div>
+                <div className='flex items-center justify-center gap-2'><span className='font-semibold'>Pokedex</span><p className='text-gray-800 text-lg'><FaArrowAltCircleLeft/></p></div>
             </button>
             </Link>
             </nav>
@@ -192,8 +191,8 @@ const PokemonPage: React.FC<Props> = ({ pokemon }) => {
 
       {/* Sidebar for larger screens */}
       <div className="fixed top-0 left-0 h-full w-64 hidden md:block z-40">
-        <aside className="flex flex-col p-6 border border-gray-200 rounded-lg shadow-lg text-black bg-white bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-30 h-full">
-          <div className="absolute inset-0 bg-bg4 bg-cover opacity-5 pointer-events-none"></div>
+        <aside className="flex flex-col p-6 border border-gray-200 rounded-lg shadow-lg text-black bg-white bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-40 h-full">
+          <div className="absolute inset-0 bg-bg4 bg-contain opacity-5 pointer-events-none"></div>
           <nav className="flex flex-col space-y-4">
             <button
               className={`py-3 px-5 rounded-lg text-left transition-transform transform hover:scale-105 focus:outline-none ${
@@ -229,8 +228,7 @@ const PokemonPage: React.FC<Props> = ({ pokemon }) => {
             </button>
             <Link href='/pokedex'>
             <button
-              className={`py-3 px-5 rounded-lg text-left transition-transform transform hover:scale-105 focus:outline-none ${
-                activeSection === 'section4' ? 'bg-white font-semibold shadow-md' : 'shadow-sm'
+              className={`py-3 px-5 rounded-lg text-left transition-transform transform hover:scale-105 focus:outline-none '
               }`}
             >
                <div className='flex items-center justify-center gap-2'><span>Pokedex</span><p className='text-gray-800 text-lg'><FaArrowAltCircleLeft/></p></div>
@@ -263,7 +261,7 @@ const PokemonPage: React.FC<Props> = ({ pokemon }) => {
                     />
                   ))}
                 </div>
-                <div className="md:px-32 px-6 flex items-center justify-center">
+                <div className="md:px-32 px-2 flex items-center justify-center">
                   <p className="text-center text-white mt-2 p-4 border border-white rounded-lg">{pokemon.description}</p>
                 </div>
               </div>

@@ -213,7 +213,7 @@ const Pokemon = () => {
     <div className="relative p-6 bg-hero bg-cover bg-center min-h-screen">
       <div className="absolute inset-0 bg-bg1 bg-repeat bg-center opacity-5 hidden md:block"></div>
       <div className="absolute inset-0 bg-bg3 bg-contain bg-repeat bg-center opacity-5 md:hidden"></div>
-      <h1 className="relative text-4xl font-bold text-center mb-8 text-white">MonsterPedia Pokédex</h1>
+      <h1 className="relative text-xs font-bold text-center mb-20 text-blue-700 ">`</h1>
       <div className="relative mb-6 flex flex-col items-center justify-center gap-4 md:flex-row md:gap-6">
         <div className="relative w-full max-w-md">
           <input

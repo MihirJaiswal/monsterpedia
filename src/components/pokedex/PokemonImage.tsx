@@ -26,7 +26,7 @@ const PokemonImage = ({ sprites, name }: PokemonImageProps) => {
   const handleImageError = () => setLoading(false); // Optionally handle image load errors
 
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex flex-col items-center z-50">
       <div className="relative w-52 h-52 mx-auto mb-4">
         <div className="absolute inset-0 flex justify-center border-2 border-gray-300 items-center z-0 bg-card2 rounded-full bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-10 opacity-40">
           <div className="w-36 h-36 rounded-full border-2 border-gray-300 relative flex justify-center items-center">

@@ -28,7 +28,7 @@ const TypeTable: React.FC<TypeTableProps> = ({
   getTypeData
 }) => {
   return (
-    <div className="p-6 rounded-lg shadow-lg mx-auto w-full max-w-7xl">
+    <div className="p-6 rounded-lg shadow-lg mx-auto w-full max-w-7xl mt-20">
         <div className="overflow-hidden bg-white bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-40 border border-gray-100 shadow-xl md:hidden">
         {pokemonTypes.map((pokemonType, index) => {
           const typeData = getTypeData(pokemonType.type1, pokemonType.type2);
