@@ -13,5 +13,10 @@ export const navigation = [
       label: "2",
       title: "Calculator",
       route: "/calculator",
+    },
+    {
+      label: "3",
+      title: "Team",
+      route: "/team",
     }
   ];
