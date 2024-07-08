@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Image from 'next/image';
 import { FaArrowRight, FaArrowDown } from 'react-icons/fa';
 import { useRouter } from 'next/navigation';
-import gif from '../../public/pokeball-loader.gif';
+import gif from '../../../public/pokeball-loader.gif';
 
 // Define the Pokémon type interface
 interface PokemonType {
@@ -116,7 +116,7 @@ const Evolution: React.FC<EvolutionProps> = ({ evolution }) => {
     setIsNavigating(true); // Show shimmer effect
 
     setTimeout(() => {
-      router.push(`/pokemon/${speciesName.toLowerCase()}`); // Navigate to details page
+      router.push(`/pokedex/${speciesName.toLowerCase()}`); // Navigate to details page
     }, 500); // Adjust delay for shimmer effect duration
   };
 

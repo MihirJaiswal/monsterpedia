@@ -1,5 +1,5 @@
 import { notFound } from 'next/navigation';
-import PokemonDetailClient from '../../../components/PokemonPage';
+import PokemonDetailClient from '../../../components/pokedex/PokemonPage';
 
 enum MoveMethod {
   LEVEL_UP = 'level-up',

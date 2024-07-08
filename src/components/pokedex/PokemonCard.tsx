@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import gif from '../../public/pokeball-loader.gif'
+import gif from '../../../public/pokeball-loader.gif'
 
 interface PokemonType {
   type: {
@@ -47,7 +47,7 @@ const PokemonCard: React.FC<PokemonCardProps> = ({ name, spriteUrl, types = [], 
     event.preventDefault(); // Prevent default navigation behavior
     setIsNavigating(true); // Show shimmer effect
     setTimeout(() => {
-      router.push(`/pokemon/${name.toLowerCase()}`); // Navigate to details page
+      router.push(`/pokedex/${name.toLowerCase()}`); // Navigate to details page
     }, 200); // Delay for shimmer effect
   };
 

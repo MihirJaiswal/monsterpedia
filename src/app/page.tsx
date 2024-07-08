@@ -1,10 +1,9 @@
-import Pokemon from "@/components/Pokemon";
-import Image from "next/image";
+import React from 'react'
 
-export default function Home() {
+const page = () => {
   return (
-    <main className="bg-hero">
-      <Pokemon/>
-    </main>
-  );
+    <div>page</div>
+  )
 }
+
+export default page

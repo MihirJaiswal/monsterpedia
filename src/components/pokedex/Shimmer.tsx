@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Image from 'next/image';
-import gif from '../../public/pokeball-loader.gif';
+import gif from '../../../public/pokeball-loader.gif';
 
 const Shimmer = () => {
   return (
