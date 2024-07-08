@@ -1,11 +1,13 @@
-'use client'
+// TeamBuilder.tsx
+'use client';
 import React, { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
 import html2canvas from 'html2canvas';
 import PokemonSelect from './PokemonSelect';
 import PhotoFrame from './PhotoFrame';
 import ImageUpload from './ImageUpload';
-import PokemonCard from './PokemonCard'; // Import the new component
+import PokemonCard from './PokemonCard'; // Import the PokemonCard component
+import StaticCard from './StaticCardGrid'; // Import the StaticCard component
 
 interface Pokemon {
   id: number;
@@ -122,26 +124,40 @@ const TeamBuilder: React.FC = () => {
       />
    
       <div className="grid grid-cols-3 gap-4 mb-4 mt-12">
-        {team.map((pokemon) => (
-          <PokemonCard
-            key={pokemon.id}
-            pokemon={pokemon}
-            onRemove={removePokemonFromTeam}
-          />
-        ))}
+        {team.length === 0 ? (
+          <>
+            <StaticCard />
+            <StaticCard />
+            <StaticCard />
+            <StaticCard />
+            <StaticCard />
+            <StaticCard />
+          </>
+        ) : (
+          team.map((pokemon) => (
+            <PokemonCard
+              key={pokemon.id}
+              pokemon={pokemon}
+              onRemove={removePokemonFromTeam}
+            />
+          ))
+        )}
       </div>
       
-      <div className='flex px-24 flex-col items-center justify-center  bg-white  bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-30 border border-gray-100 rounded-lg shadow-2xl mt-16'>
-        <PhotoFrame
-          team={team}
-          uploadedImage={uploadedImage}
-          photoFrameRef={photoFrameRef}
-        />
-        <ImageUpload
-          handleImageUpload={handleImageUpload}
-          downloadImage={downloadImage}
-        />
-      </div>
+      {/* Conditionally render PhotoFrame and ImageUpload */}
+      {team.length > 0 && (
+        <div className='flex px-24 flex-col items-center justify-center bg-white bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-30 border border-gray-100 rounded-lg shadow-2xl mt-16'>
+          <PhotoFrame
+            team={team}
+            uploadedImage={uploadedImage}
+            photoFrameRef={photoFrameRef}
+          />
+          <ImageUpload
+            handleImageUpload={handleImageUpload}
+            downloadImage={downloadImage}
+          />
+        </div>
+      )}
     </div>
   );
 };

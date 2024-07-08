@@ -27,7 +27,7 @@ const PhotoFrame: React.FC<PhotoFrameProps> = ({ team, uploadedImage, photoFrame
     >
       {/* Pokémon Team Section */}
       <div className="flex-1 flex flex-col items-center md:items-start">
-        <h3 className="text-3xl font-extrabold mb-6 text-gray-800 text-center">Pokémon Team</h3>
+        <h3 className="text-3xl font-extrabold mb-6 text-gray-800 text-center">Team</h3>
         <div className="flex flex-wrap gap-6 justify-center">
           {team.map((pokemon) => (
             <div
