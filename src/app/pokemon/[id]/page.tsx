@@ -56,6 +56,7 @@ interface PokemonDetail {
       name: string;
       method: MoveMethod;
       type: MoveType;
+      moveType: string;
       level?: number;
     };
   }[];
@@ -143,6 +144,7 @@ const fetchPokemonData = async (name: string): Promise<PokemonDetail | null> => 
             name: moveEntry.move.name,
             method: method as MoveMethod,
             type: type as MoveType,
+            moveType: moveDetails.type.name,
             level: method === MoveMethod.LEVEL_UP ? level : undefined,
           },
         };
@@ -243,22 +245,6 @@ export default async function PokemonPage({ params }: Props) {
     const evolutionPaths = await extractEvolutionPaths(evolutionChain.chain);
     if (species.evolves_from_species) {
       const preEvolutionResponse = await fetch(species.evolves_from_species.url);
-  /*     if (!preEvolutionResponse.ok) throw new Error(`Failed to fetch pre-evolution data: ${preEvolutionResponse.statusText}`);
-      const preEvolutionData = await preEvolutionResponse.json();
-      const preEvolutionPokemon = await fetchPokemonData(preEvolutionData?.name ?? '');
- */
-     /*  if (preEvolutionData && preEvolutionPokemon && !seenPokemon.has(preEvolutionData.name)) {
-        evolutionPaths.forEach(path => {
-          path.unshift({
-            species_name: preEvolutionData.name,
-            min_level: null,
-            trigger_name: '',
-            item: null,
-            image_url: preEvolutionPokemon.sprites.other['official-artwork'].front_default,
-            types: preEvolutionPokemon.types,
-          });
-        });
-      } */
     }
 
     const detailedPokemon = await fetchPokemonData(pokemon.name);

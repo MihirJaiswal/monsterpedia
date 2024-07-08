@@ -50,6 +50,7 @@ interface PokemonDetail {
       name: string;
       method: 'level-up' | 'egg' | 'machine';
       type: 'physical' | 'special' | 'status';
+      moveType: string;
       level?: number;
     };
   }[];
@@ -110,7 +111,7 @@ const PokemonPage: React.FC<Props> = ({ pokemon }) => {
   const getTotalStatColor = (total: number) => {
     if (total > 500) return 'bg-blue-600';
     if (total > 400) return 'bg-purple-600';
-    if (total > 300) return 'bg-teal-600';
+    if (total > 300) return 'bg-red-600';
     return 'bg-pink-600';
   };
 

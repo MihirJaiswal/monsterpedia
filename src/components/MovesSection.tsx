@@ -8,6 +8,7 @@ interface Move {
     method: 'level-up' | 'egg' | 'machine'; // Method of learning the move
     type: 'physical' | 'special' | 'status'; // Type of the move
     level?: number; // Level at which the move is learned (optional, only for level-up moves)
+    moveType: string; // Type of the move (e.g., Fire, Water, Grass)
   };
 }
 
@@ -16,28 +17,57 @@ interface MovesSectionProps {
   moves: Move[];
 }
 
-// Images for move types
-const moveTypeImages: { [key: string]: string } = {
+// Images for move categories and types
+const moveCategoryImages: { [key: string]: string } = {
   physical: '/moves/physical.png',
   special: '/moves/special.png',
   status: '/moves/status.png',
 };
 
+const moveTypeImages: { [key: string]: string } = {
+  normal: '/types/normal.png',
+  fire: '/types/fire.png',
+  water: '/types/water.png',
+  grass: '/types/grass.png',
+  electric: '/types/electric.png',
+  ice: '/types/ice.png',
+  fighting: '/types/fighting.png',
+  poison: '/types/poison.png',
+  ground: '/types/ground.png',
+  flying: '/types/flying.png',
+  psychic: '/types/psychic.png',
+  bug: '/types/bug.png',
+  rock: '/types/rock.png',
+  ghost: '/types/ghost.png',
+  dragon: '/types/dragon.png',
+  dark: '/types/dark.png',
+  steel: '/types/steel.png',
+  fairy: '/types/fairy.png',
+  default: '/types/default.png',
+};
+
 // MovesSection component
 const MovesSection: React.FC<MovesSectionProps> = ({ moves }) => {
-  // Function to render move with icon
+  // Function to render move with icons
   const renderMove = (move: Move, index: number) => (
     <tr key={index} className="border-b border-gray-200">
       <td className="py-2 px-4 capitalize text-gray-900">{move.move.name}</td>
       {move.move.method === 'level-up' && (
-        <td className="py-2 px-4">
-          {move.move.level}
-        </td>
+        <td className="py-2 px-4">{move.move.level}</td>
       )}
       <td className="py-2 px-4">
         <Image
-          src={moveTypeImages[move.move.type] || '/types/default.png'} // Fallback image
+          src={moveCategoryImages[move.move.type] || '/types/default.png'} // Fallback image
           alt={move.move.type}
+          width={24}
+          height={24}
+          className="inline-block"
+        />
+      </td>
+      <td className="py-2 px-4">
+        <Image
+          src={moveTypeImages[move.move.moveType] || '/types/default.png'} // Fallback image
+          alt={move.move.moveType}
           width={24}
           height={24}
           className="inline-block"
@@ -60,6 +90,7 @@ const MovesSection: React.FC<MovesSectionProps> = ({ moves }) => {
                 <th className={`py-2 px-4 bg-gray-100 text-left ${title === 'Level-Up Moves' ? 'block' : 'hidden'}`}>
                   Level
                 </th>
+                <th className="py-2 px-4 bg-gray-100 text-center">Cat.</th>
                 <th className="py-2 px-4 bg-gray-100 text-center">Type</th>
               </tr>
             </thead>
