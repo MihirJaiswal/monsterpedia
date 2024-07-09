@@ -16,8 +16,12 @@ export const navigation = [
     },
     {
       label: "3",
-      title: "Team",
+      title: "Team Builder",
       route: "/team",
+    },{
+      label: "4",
+      title: "Generate",
+      route: "/generate",
     }
   ];
   export const footerLinks = [

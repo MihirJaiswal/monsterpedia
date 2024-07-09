@@ -123,7 +123,7 @@ const TeamBuilder: React.FC = () => {
         teamSize={team.length} // Pass team size as a prop
       />
    
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-4 mt-12">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4 mt-12">
         {team.length === 0 ? (
           <>
             <StaticCard />

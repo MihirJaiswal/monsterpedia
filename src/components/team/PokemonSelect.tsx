@@ -47,28 +47,28 @@ const PokemonSelect: React.FC<PokemonSelectProps> = ({
   );
 
   return (
-    <div className="relative mb-4 md:w-96 mx-auto">
-      <div className="relative mb-2">
+    <div className="relative mb-4 mx-auto">
+      <div className="relative mb-2 md:mb-8 flex items-center justify-center">
         <input
           type="text"
           placeholder="Search Pokémon"
           value={searchQuery}
           onChange={handleSearchChange}
-          className={`bg-gray-200 p-2 pl-10 rounded-lg w-full shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${isDisabled ? 'bg-gray-300 cursor-not-allowed' : ''}`}
+          className={`bg-white bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-30 border p-2 pl-10 rounded-full w-full max-w-6xl shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${isDisabled ? 'bg-gray-300 cursor-not-allowed' : ''}`}
           disabled={isDisabled} // Disable input when needed
         />
-        <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500" />
+        <FaSearch className="absolute left-2 md:left-32 top-1/2 transform -translate-y-1/2 text-gray-700" />
       </div>
       {showSuggestions && searchQuery && !isDisabled && (
-        <div className="absolute top-full left-0 w-full bg-white border border-gray-300 rounded-lg mt-2 shadow-lg z-10">
+        <div className="absolute top-full left-0 w-1/2 h-96 overflow-scroll bg-white bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-50 border border-gray-300 rounded-lg mt-2 shadow-lg z-10">
           {filteredSuggestions.map((pokemon) => (
             <div
               key={pokemon.id}
               className="p-4 cursor-pointer hover:bg-gray-100 transition-colors duration-200"
               onClick={() => handleSuggestionClick(pokemon)}
             >
-              <div className="font-semibold text-gray-800">{pokemon.name}</div>
-              <div className="text-gray-500">{pokemon.types.join(', ')}</div>
+              <div className="font-semibold text-gray-900">{pokemon.name}</div>
+              <div className="text-gray-700">{pokemon.types.join(', ')}</div>
             </div>
           ))}
           {filteredSuggestions.length === 0 && (

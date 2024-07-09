@@ -215,18 +215,18 @@ const Pokemon = () => {
       <div className="absolute inset-0 bg-bg3 bg-contain bg-repeat bg-center opacity-5 md:hidden"></div>
       <h1 className="relative text-xs font-bold text-center mb-20 text-blue-700 ">`</h1>
       <div className="relative mb-6 flex flex-col items-center justify-center gap-4 md:flex-row md:gap-6">
-        <div className="relative w-full max-w-md">
+        <div className="relative w-full max-w-5xl ">
           <input
             type="text"
             placeholder="Search Pokémon..."
-            className="w-full text-black p-3 pl-10 rounded-lg border border-gray-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full text-black bg-white bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-30 p-3 pl-10 rounded-full border border-white shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
-          <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500" />
+          <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-700" />
         </div>
         <div className='flex gap-6'>
-          <div className="relative w-40 max-w-1/2">
+          <div className="relative w-40 md:w-56 max-w-1/2">
             <select
               className="w-full text-black p-3 rounded-lg border border-gray-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
               value={selectedGeneration === null ? 'all' : selectedGeneration}

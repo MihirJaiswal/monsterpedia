@@ -3,6 +3,11 @@ const nextConfig = {
       remotePatterns: [
         {
           hostname: 'raw.githubusercontent.com',
+        },{
+          hostname: 'picsum.photos',
+        },
+        {
+          hostname: 'randomuser.me',
         },
       ],
     },
