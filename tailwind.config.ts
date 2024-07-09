@@ -75,6 +75,22 @@ const config = {
         sm: "calc(var(--radius) - 4px)",
       },
       keyframes: {
+        "shine-pulse": {
+          "0%": {
+            "background-position": "0% 0%",
+          },
+          "50%": {
+            "background-position": "100% 100%",
+          },
+          to: {
+            "background-position": "0% 0%",
+          },
+        },
+        "border-beam": {
+          "100%": {
+            "offset-distance": "100%",
+          },
+        },
         meteor: {
           "0%": { transform: "rotate(215deg) translateX(0)", opacity: '1' },
           "70%": { opacity: '1' },
@@ -103,6 +119,7 @@ const config = {
         },
       },
       animation: {
+        "border-beam": "border-beam calc(var(--duration)*1s) infinite linear",
         meteor: "meteor 5s linear infinite",
         orbit: "orbit calc(var(--duration)*1s) linear infinite",
         "accordion-down": "accordion-down 0.2s ease-out",

@@ -5,6 +5,7 @@ import Particles from './ui/Particles';
 import OrbitingCircles from './ui/orbiting-circles';
 import Meteors from './ui/meteors';
 import { motion } from 'framer-motion';
+import About from './About';
 
 const Hero = () => {
     const Icons = {
@@ -24,13 +25,17 @@ const Hero = () => {
 
   return (
     <div>
-      <div className="fixed left-0 top-0 h-full w-36 bg-gray-300 bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-5 text-white shadow-md hidden md:block border-r border-gray-600">
-      {/* <div className="p-4 border-b border-gray-600 mt-20">
-  <button className="p-2 rounded text-white flex items-center">
+     <div>
+     <div className="fixed left-0 top-0 h-full w-12 bg-gray-300 bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-5 text-white shadow-md hidden md:block border-r border-gray-600">
     
-  </button>
-</div> */}
-      </div>
+    </div>
+    <div className="fixed right-0 top-0 h-full w-12 bg-gray-300 bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-5 text-white shadow-md hidden md:block border-l border-gray-600">
+  
+    </div>
+    <div className="fixed bottom-0 h-10 z-50 w-full bg-gray-300 bg-clip-padding backdrop-filter  bg-opacity-5 text-white shadow-md hidden md:block border-t border-gray-600">
+  
+    </div>
+     </div>
 
       <div className="relative text-white overflow-hidden h-screen flex flex-col items-center justify-center">
         <div className="relative flex h-[500px] w-full flex-col items-center justify-center overflow-hidden rounded-lg">
@@ -76,6 +81,8 @@ const Hero = () => {
           >
             <Icons.gitHub />
           </OrbitingCircles>
+          
+          
         </div>
 
         <div>
@@ -98,7 +105,7 @@ const Hero = () => {
             </div> */}
           </div>
 
-          <div className='absolute top-16 left-0 w-full h-full'>
+          <div className='fixed top-16 left-0 w-full h-full'>
             <Particles
               className="absolute top-32 w-full h-full"
               quantity={500}
@@ -106,11 +113,11 @@ const Hero = () => {
           </div>
         </div>
 
-        <div className='absolute bottom-0 right-0'>
+        <div className='bottom-0 right-0 fixed'>
         <img src="/backgrounds/ash.png" alt="" className='w-full md:h-96 ' />
       </div>
         {/* Decorative Image */}
-        <div className="absolute top-24 left-2 md:left-44 opacity-90">
+        <div className="fixed top-24 left-2 md:left-44 opacity-90">
         <motion.div
              key="robot-div"
              initial={{ y: ontoggle ? 0 : 5 }}
@@ -120,7 +127,11 @@ const Hero = () => {
                <Image src="/jirachi.png" alt="Pikachu" width={100} height={100} className='md:w-16 w-12' />
              </motion.div>
         </div>
+      {/*   <div className="absolute bottom-0 left-0 hidden md:block opacity-90">
+          <img src="/backgrounds/umbreon.png" alt="" className='w-56' />
+        </div> */}
       </div>
+   
     </div>
   );
 };
