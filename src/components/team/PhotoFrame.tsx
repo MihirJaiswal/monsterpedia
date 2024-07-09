@@ -25,7 +25,7 @@ const PhotoFrame: React.FC<PhotoFrameProps> = ({ team, uploadedImage, photoFrame
     <h3 className="text-3xl font-extrabold mb-6 text-gray-800 pt-8 text-center">Team</h3>
     <div
       ref={photoFrameRef}
-      className="flex flex-col md:flex-row items-center justify-center p-8 space-y-8 md:space-y-0"
+      className="flex flex-col md:flex-row items-center justify-center p-8 space-y-8 md:space-y-0 space-x-8"
     >
       
       {/* Pokémon Team Section */}
