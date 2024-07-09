@@ -113,7 +113,7 @@ const TeamBuilder: React.FC = () => {
   };
 
   return (
-    <div className="mt-32 px-8 md:px-16 mb-10">
+    <div className="pt-32 px-8 md:px-16 mb-10">
       <PokemonSelect
         pokemonList={pokemonList}
         filteredPokemonList={filteredPokemonList}

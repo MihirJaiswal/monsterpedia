@@ -28,7 +28,7 @@ const TypeTable: React.FC<TypeTableProps> = ({
   getTypeData
 }) => {
   return (
-    <div className="p-6 rounded-lg shadow-lg mx-auto w-full max-w-7xl mt-20">
+    <div className="p-6 rounded-lg mx-auto w-full max-w-7xl mt-20">
         <div className="overflow-hidden bg-white bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-40 border border-gray-100 shadow-xl md:hidden">
         {pokemonTypes.map((pokemonType, index) => {
           const typeData = getTypeData(pokemonType.type1, pokemonType.type2);
@@ -282,7 +282,7 @@ const TypeTable: React.FC<TypeTableProps> = ({
         </div>
 
         {/* Recommended Additions Section */}
-        <div className="bg-yellow-100 p-4 border border-gray-300 w-full">
+        <div className="bg-yellow-100 p-4 border border-gray-300 w-full relative">
           <h2 className="text-lg font-semibold text-gray-800 mb-2">Recommended Additions</h2>
           <div className="flex flex-wrap gap-2">
             {recommended.map((type, index) => (

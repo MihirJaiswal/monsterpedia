@@ -37,9 +37,9 @@ const Hero = () => {
           <div className="relative flex h-[500px] w-full">
             <Meteors number={7} />
           </div>
-          <div className='absolute flex flex-col items-center justify-center px-4'>
+          <a href='/pokedex' className='absolute flex flex-col items-center justify-center px-4'>
             <img src="/pokedex2.png" alt="" className='w-16 h-full' />
-          </div>
+          </a>
 
           <OrbitingCircles
             className="size-[30px] border-none bg-transparent"
