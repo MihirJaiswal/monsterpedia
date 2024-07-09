@@ -19,7 +19,9 @@ const config = {
     },
     extend: {
       backgroundImage: {
+        "footer":" linear-gradient(to bottom, #005d77, #00516d, #004663, #003b58, #00304d);",
         "card2":"radial-gradient(circle, #ff0007, #ff0045, #ff0072, #fe369a, #ea56bb, #cf66cc, #b173d6, #937dda, #6c7ed2, #477dc5, #227ab4, #0075a0 80%, rgba(0, 0, 0, 0) 100%);",
+        "bg6":"url('/backgrounds/11.png')",
         "bg5":"url('/backgrounds/15.jpg')",
         "bg4":"url('/backgrounds/11.png')",
         "bg3":"url('/backgrounds/10.jpg')",

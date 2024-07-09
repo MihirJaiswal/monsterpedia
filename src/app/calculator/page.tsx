@@ -1,4 +1,5 @@
 import Calculate from '@/components/calculator/Calculate'
+import Footer from '@/components/Footer'
 import HomeHeader from '@/components/HomeHeader'
 import React from 'react'
 
@@ -7,6 +8,7 @@ const page = () => {
     <div className='bg-hero'>
       <HomeHeader/>
       <Calculate/>
+      <Footer/>
     </div>
   )
 }
