@@ -4,7 +4,7 @@ import { FaPaperclip } from 'react-icons/fa'; // Import the clip icon from react
 const Note = () => {
   return (
     <div className='relative z-10'>
-      <section id="developers-note" className=" md:w-1/2 w-[85%] mx-auto my-12 md:p-8 px-4 py-8 flex flex-col items-center justify-center bg-yellow-100/80 border border-yellow-500 rounded-lg shadow-lg transform rotate-1">
+      <section id="developers-note" className=" md:w-1/2 w-[85%] mx-auto md:my-12 md:p-8 px-4 py-8 flex flex-col items-center justify-center bg-yellow-100/80 border border-yellow-500 rounded-lg shadow-lg transform rotate-1">
         <FaPaperclip className="absolute top-4 left-4 mt-[-20px] ml-[-20px] text-4xl text-gray-700 transform -rotate-45" />
         <div className='px-4'>
           <h2 className="text-4xl font-extrabold text-center mb-8 text-gray-800">Developer's Note</h2>

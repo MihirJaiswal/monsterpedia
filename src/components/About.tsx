@@ -27,23 +27,27 @@ const About = () => {
             title="Pokedex" 
             description="Tailor your Pokédex's look and feel, from the color scheme to the font size, to the design of the page."
             icon={pokedex}
+            href="/pokedex"
           />
 
           <Card 
             title="Caculator" 
             description="We build our templates with speed in mind, ensuring super-fast load times so your customers never waver."
             icon={go}
+            href="/calculator"
           />
 
           <Card 
             title="Team Builder" 
             description="Everything you need to succeed and launch your Pokédex, right out of the box. No need to install anything else."
             icon={battle}
+            href="/team"
           />
           <Card 
             title="Pokemon Generator" 
             description="Everything you need to succeed and launch your Pokédex, right out of the box. No need to install anything else."
             icon={master}
+            href="/generator"
           />
         </div>
 

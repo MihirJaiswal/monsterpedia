@@ -19,7 +19,7 @@ const Feature = () => {
            <div className='z-50'>
            <PokemonGameFeature/>
            </div>
-            <div className='hidden md:block'>
+            <div className=''>
             <div className="absolute bottom-0 left-0 md:block opacity-90">
           <img src="/mist4.png" alt="" className='w- opacity-15 blur-md' />
         </div>
