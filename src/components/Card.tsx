@@ -1,7 +1,13 @@
 import React from 'react';
 import Image from 'next/image';
 
-const Card = ({ title, description, icon }:any) => {
+interface CardProps {
+  title: string;
+  description: string;
+  icon: any;
+}
+
+const Card = ({ title, description, icon }: CardProps) => {
   return (
     <div className="rounded-md border border-neutral-300 bg-gray-900/40 backdrop-blur-sm p-8 text-center shadow flex flex-col items-center justify-center transform transition-transform duration-500 hover:scale-105 hover:shadow-xl hover:bg-gray-900/50 cursor-pointer">
       <div className='relative'>
@@ -22,7 +28,7 @@ const Card = ({ title, description, icon }:any) => {
           height={124}
           quality='100'
           alt="icon"
-          className='w-32 relative transition-transform duration-300 hover:scale-110'
+          className='w-32 relative transition-transform duration-300 hover:animate-spinThreeTimes'
         />
       </div>
       <h3 className="mt-6 text-white text-xl font-bold transition-colors duration-300 hover:text-gray-300">{title}</h3>

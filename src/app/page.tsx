@@ -3,6 +3,10 @@ import Hero from '@/components/Hero'
 import HomeHeader from '@/components/HomeHeader'
 import About from '@/components/About'
 import Footer from '@/components/Footer'
+import Note from '@/components/Note'
+import SupportMe from '@/components/Support'
+import PokemonGameFeature from '@/components/other'
+
 
 const page = () => {
   return (
@@ -22,6 +26,9 @@ const page = () => {
       <HomeHeader/>
       <Hero/>
       <About/>
+      <SupportMe/>
+      <PokemonGameFeature/>
+      <Note/>
       <Footer/>
     </div>
   )

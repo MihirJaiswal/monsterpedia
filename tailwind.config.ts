@@ -75,6 +75,10 @@ const config = {
         sm: "calc(var(--radius) - 4px)",
       },
       keyframes: {
+        spinThreeTimes: {
+          '0%': { transform: 'rotate(0deg)' },
+          '100%': { transform: 'rotate(360deg)' }, // 3 times 360 degrees
+        },
         "shine-pulse": {
           "0%": {
             "background-position": "0% 0%",
@@ -119,6 +123,7 @@ const config = {
         },
       },
       animation: {
+        spinThreeTimes: 'spinThreeTimes 1s ease-in-out forwards',
         "border-beam": "border-beam calc(var(--duration)*1s) infinite linear",
         meteor: "meteor 5s linear infinite",
         orbit: "orbit calc(var(--duration)*1s) linear infinite",

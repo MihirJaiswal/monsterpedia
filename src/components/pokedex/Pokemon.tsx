@@ -259,7 +259,7 @@ const Pokemon = () => {
         {types.map((type) => (
           <button
             key={type}
-            className={`px-4 py-2 rounded-lg shadow-md border border-black transition duration-300 flex items-center gap-2 ${selectedType === type ? typeGradients[type] : 'bg-white rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-60 border border-gray-100 text-black'}`}
+            className={`px-4 py-2 rounded-lg shadow-md border border-black transition duration-300 flex items-center gap-2 ${selectedType === type ? `${typeGradients[type]} text-white` : 'bg-white rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-60 border border-gray-100 text-black'}`}
             onClick={() => handleFilterChange(type === selectedType ? '' : type, selectedGeneration)}
           >
             {typeIcons[type]}
