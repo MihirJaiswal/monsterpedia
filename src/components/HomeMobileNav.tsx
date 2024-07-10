@@ -29,7 +29,7 @@ function HomeMobileNav() {
         className='cursor-pointer sm:hidden' 
         />
       </SheetTrigger>
-      <SheetContent side='right' className='bg-mainb border-gray-700'>
+      <SheetContent side='right' className='bg-black bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-5 border-gray-700'>
       <Link href='/' className='flex items-center gap-1'>
      <Image
       src={logo}

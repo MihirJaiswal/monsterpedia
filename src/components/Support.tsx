@@ -4,7 +4,7 @@ import UpcomingFeatures from '@/components/Upcoming'
 
 const SupportMe = () => {
   return (
-    <section id="support-me" className="container relative w-[90%] mx-auto my-12 p-4 flex flex-col items-center justify-center bg-white bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-5 rounded-lg border border-gray-400 text-center">
+    <section id="support-me" className="container relative md:w-[90%] mx-auto my-12 p-8 flex flex-col items-center justify-center bg-white bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-5 rounded-lg border border-gray-400 text-center">
             <UpcomingFeatures/>
       <div className='flex flex-col items-center justify-center border p-8 rounded-md'>
       <h2 className="text-4xl font-bold text-gray-100 mb-6">Support Me</h2>
