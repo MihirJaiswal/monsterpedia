@@ -27,7 +27,6 @@ const page = () => {
       <Hero/>
       <About/>
       <SupportMe/>
-      <PokemonGameFeature/>
       <Note/>
       <Footer/>
     </div>

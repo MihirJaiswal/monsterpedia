@@ -1,6 +1,7 @@
 import React from 'react';
 import { FaLinkedin, FaTwitter, FaGithub } from 'react-icons/fa'; // Import icons for support methods
 import UpcomingFeatures from '@/components/Upcoming'
+import PokemonGameFeature from './other';
 
 const SupportMe = () => {
   return (
@@ -19,9 +20,12 @@ const SupportMe = () => {
           <FaTwitter size={40} />
         </a>
         <a href="https://github.com/yourprofile" target="_blank" rel="noopener noreferrer" className="text-gray-800 hover:text-gray-900">
-          <FaGithub size={40} />
+          <FaGithub size={40} className='text-white' />
         </a>
       </div>
+      </div>
+      <div>
+      <PokemonGameFeature/>
       </div>
     </section>
   );
