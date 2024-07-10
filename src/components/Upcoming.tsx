@@ -51,6 +51,17 @@ const UpcomingFeatures = () => {
             transition={{ duration: 0.1 }}
           >
             <div className="relative w-full h-36">
+            <div className="absolute left-14 inset-0 w-36 h-36 flex justify-center border-2 border-gray-300 items-center z-0 bg-card2 rounded-full bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-10 opacity-30 transition-all duration-300">
+          <div className="w-36 h-36 rounded-full border-2 border-gray-300 relative flex justify-center items-center">
+            <div className="w-36 h-36 rounded-full border-2 border-gray-300 relative flex justify-center items-center">
+              <div className="absolute w-full h-full flex items-center justify-center">
+                <div className="absolute w-full h-[2px] bg-white transform rotate-45 left-2"></div>
+                <div className="absolute w-10 h-10 rounded-full border-2 border-white flex justify-center items-center"></div>
+                <div className="absolute w-full h-[2px] bg-white transform rotate-45 right-2"></div>
+              </div>
+            </div>
+          </div>
+        </div>
               <Image src={feature.img} alt={feature.title} layout="fill" objectFit="contain" className="rounded-t-lg" />
             </div>
             <div className="p-6 h-fyll flex flex-col justify-between">

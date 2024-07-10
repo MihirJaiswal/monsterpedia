@@ -32,7 +32,7 @@ const About = () => {
 
           <Card 
             title="Caculator" 
-            description="We build our templates with speed in mind, ensuring super-fast load times so your customers never waver."
+            description="Calculate your team's weakness resistances and immunities in seconds, effective for doing battle calc in nuzlocks"
             icon={go}
             href="/calculator"
           />
