@@ -9,7 +9,7 @@ import ShineBorder from './ui/shine-border';
 const About = () => {
   return (
     <section id='about' className="flex flex-col justify-center items-center z-40">
-      <ShineBorder className="relative block px-6 py-10 md:py-20 md:px-12 bg-white bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-5 rounded-lg border border-gray-400" color={["#A07CFE", "#FE8FB5", "#0AB6C8"]}>
+      <ShineBorder className="relative block px-6 py-10 md:py-20 md:px-12 bg-white bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-5 rounded-lg border-2 " color={["#A07CFE", "#FE8FB5", "#0AB6C8"]}>
         <div className="relative mx-auto max-w-5xl text-center flex flex-col items-center justify-center">
           <img src="/logo.png" alt="Monster Pedia Logo" className="w-28" />
           <h2 className="block w-full bg-gradient-to-b text-white bg-clip-text font-bold text-transparent text-3xl sm:text-4xl">

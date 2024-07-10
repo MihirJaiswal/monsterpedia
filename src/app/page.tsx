@@ -3,9 +3,9 @@ import Hero from '@/components/Hero'
 import HomeHeader from '@/components/HomeHeader'
 import About from '@/components/About'
 import Footer from '@/components/Footer'
-import Note from '@/components/Note'
 import SupportMe from '@/components/Support'
-import PokemonGameFeature from '@/components/other'
+import Feature from '@/components/Feature'
+import Final from '@/components/up'
 
 
 const page = () => {
@@ -26,8 +26,9 @@ const page = () => {
       <HomeHeader/>
       <Hero/>
       <About/>
+      <Final/>
+      <Feature/>
       <SupportMe/>
-      <Note/>
       <Footer/>
     </div>
   )
