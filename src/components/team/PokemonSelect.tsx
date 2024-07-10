@@ -54,13 +54,13 @@ const PokemonSelect: React.FC<PokemonSelectProps> = ({
           placeholder="Search Pokémon"
           value={searchQuery}
           onChange={handleSearchChange}
-          className={`bg-white bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-30 border p-2 pl-10 rounded-full w-full max-w-6xl shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${isDisabled ? 'bg-gray-300 cursor-not-allowed' : ''}`}
+          className={`bg-white bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-60 border-2 p-2 pl-10 rounded-full w-full max-w-6xl shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${isDisabled ? 'bg-gray-300 cursor-not-allowed' : ''}`}
           disabled={isDisabled} // Disable input when needed
         />
         <FaSearch className="absolute left-2 md:left-32 top-1/2 transform -translate-y-1/2 text-gray-700" />
       </div>
       {showSuggestions && searchQuery && !isDisabled && (
-        <div className="absolute top-full left-0 w-1/2 h-96 overflow-scroll bg-white bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-50 border border-gray-300 rounded-lg mt-2 shadow-lg z-10">
+        <div className="absolute top-full left-0 w-1/2 h-96 overflow-scroll bg-white bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-70 border border-gray-300 rounded-lg mt-2 shadow-lg z-10">
           {filteredSuggestions.map((pokemon) => (
             <div
               key={pokemon.id}

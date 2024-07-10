@@ -32,7 +32,7 @@ const Hero = () => {
     <div className="fixed right-0 top-0 h-full w-12 bg-gray-300 bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-5 text-white shadow-md hidden md:block border-l border-gray-600">
   
     </div>
-    <div className="fixed bottom-0 h-10 z-50 w-full bg-gray-300 bg-clip-padding backdrop-filter  bg-opacity-5 text-white shadow-md hidden md:block border-t border-gray-600">
+    <div className="fixed bottom-0 h-10 z-40 w-full bg-gray-300 bg-clip-padding backdrop-filter  bg-opacity-5 text-white shadow-md hidden md:block border-t border-gray-600">
   
     </div>
      </div>

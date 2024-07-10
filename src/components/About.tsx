@@ -4,11 +4,12 @@ import pokedex from '../../public/pokedex2.png'
 import battle from '../../public/gym.png'
 import go from '../../public/go.png'
 import master from '../../public/masterball.png'
+import ShineBorder from './ui/shine-border';
 
 const About = () => {
   return (
-    <div className="flex flex-col justify-center items-center">
-      <section className="relative block px-6 py-10 md:py-20 md:px-10 bg-white bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-5 rounded-lg border border-gray-400">
+    <div className="flex flex-col justify-center items-center z-30">
+      <ShineBorder className="relative block px-6 py-10 md:py-20 md:px-10 bg-white bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-5 rounded-lg border border-gray-400" color={["#A07CFE", "#FE8FB5", "#0AB6C8"]}>
         <div className="relative mx-auto max-w-5xl text-center flex flex-col items-center justify-center">
           <img src="/logo.png" alt="Monster Pedia Logo" className="w-28" />
           <h2 className="block w-full bg-gradient-to-b text-white bg-clip-text font-bold text-transparent text-3xl sm:text-4xl">
@@ -59,7 +60,7 @@ const About = () => {
        
         </div>
        
-      </section>
+      </ShineBorder>
       
     </div>
   );
