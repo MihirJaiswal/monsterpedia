@@ -86,6 +86,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 For any questions or feedback, feel free to reach out to me:
 
-- **GitHub**: [your-username](https://github.com/MihirJaiswal/MihirJaiswal)
+- **GitHub**: [Mihir Jaiswal](https://github.com/MihirJaiswal/MihirJaiswal)
 - **Email**: jaiswalmihir.business@gmail.com
 
