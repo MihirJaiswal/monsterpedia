@@ -28,13 +28,31 @@ const UpcomingFeatures = () => {
   return (
     <section id="upcoming-section" className="container mx-auto p-4 flex mb-12 flex-col items-center justify-center">
       <div className='flex flex-col items-center justify-center gap-4'>
-        <img src="/mega.png" alt="" className='w-16' />
-        <h2 className="text-3xl font-extrabold text-white mb-6">Upcoming Features</h2>
-        <p className="text-lg text-gray-300 mb-12 text-center max-w-2xl">
-            Stay tuned for exciting new features! We're constantly working to enhance your experience with new tools, improved functionality, and innovative updates to make your Pokémon journey even more enjoyable.
-        </p>
-
-      </div>
+      <motion.img
+        src="/mega.png"
+        alt="Upcoming Features"
+        className="w-16"
+        initial={{ filter: 'blur(10px)', opacity: 0.8 }}
+        whileInView={{ filter: 'blur(0px)', opacity: 1 }}
+        transition={{ duration: 0.4, delay: 0.3 }}
+      />
+      <motion.h2
+        className="text-3xl font-extrabold text-white mb-6"
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.3 }}
+      >
+        Upcoming Features
+      </motion.h2>
+      <motion.p
+        className="text-lg text-gray-300 mb-12 text-center max-w-2xl"
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.3 }}
+      >
+        Stay tuned for exciting new features! We're constantly working to enhance your experience with new tools, improved functionality, and innovative updates to make your Pokémon journey even more enjoyable.
+      </motion.p>
+    </div>
       <motion.div
         className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-16"
         variants={containerVariants}
@@ -52,7 +70,7 @@ const UpcomingFeatures = () => {
             transition={{ duration: 0.1 }}
           >
             <div className="relative w-full h-36 flex items-center justify-center">
-            <div className="absolute left-14 inset-0 w-36 h-36 flex justify-center border-2 border-gray-300 items-center z-0 bg-card2 rounded-full bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-10 opacity-30 transition-all duration-300">
+            <div className="absolute left-12 md:left-14 inset-0 w-36 h-36 flex justify-center border-2 border-gray-300 items-center z-0 bg-card2 rounded-full bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-10 opacity-30 transition-all duration-300">
           <div className="w-36 h-36 rounded-full border-2 border-gray-300 relative flex justify-center items-center">
             <div className="w-36 h-36 rounded-full border-2 border-gray-300 relative flex justify-center items-center">
               <div className="absolute w-full h-full flex items-center justify-center">
@@ -64,10 +82,9 @@ const UpcomingFeatures = () => {
           </div>
         </div>
               <Image src={feature.img} alt={feature.title} 
-              objectFit="contain"
               width={300}
               height={300}
-               className="rounded-t-lg w-36 relative" />
+               className="rounded-t-lg w-36 relative object-contain " />
             </div>
             <div className="p-6 h-fyll flex flex-col justify-between">
               <h3 className="text-2xl font-bold text-white mb-3">{feature.title}</h3>
