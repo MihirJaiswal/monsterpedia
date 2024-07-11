@@ -30,9 +30,9 @@ const UpcomingFeatures = () => {
       <div className='flex flex-col items-center justify-center gap-4'>
         <img src="/mega.png" alt="" className='w-16' />
         <h2 className="text-3xl font-extrabold text-white mb-6">Upcoming Features</h2>
-<p className="text-lg text-gray-300 mb-12 text-center max-w-2xl">
-    Stay tuned for exciting new features! We're constantly working to enhance your experience with new tools, improved functionality, and innovative updates to make your Pokémon journey even more enjoyable.
-</p>
+        <p className="text-lg text-gray-300 mb-12 text-center max-w-2xl">
+            Stay tuned for exciting new features! We're constantly working to enhance your experience with new tools, improved functionality, and innovative updates to make your Pokémon journey even more enjoyable.
+        </p>
 
       </div>
       <motion.div
@@ -51,7 +51,7 @@ const UpcomingFeatures = () => {
             whileTap={{ scale: 0.9 }}
             transition={{ duration: 0.1 }}
           >
-            <div className="relative w-full h-36">
+            <div className="relative w-full h-36 flex items-center justify-center">
             <div className="absolute left-14 inset-0 w-36 h-36 flex justify-center border-2 border-gray-300 items-center z-0 bg-card2 rounded-full bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-10 opacity-30 transition-all duration-300">
           <div className="w-36 h-36 rounded-full border-2 border-gray-300 relative flex justify-center items-center">
             <div className="w-36 h-36 rounded-full border-2 border-gray-300 relative flex justify-center items-center">
@@ -63,7 +63,11 @@ const UpcomingFeatures = () => {
             </div>
           </div>
         </div>
-              <Image src={feature.img} alt={feature.title} layout="fill" objectFit="contain" className="rounded-t-lg" />
+              <Image src={feature.img} alt={feature.title} 
+              objectFit="contain"
+              width={300}
+              height={300}
+               className="rounded-t-lg w-36 relative" />
             </div>
             <div className="p-6 h-fyll flex flex-col justify-between">
               <h3 className="text-2xl font-bold text-white mb-3">{feature.title}</h3>
