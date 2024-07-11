@@ -13,13 +13,13 @@ const Footer = () => {
             <p className="text-gray-400">Your ultimate Pokémon resource.</p>
           </div>
           <div className="flex space-x-6">
-            <a href="https://twitter.com" target="_blank" rel="noopener noreferrer">
+            <a href="https://x.com/mihirja73370412" target="_blank" rel="noopener noreferrer">
               <FaTwitter className="text-xl hover:text-gray-500 transition duration-300" />
             </a>
-            <a href="https://facebook.com" target="_blank" rel="noopener noreferrer">
+            <a href="https://www.linkedin.com/in/mihir-jaiswal-322898287/" target="_blank" rel="noopener noreferrer">
               <FaLinkedinIn className="text-xl hover:text-gray-500 transition duration-300" />
             </a>
-            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer">
+            <a href="https://www.instagram.com/monty_draws_/" target="_blank" rel="noopener noreferrer">
               <FaInstagram className="text-xl hover:text-gray-500 transition duration-300" />
             </a>
             <a href="https://github.com/MihirJaiswal/MihirJaiswal" target="_blank" rel="noopener noreferrer">
@@ -37,10 +37,10 @@ const Footer = () => {
                 <a href="/calculator" className="hover:text-gray-500 transition duration-300">Type Calculator</a>
               </li>
               <li>
-                <a href="/pokedex-maker" className="hover:text-gray-500 transition duration-300">Pokédex Maker</a>
+                <a href="/pokedex-maker" className="hover:text-gray-500 transition duration-300">Team Builder</a>
               </li>
               <li>
-                <a href="/team" className="hover:text-gray-500 transition duration-300">Team Builder</a>
+                <a href="/team" className="hover:text-gray-500 transition duration-300">Pokémon Maker</a>
               </li>
             </ul>
           </div>

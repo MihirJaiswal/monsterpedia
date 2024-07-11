@@ -1,11 +1,10 @@
 "use client";
-
 import React, { useState, useRef } from 'react';
-import htmlToImage from 'html-to-image';
+import html2canvas from 'html2canvas';
 import axios from 'axios';
 import PokemonForm from './PokemonForm';
 import Preview from './Preview';
-import pikachuImg from '../../../public/pikachu.jpg'; // Import static image
+import pikachuImg from '../../../public/pikachu.jpg'; 
 
 const PokemonCreator: React.FC = () => {
   const [name, setName] = useState('');
@@ -20,7 +19,7 @@ const PokemonCreator: React.FC = () => {
   const [type1, setType1] = useState('');
   const [type2, setType2] = useState('');
   const [image, setImage] = useState<File | null>(null);
-  const [previewImage, setPreviewImage] = useState<string>(pikachuImg.src); // Use img.src for string URL
+  const [previewImage, setPreviewImage] = useState<string>(pikachuImg.src);
   const previewRef = useRef<HTMLDivElement>(null);
 
   // Handle image upload
@@ -36,7 +35,6 @@ const PokemonCreator: React.FC = () => {
     }
   };
 
-  // Handle image generation using the unofficial Cartoon Network API
   const handleImageGeneration = async () => {
     try {
       const response = await axios.get('https://www.cartoons.org/api/characters');
@@ -59,7 +57,7 @@ const PokemonCreator: React.FC = () => {
       }
     } catch (error) {
       console.error('Error fetching cartoon images:', error);
-      setPreviewImage(pikachuImg.src); // Fallback to placeholder image
+      setPreviewImage(pikachuImg.src); 
     }
   };
 
@@ -67,7 +65,8 @@ const PokemonCreator: React.FC = () => {
   const handleDownload = async () => {
     if (previewRef.current) {
       try {
-        const dataUrl = await htmlToImage.toPng(previewRef.current);
+        const canvas = await html2canvas(previewRef.current);
+        const dataUrl = canvas.toDataURL('image/png');
         const link = document.createElement('a');
         link.href = dataUrl;
         link.download = 'pokemon.png';

@@ -66,8 +66,6 @@ const Hero = () => {
                     <OrbitingCircles className="size-[30px] border-none bg-transparent" duration={20} delay={10} radius={80}>
                         <Icons.notion />
                     </OrbitingCircles>
-
-                    {/* Outer Circles (reverse) */}
                     <OrbitingCircles className="size-[50px] border-none bg-transparent" radius={190} duration={20} reverse>
                         <Icons.googleDrive />
                     </OrbitingCircles>
@@ -97,7 +95,6 @@ const Hero = () => {
                     <img src="/backgrounds/ash.png" alt="" className='w-full md:h-96' />
                 </div>
 
-                {/* Decorative Image */}
                 <div className={`fixed top-24 left-2 md:left-44 opacity-90 ${isScrolledToContact ? 'sticky' : 'fixed'}`}>
                     <motion.div
                         key="robot-div"

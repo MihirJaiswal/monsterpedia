@@ -4,17 +4,10 @@ import { useState } from 'react';
 import { usePathname } from 'next/navigation';
 import { navigation } from '../../constant';
 
-
-
-/* import HamburgerMenu from './HamburgerMenu'; */
-
 function HomeNav() {
-
     const pathname = usePathname();
     const [openNavigation, setOpenNavigation] = useState(false);
 
-   
-    
       const handleClick = () => {
         if (!openNavigation) return;
         setOpenNavigation(false);
@@ -46,8 +39,7 @@ function HomeNav() {
             ))}
           </div>
         </nav>
-      </div>
-    
+      </div>   
   )
 }
 

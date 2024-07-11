@@ -21,20 +21,17 @@ const Feature = () => {
            </div>
             <div className=''>
             <div className="absolute bottom-0 left-0 md:block opacity-90">
-          <img src="/mist4.png" alt="" className='w- opacity-15 blur-md' />
-        </div>
-        <div className="absolute bottom-0 left-0 md:block opacity-90">
-          <img src="/mist4.png" alt="" className='w-2/3 opacity-15 blur-md' />
-        </div>
-        <div className="absolute bottom-0 left-0 md:block opacity-90">
-          <img src="/mist.png" alt="" className='w-96 opacity-10 blur-md' />
-        </div>
-     
-            </div>
-        
-         </section>
-       
-    </div>
+            <img src="/mist4.png" alt="" className='w- opacity-15 blur-md' />
+          </div>
+          <div className="absolute bottom-0 left-0 md:block opacity-90">
+            <img src="/mist4.png" alt="" className='w-2/3 opacity-15 blur-md' />
+          </div>
+          <div className="absolute bottom-0 left-0 md:block opacity-90">
+            <img src="/mist.png" alt="" className='w-96 opacity-10 blur-md' />
+          </div>
+          </div>
+        </section>
+      </div>
   )
 }
 

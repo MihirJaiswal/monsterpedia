@@ -21,9 +21,7 @@ const HomeHeader = () => {
         <div>
         <HomeNav/>
         </div>
-        
       <div className='flex-between gap-5'>
-
          <HomeMobileNav/>
       </div>
     </div>  

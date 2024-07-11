@@ -40,7 +40,7 @@ const typeData: TypeDataMap = {
     "immunities": []
   },
   "Grass": { 
-    "weaknesses": ["Fire", "Flying", "Poison", "Bug"], 
+    "weaknesses": ["Fire", "Flying", "Poison", "Bug", "ice"], 
     "resistances": ["Water", "Grass", "Electric", "Ground"], 
     "immunities": []
   },
@@ -148,12 +148,13 @@ const PokemonTypeCalculator = () => {
     const weaknessesSet = new Set<string>();
     const resistancesSet = new Set<string>();
     const immunitiesSet = new Set<string>();
-
+  
+    // Collect weaknesses, resistances, and immunities
     pokemonTypes.forEach(pokemonType => {
       const types = [pokemonType.type1, pokemonType.type2]
         .filter(type => type > 0)
         .map(typeIndex => typeOptions[typeIndex]);
-
+  
       types.forEach(type => {
         const currentTypeData = typeData[type];
         
@@ -170,35 +171,42 @@ const PokemonTypeCalculator = () => {
         }
       });
     });
-
-    const filteredWeaknesses = Array.from(weaknessesSet).filter(type => !resistancesSet.has(type));
-    const filteredWeaknessesWithImmunities = filteredWeaknesses.filter(type => !immunitiesSet.has(type));
-    const filteredResistances = Array.from(resistancesSet).filter(type => !immunitiesSet.has(type));
+  
+    // Remove weaknesses that are also resisted
+    const filteredWeaknesses = Array.from(weaknessesSet).filter(weakness => !resistancesSet.has(weakness));
+    
+    // Remove resistances that are also weaknesses
+    const filteredResistances = Array.from(resistancesSet).filter(resistance => !weaknessesSet.has(resistance));
+    
+    // Remove immunities that are also in the weaknesses list
+    const filteredWeaknessesWithImmunities = filteredWeaknesses.filter(weakness => !immunitiesSet.has(weakness));
+  
+    // Not resisted types
     const filteredNotResisted = typeOptions.slice(1).filter(type => !filteredResistances.includes(type));
-
+  
     setWeaknesses(filteredWeaknessesWithImmunities);
     setResistances(filteredResistances);
     setImmunities(Array.from(immunitiesSet));
     setRecommended(filteredNotResisted);
   };
+  
+  
 
   const getTypeData = (type1: number, type2: number): TypeData => {
     const type1Data = type1 > 0 ? typeData[typeOptions[type1]] : { weaknesses: [], resistances: [], immunities: [] };
     const type2Data = type2 > 0 ? typeData[typeOptions[type2]] : { weaknesses: [], resistances: [], immunities: [] };
-  
     const combinedWeaknesses = new Set([...type1Data.weaknesses, ...type2Data.weaknesses]);
     const combinedResistances = new Set([...type1Data.resistances, ...type2Data.resistances]);
     const combinedImmunities = new Set([...type1Data.immunities, ...type2Data.immunities]);
-  
-    const filteredWeaknesses = Array.from(combinedWeaknesses).filter(type => !combinedResistances.has(type) && !combinedImmunities.has(type));
-    const filteredResistances = Array.from(combinedResistances).filter(type => !combinedImmunities.has(type));
-  
+    const filteredWeaknesses = Array.from(combinedWeaknesses).filter(weakness => !combinedResistances.has(weakness) && !combinedImmunities.has(weakness));
+    const filteredResistances = Array.from(combinedResistances).filter(resistance => !combinedWeaknesses.has(resistance) && !combinedImmunities.has(resistance));
     return {
       weaknesses: filteredWeaknesses,
       resistances: filteredResistances,
       immunities: Array.from(combinedImmunities),
     };
   };
+  
 
   const reset = () => {
     setPokemonTypes([
