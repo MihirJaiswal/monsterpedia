@@ -1,6 +1,7 @@
 # Monster Pedia
 
-![Monster Pedia Logo](public/preview.png) 
+![Monster Pedia preview](public/preview.png) 
+![Monster Pedia preview](public/preview2.png) 
 
 **Monster Pedia** is an interactive web application designed for Pokémon fans. It includes a comprehensive Pokédex, a type weakness calculator, a team builder, and a Pokémon card maker. The project is built using Next.js, Tailwind CSS, and Framer Motion to deliver an engaging and visually appealing user experience.
 
@@ -48,12 +49,10 @@ To get started with the Monster Pedia project, follow these steps:
 
 ## Project Structure
 
-- **`pages/`**: Contains the Next.js pages and routes.
 - **`components/`**: Reusable React components such as the Pokédex, Type Weakness Calculator, and Pokémon Card Maker.
 - **`public/`**: Static assets including images and icons.
-    - ![Pokédex Screenshot](public/images/pokedex-screenshot.png) <!-- Replace with a screenshot or relevant image -->
 - **`styles/`**: Tailwind CSS configuration and custom styles.
-- **`utils/`**: Utility functions and API calls.
+- **`constant/`**: Constant Data.
 
 ## Customization
 
@@ -87,6 +86,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 For any questions or feedback, feel free to reach out to me:
 
-- **GitHub**: [your-username](https://github.com/your-username)
-- **Email**: your-email@example.com
+- **GitHub**: [your-username](https://github.com/MihirJaiswal/MihirJaiswal)
+- **Email**: jaiswalmihir.business@gmail.com
 
