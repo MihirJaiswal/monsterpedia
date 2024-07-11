@@ -13,7 +13,7 @@ const Hero = () => {
 
     useEffect(() => {
         const handleScroll = () => {
-            const upcomingSection = document.getElementById('upcoming-section');
+            const upcomingSection = document.getElementById('cards');
             const supportSection = document.getElementById('support-section');
             const upcomingSectionTop = upcomingSection?.getBoundingClientRect().top;
             const supportSectionTop = supportSection?.getBoundingClientRect().top;
@@ -132,17 +132,23 @@ const Hero = () => {
 
                 {/* Ho-Oh */}
                 <motion.div
-                    initial={{ opacity: 0, x: -150, y: 0 }}
-                    animate={{ opacity: isScrolledToUpcoming && !isScrolledToSupport ? 1 : 0, x: scrollX * 0.1, y: scrollX * 0.1 }} // Apply diagonal movement based on scroll
-                    transition={{ 
-                        x: { type: "spring", stiffness: 50, damping: 10 },
-                        y: { type: "spring", stiffness: 50, damping: 10 },
-                        opacity: { duration: 0.3 }
-                    }} // Smooth transition for x, y, and opacity
-                    className={`fixed top-24 left-0 opacity-90 hidden md:block`}
-                >
-                    <img src="/ho-oh.png" alt="Ho-Oh" className='md:w-44 w-32' />
-                </motion.div>
+    initial={{ opacity: 0, x: -150, y: 0 }}
+    animate={{ 
+        opacity: isScrolledToUpcoming && !isScrolledToSupport ? 1 : 0, 
+        x: scrollX * 0.1, // You can adjust this multiplier for horizontal movement
+        y: scrollY * 0.1 // Adjust this multiplier for vertical movement
+    }}
+    transition={{ 
+        x: { type: "spring", stiffness: 50, damping: 10 },
+        y: { type: "spring", stiffness: 50, damping: 10 },
+        opacity: { duration: 0.2 }
+    }}
+    className={`fixed top-24 left-24 opacity-90 hidden md:block`}
+>
+    <img src="/ho-oh.png" alt="Ho-Oh" className='md:w-44 w-32' />
+</motion.div>
+
+
                
                 <div className={`fixed top-24 md:hidden left-2 md:left-44 opacity-90 ${isScrolledToUpcoming ? 'block' : 'hidden'}`}>
                     <motion.div

@@ -59,6 +59,7 @@ const UpcomingFeatures = () => {
         initial="hidden"
         whileInView="visible"
         transition={{duration:0.2}}
+         id='cards'
       >
         {features.map((feature) => (
           <motion.div
