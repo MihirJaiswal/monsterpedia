@@ -2,6 +2,7 @@ import React from 'react';
 import { FaLinkedin, FaInstagram, FaGithub } from 'react-icons/fa'; // Import icons for support methods
 import UpcomingFeatures from '@/components/Upcoming'
 import Note from './Note';
+import { AlertDialogDemo } from './Alert';
 
 const SupportMe = () => {
   return (
@@ -12,7 +13,8 @@ const SupportMe = () => {
       <p className="text-lg text-gray-300 mb-6">
         If you enjoy visiting my website and would like to support the development, please consider making a donation or following me on social media. Your support helps me keep improving and adding new features!
       </p>
-      <div className="flex space-x-6">
+     <div className='flex flex-col  gap-8 justify-center items-center'>
+     <div className="flex space-x-6">
         <a href="https://www.linkedin.com/in/mihir-jaiswal-322898287/" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800">
           <FaLinkedin size={40} />
         </a>
@@ -23,6 +25,10 @@ const SupportMe = () => {
           <FaGithub size={40} className='text-white' />
         </a>
       </div>
+      <div>
+        <AlertDialogDemo/>
+      </div>
+     </div>
       </div>
     </section>
     <Note/>
