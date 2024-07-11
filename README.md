@@ -1,6 +1,6 @@
 # Monster Pedia
 
-![Monster Pedia Logo](public/images/logo.png) <!-- Replace with your logo or main image -->
+![Monster Pedia Logo](public/preview.png) 
 
 **Monster Pedia** is an interactive web application designed for Pokémon fans. It includes a comprehensive Pokédex, a type weakness calculator, a team builder, and a Pokémon card maker. The project is built using Next.js, Tailwind CSS, and Framer Motion to deliver an engaging and visually appealing user experience.
 
