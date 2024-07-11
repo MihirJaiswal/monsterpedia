@@ -4,9 +4,9 @@ import { motion } from 'framer-motion';
 import Image from 'next/image';
 
 const features = [
-  { id: 1, title: 'Game Maker', description: 'Discover new types and abilities to enhance your Pokémon team.', img: '/feature1.png' },
-  { id: 2, title: 'Pokedex Maker', description: 'Get additional customization options for your Pokémon team.', img: '/feature2.png' },
-  { id: 3, title: 'Fakemon API', description: 'Engage with new interactive elements and challenges.', img: '/feature3.png' },
+  { id: 1, title: 'Game Maker', description: 'Create your own Pokémon games with custom rules, characters, and adventures using our intuitive game maker.', img: '/feature1.png' },
+  { id: 2, title: 'Pokedex Maker', description: 'Design and customize your own Pokédex, adding unique entries and detailed information for fan-made Pokémon.', img: '/feature2.png' },
+  { id: 3, title: 'Fakemon API', description: 'Access a comprehensive API to generate and integrate Fakemon into your applications, complete with stats and abilities.', img: '/feature3.png' },
 ];
 
 const containerVariants = {
@@ -29,10 +29,11 @@ const UpcomingFeatures = () => {
     <section id="upcoming-section" className="container mx-auto p-4 flex mb-12 flex-col items-center justify-center">
       <div className='flex flex-col items-center justify-center gap-4'>
         <img src="/mega.png" alt="" className='w-16' />
-      <h2 className="text-3xl font-extrabold text-white mb-6">Upcoming Features</h2>
-      <p className="text-lg text-gray-300 mb-12 text-center max-w-2xl">
-        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Veniam, sed ut explicabo alias id dignissimos officiis beatae necessitatibus quos dolor.
-      </p>
+        <h2 className="text-3xl font-extrabold text-white mb-6">Upcoming Features</h2>
+<p className="text-lg text-gray-300 mb-12 text-center max-w-2xl">
+    Stay tuned for exciting new features! We're constantly working to enhance your experience with new tools, improved functionality, and innovative updates to make your Pokémon journey even more enjoyable.
+</p>
+
       </div>
       <motion.div
         className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-16"

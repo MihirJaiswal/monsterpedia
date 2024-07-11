@@ -1,12 +1,10 @@
-'use client'
+'use client';
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
-import Link from 'next/link';
 import Particles from './ui/Particles';
 import OrbitingCircles from './ui/orbiting-circles';
 import Meteors from './ui/meteors';
 import { motion } from 'framer-motion';
-import About from './About';
 
 const Hero = () => {
     const [isScrolledToContact, setIsScrolledToContact] = useState(false);
@@ -30,16 +28,16 @@ const Hero = () => {
 
     const Icons = {
         gitHub: () => (
-          <img src="/lifeorb.png" alt="" />
+            <img src="/lifeorb.png" alt="" />
         ),
         notion: () => (
-          <img src="/gym.png" alt="" />
+            <img src="/gym.png" alt="" />
         ),
         googleDrive: () => (
-          <img src="/go.png" alt="" />
+            <img src="/go.png" alt="" />
         ),
         whatsapp: () => (
-         <img src="masterball.png" alt="" />
+            <img src="masterball.png" alt="" />
         ),
     };
 
@@ -112,11 +110,10 @@ const Hero = () => {
                         animate={{ y: isScrolledToContact ? 5 : 0 }}
                         transition={{ duration: 1, repeat: Infinity, repeatType: "reverse" }}
                     >
-                        <img src="/ho-oh.png" alt="Pikachu"  className='md:w-44 w-32' />
+                        <img src="/ho-oh.png" alt="Pikachu" className='md:w-44 w-32' />
                     </motion.div>
                 </div>
             </div>
-            
         </div>
     );
 };

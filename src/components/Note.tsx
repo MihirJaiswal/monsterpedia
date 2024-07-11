@@ -19,10 +19,11 @@ const Note = () => {
            </div>
             </div>
             <p className="text-lg mb-6 text-gray-700 leading-relaxed">
-              We are thrilled to share with you the latest updates and features coming to our website. Our team has been working hard to bring new functionalities and improvements to enhance your Pokémon experience. Stay tuned for exciting new features and updates that will make your journey even more enjoyable!
+            I am excited to share the latest updates and features coming to our website. This project is a personal passion, and I have spent many hours creating unique assets and adding new features. My goal is to make your Pokémon experience even better. Stay tuned for exciting updates that will make your journey more fun!
+
             </p>
             <p className="text-lg mb-6 text-gray-700 leading-relaxed">
-              As always, we appreciate your feedback and support. If you have any suggestions or encounter any issues, feel free to reach out to us through our contact page.
+              As always, I appreciate your feedback and support. If you have any suggestions or encounter any issues, feel free to reach out to us through social media.
             </p>
           </div>
           <p className='absolute right-8 md:right-48 bottom-7 text-gray-900 font-bold'>- Mihir</p>

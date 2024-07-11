@@ -7,7 +7,7 @@ const Footer = () => {
         <div className="flex flex-col md:flex-row justify-between items-center">
           <div className="mb-6 md:mb-0">
             <div className='flex items-center justify-center md:justify-start'>
-            <h3 className="text-lg font-bold text-center md:text-left">Monster Pedia</h3>
+            <h3 className="text-lg font-bold text-center md:text-left">MonsterPédia</h3>
             <img src="/logo.png" alt="" className='w-12' />
             </div>
             <p className="text-gray-400">Your ultimate Pokémon resource.</p>
@@ -45,7 +45,7 @@ const Footer = () => {
             </ul>
           </div>
           <div className="text-center md:text-right  md:mt-0 text-xs">
-            <p className="text-gray-400">&copy; 2024 Monster Pedia. All rights reserved.</p>
+            <p className="text-gray-400">&copy; 2024 MonsterPédia. All rights reserved.</p>
           </div>
         </div>
       </div>

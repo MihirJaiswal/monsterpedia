@@ -16,7 +16,7 @@ const HomeHeader = () => {
             height={42}
             className='max-sm:size-10 m-2'
             />
-            <p className='text-gray-200 font-bold text-2xl max-lg:hidden uppercase'>MonsterPedia</p>
+            <p className='text-gray-200 font-bold text-2xl max-lg:hidden uppercase'>MonsterPédia</p>
         </a>
         <div>
         <HomeNav/>

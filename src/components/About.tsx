@@ -24,25 +24,25 @@ const About = () => {
         <div className="relative flex flex-col mx-auto max-w-7xl z-10 md:grid gap-10 pt-14 lg:grid-cols-4 md:grid-cols-2">
           <Card 
             title="Pokedex" 
-            description="Tailor your Pokédex's look and feel, from the color scheme to the font size, to the design of the page."
+            description="Explore detailed information on every Pokémon, including stats, abilities, and evolution."
             icon={pokedex}
             href="/pokedex"
           />
           <Card 
             title="Caculator" 
-            description="Calculate your team's weakness resistances and immunities in seconds, effective for doing battle calc in nuzlocks"
+            description="Calculate Pokémon type weaknesses and strengths, essential for planning Nuzlock and other battles."
             icon={go}
             href="/calculator"
           />
           <Card 
             title="Team Builder" 
-            description="Everything you need to succeed and launch your Pokédex, right out of the box. No need to install anything else."
+            description="Create and optimize your Pokémon team, analyzing strengths, weaknesses, and synergy for competitive play."
             icon={battle}
             href="/team"
           />
           <Card 
             title="Pokemon Generator" 
-            description="Everything you need to succeed and launch your Pokédex, right out of the box. No need to install anything else."
+            description="Generate custom Pokémon cards with detailed stats, abilities, and types for personalized collections."
             icon={master}
             href="/generator"
           />

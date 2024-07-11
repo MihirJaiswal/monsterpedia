@@ -82,8 +82,8 @@ const PokemonCreator: React.FC = () => {
   };
 
   return (
-    <div className='flex flex-col md:flex-row pt-28 mb-12 mx-12'>
-      <div className='flex-1'>
+    <div className='flex flex-col md:flex-row pt-28 mb-12 md:mx-12  gap-8 md:gap-1'>
+      <div className='flex-1 mx-4'>
         <PokemonForm
           name={name}
           hp={hp}

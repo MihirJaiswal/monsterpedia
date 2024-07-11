@@ -38,7 +38,7 @@ function HomeMobileNav() {
       alt='logo'
       className='max-sm:size-10'
       />
-      <p className='text-[21px] font-bold text-white px-2 mt-1'>MonsterPedia</p>
+      <p className='text-[21px] font-bold text-white px-2 mt-1'>MonsterPédia</p>
      </Link>
     <div className='flex h-[calc(100vh-72px)] flex-col justify-between overflow-y-auto'>
         <SheetClose asChild>

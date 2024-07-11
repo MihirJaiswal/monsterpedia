@@ -35,13 +35,14 @@ const PokemonGameFeature = () => {
          </div>
 
           <div className='flex items-center gap-4'>
-            <a href="#_" className="relative px-6 py-3 font-bold text-white rounded-lg group overflow-hidden">
+            <a href="https://mihirjaiswal.github.io/DreamMist/" className="relative px-6 py-3 font-bold text-white rounded-lg group overflow-hidden">
               <span className="absolute inset-0 w-full h-full transition-all duration-300 transform bg-purple-800 opacity-80 group-hover:bg-blue-800"></span>
               <span className="absolute inset-0 w-full h-full transition-all duration-300 transform translate-x-1 translate-y-1 bg-blue-800 mix-blend-screen group-hover:translate-x-0 group-hover:translate-y-0 opacity-80"></span>
               <span className="relative z-10">Play Now</span>
               <span className="absolute inset-0 border-2 border-white rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
             </a>
-            <FaGithub size={40} className='text-white' />
+            <a href="https://github.com/MihirJaiswal/DreamMist"><FaGithub size={40} className='text-white' /></a>
+            
           </div>
         </div>
       </Vortex>
