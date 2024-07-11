@@ -22,7 +22,6 @@ const PokemonCreator: React.FC = () => {
   const [previewImage, setPreviewImage] = useState<string>(pikachuImg.src);
   const previewRef = useRef<HTMLDivElement>(null);
 
-  // Handle image upload
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
@@ -41,11 +40,8 @@ const PokemonCreator: React.FC = () => {
       const characters = response.data;
       
       if (characters.length > 0) {
-        // Extract image URLs
         const imageUrls = characters.map((character: any) => character.image_url);
-        
         if (imageUrls.length > 0) {
-          // Select a random image
           const randomIndex = Math.floor(Math.random() * imageUrls.length);
           const randomImageUrl = imageUrls[randomIndex];
           setPreviewImage(randomImageUrl);
@@ -61,7 +57,7 @@ const PokemonCreator: React.FC = () => {
     }
   };
 
-  // Handle download
+  
   const handleDownload = async () => {
     if (previewRef.current) {
       try {
@@ -77,7 +73,6 @@ const PokemonCreator: React.FC = () => {
     }
   };
 
-  // Handle types change
   const handleType1Change = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setType1(e.target.value);
   };

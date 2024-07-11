@@ -1,23 +1,20 @@
 import React from 'react';
 import Image from 'next/image';
 
-// Define the Move interface with additional properties
 interface Move {
   move: {
     name: string;
-    method: 'level-up' | 'egg' | 'machine'; // Method of learning the move
-    type: 'physical' | 'special' | 'status'; // Type of the move
-    level?: number; // Level at which the move is learned (optional, only for level-up moves)
-    moveType: string; // Type of the move (e.g., Fire, Water, Grass)
+    method: 'level-up' | 'egg' | 'machine'; 
+    type: 'physical' | 'special' | 'status';
+    level?: number;
+    moveType: string;
   };
 }
 
-// Interface for MovesSectionProps
 interface MovesSectionProps {
   moves: Move[];
 }
 
-// Images for move categories and types
 const moveCategoryImages: { [key: string]: string } = {
   physical: '/moves/physical.png',
   special: '/moves/special.png',
@@ -46,10 +43,8 @@ const moveTypeImages: { [key: string]: string } = {
   default: '/types/default.png',
 };
 
-// MovesSection component
 const MovesSection: React.FC<MovesSectionProps> = ({ moves }) => {
-  // Function to render move with icons
-  const renderMove = (move: Move, index: number) => (
+   const renderMove = (move: Move, index: number) => (
     <tr key={index} className="border-b border-gray-200">
       <td className="py-2 px-4 capitalize text-gray-900">{move.move.name}</td>
       {move.move.method === 'level-up' && (
@@ -57,7 +52,7 @@ const MovesSection: React.FC<MovesSectionProps> = ({ moves }) => {
       )}
       <td className="py-2 px-4">
         <Image
-          src={moveCategoryImages[move.move.type] || '/types/default.png'} // Fallback image
+          src={moveCategoryImages[move.move.type] || '/types/default.png'} 
           alt={move.move.type}
           width={24}
           height={24}
@@ -66,7 +61,7 @@ const MovesSection: React.FC<MovesSectionProps> = ({ moves }) => {
       </td>
       <td className="py-2 px-4">
         <Image
-          src={moveTypeImages[move.move.moveType] || '/types/default.png'} // Fallback image
+          src={moveTypeImages[move.move.moveType] || '/types/default.png'} 
           alt={move.move.moveType}
           width={24}
           height={24}
@@ -103,7 +98,6 @@ const MovesSection: React.FC<MovesSectionProps> = ({ moves }) => {
     </div>
   );
 
-  // Sort level-up moves by level
   const sortedLevelUpMoves = moves
     .filter(move => move.move.method === 'level-up')
     .sort((a, b) => (a.move.level ?? 0) - (b.move.level ?? 0));

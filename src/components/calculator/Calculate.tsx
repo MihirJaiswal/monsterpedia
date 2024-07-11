@@ -1,6 +1,6 @@
 'use client';
 import React, { useState, useEffect } from 'react';
-import TypeTable from './TypeTable'; // Adjust the import path as needed
+import TypeTable from './TypeTable';
 
 const typeOptions = [
   "None", "Normal", "Fire", "Water", "Electric", "Grass", "Ice", "Fighting",
@@ -148,8 +148,7 @@ const PokemonTypeCalculator = () => {
     const weaknessesSet = new Set<string>();
     const resistancesSet = new Set<string>();
     const immunitiesSet = new Set<string>();
-  
-    // Collect weaknesses, resistances, and immunities
+
     pokemonTypes.forEach(pokemonType => {
       const types = [pokemonType.type1, pokemonType.type2]
         .filter(type => type > 0)
@@ -172,18 +171,11 @@ const PokemonTypeCalculator = () => {
       });
     });
   
-    // Remove weaknesses that are also resisted
+  
     const filteredWeaknesses = Array.from(weaknessesSet).filter(weakness => !resistancesSet.has(weakness));
-    
-    // Remove resistances that are also weaknesses
     const filteredResistances = Array.from(resistancesSet).filter(resistance => !weaknessesSet.has(resistance));
-    
-    // Remove immunities that are also in the weaknesses list
     const filteredWeaknessesWithImmunities = filteredWeaknesses.filter(weakness => !immunitiesSet.has(weakness));
-  
-    // Not resisted types
     const filteredNotResisted = typeOptions.slice(1).filter(type => !filteredResistances.includes(type));
-  
     setWeaknesses(filteredWeaknessesWithImmunities);
     setResistances(filteredResistances);
     setImmunities(Array.from(immunitiesSet));
@@ -225,7 +217,6 @@ const PokemonTypeCalculator = () => {
 
   return (
     <div id="main" className='flex flex-col items-center text-gray-700'>
-      {/* <button onClick={reset} className="mt-4 bg-gray-500 text-white py-2 px-4 rounded">Reset</button> */}
       <TypeTable 
         pokemonTypes={pokemonTypes}
         typeOptions={typeOptions}
@@ -236,7 +227,6 @@ const PokemonTypeCalculator = () => {
         recommended={recommended}
         getTypeData={getTypeData}
       />
-      
     </div>
   );
 };

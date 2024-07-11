@@ -23,7 +23,7 @@ const PokemonImage = ({ sprites, name }: PokemonImageProps) => {
   const toggleShiny = () => setIsShiny(!isShiny);
 
   const handleImageLoad = () => setLoading(false);
-  const handleImageError = () => setLoading(false); // Optionally handle image load errors
+  const handleImageError = () => setLoading(false); 
 
   return (
     <div className="flex flex-col items-center z-50">

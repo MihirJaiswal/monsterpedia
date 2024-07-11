@@ -21,7 +21,6 @@ const PokemonCard: React.FC<PokemonCardProps> = ({ name, spriteUrl, types = [], 
   const [isNavigating, setIsNavigating] = useState(false);
   const router = useRouter();
 
-  // Define a map for type images
   const typeImages: { [key: string]: string } = {
     normal: '/types/normal.png',
     fire: '/types/fire.png',
@@ -44,11 +43,11 @@ const PokemonCard: React.FC<PokemonCardProps> = ({ name, spriteUrl, types = [], 
   };
 
   const handleClick = (event: React.MouseEvent<HTMLDivElement>) => {
-    event.preventDefault(); // Prevent default navigation behavior
-    setIsNavigating(true); // Show shimmer effect
+    event.preventDefault(); 
+    setIsNavigating(true); 
     setTimeout(() => {
-      router.push(`/pokedex/${name.toLowerCase()}`); // Navigate to details page
-    }, 200); // Delay for shimmer effect
+      router.push(`/pokedex/${name.toLowerCase()}`); 
+    }, 200);
   };
 
   return (
@@ -79,7 +78,7 @@ const PokemonCard: React.FC<PokemonCardProps> = ({ name, spriteUrl, types = [], 
           />
           <p className='text-gray-800 text-center mt-4 text-lg font-bold'>Loading...</p>
           </div>
-        </div> // Display shimmer effect while navigating
+        </div> 
       ) : (
         <>
           {spriteUrl ? (
@@ -99,8 +98,8 @@ const PokemonCard: React.FC<PokemonCardProps> = ({ name, spriteUrl, types = [], 
                 <Image
                   src={spriteUrl}
                   alt={name}
-                  width={144} // 36 * 4 for better resolution
-                  height={144} // 36 * 4 for better resolution
+                  width={144} 
+                  height={144} 
                   className="w-full h-full object-cover object-center relative"
                   loading="lazy"
                 />
@@ -118,8 +117,8 @@ const PokemonCard: React.FC<PokemonCardProps> = ({ name, spriteUrl, types = [], 
                     key={idx}
                     src={typeImages[type.type.name] || '/types/default.png'}
                     alt={type.type.name}
-                    width={32} // Adjust size as needed
-                    height={32} // Adjust size as needed
+                    width={32} 
+                    height={32}
                     className="w-8 h-8 object-cover"
                     loading="lazy"
                     title={type.type.name}

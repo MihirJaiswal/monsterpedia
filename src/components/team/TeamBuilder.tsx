@@ -1,4 +1,3 @@
-// TeamBuilder.tsx
 'use client';
 import React, { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
@@ -6,8 +5,8 @@ import html2canvas from 'html2canvas';
 import PokemonSelect from './PokemonSelect';
 import PhotoFrame from './PhotoFrame';
 import ImageUpload from './ImageUpload';
-import PokemonCard from './PokemonCard'; // Import the PokemonCard component
-import StaticCard from './StaticCardGrid'; // Import the StaticCard component
+import PokemonCard from './PokemonCard'; 
+import StaticCard from './StaticCardGrid';
 
 interface Pokemon {
   id: number;
@@ -40,11 +39,11 @@ const TeamBuilder: React.FC = () => {
           9: 1010, // Gen 9
           10: 1000, // Gen 10
         };
-        const currentGeneration = 9; // Update this to the current generation
-        const totalPokemon = generationCounts[currentGeneration] || 1010; // Fallback to the latest known total
+        const currentGeneration = 9; 
+        const totalPokemon = generationCounts[currentGeneration] || 1010; 
 
         const requests = [];
-        for (let i = 1; i <= totalPokemon; i++) { // Fetch Pokémon up to the current total
+        for (let i = 1; i <= totalPokemon; i++) { 
           requests.push(axios.get(`https://pokeapi.co/api/v2/pokemon/${i}`));
         }
 
@@ -54,9 +53,9 @@ const TeamBuilder: React.FC = () => {
           const { id, name, sprites, types } = response.data;
           fetchedPokemonList.push({
             id,
-            name: name.charAt(0).toUpperCase() + name.slice(1), // Capitalize the first letter
+            name: name.charAt(0).toUpperCase() + name.slice(1), 
             image: sprites.other['official-artwork'].front_default,
-            types: types.map((type: { type: { name: string } }) => type.type.name), // Extract types
+            types: types.map((type: { type: { name: string } }) => type.type.name), 
           });
         });
 
@@ -120,7 +119,7 @@ const TeamBuilder: React.FC = () => {
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
         handleSelectChange={handleSelectChange}
-        teamSize={team.length} // Pass team size as a prop
+        teamSize={team.length} 
       />
    
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-4 mt-12">
@@ -144,7 +143,6 @@ const TeamBuilder: React.FC = () => {
         )}
       </div>
       
-      {/* Conditionally render PhotoFrame and ImageUpload */}
       {team.length > 0 && (
         <div className='flex px-24 flex-col items-center justify-center bg-white bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-30 border border-gray-100 rounded-lg shadow-2xl mt-16'>
           <PhotoFrame

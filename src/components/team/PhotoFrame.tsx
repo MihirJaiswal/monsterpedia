@@ -27,8 +27,6 @@ const PhotoFrame: React.FC<PhotoFrameProps> = ({ team, uploadedImage, photoFrame
       ref={photoFrameRef}
       className="flex flex-col md:flex-row items-center justify-center p-8 space-y-8 md:space-y-0 space-x-8"
     >
-      
-      {/* Pokémon Team Section */}
       <div className="flex-1 flex flex-col items-center md:items-start">
       
         <div className="flex flex-wrap gap-6 justify-center">
@@ -49,8 +47,6 @@ const PhotoFrame: React.FC<PhotoFrameProps> = ({ team, uploadedImage, photoFrame
           ))}
         </div>
       </div>
-
-      {/* Uploaded Image Section */}
       <div className="flex-1 flex flex-col items-center">
         {uploadedImage ? (
           <div className="w-full flex flex-col items-center">

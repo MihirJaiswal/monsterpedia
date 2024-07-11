@@ -44,10 +44,7 @@ const TypeWeakness = ({ types }: TypeWeaknessProps) => {
 
   return (
     <div className="px-8 py-6 rounded-lg shadow-md bg-white bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-30 border border-gray-100">
-  
-      {/* Container for mobile responsive layout */}
       <div className="flex flex-col gap-6 md:flex-row md:gap-8">
-        {/* Weaknesses */}
         <div className="flex-1">
           <h3 className="text-lg font-semibold mb-2 md:mb-4">Weaknesses:</h3>
           <div className="overflow-x-auto">
@@ -78,8 +75,6 @@ const TypeWeakness = ({ types }: TypeWeaknessProps) => {
             </table>
           </div>
         </div>
-
-        {/* Resistances */}
         <div className="flex-1">
           <h3 className="text-lg font-semibold mb-2 md:mb-4">Resistances:</h3>
           <div className="overflow-x-auto">
@@ -111,8 +106,6 @@ const TypeWeakness = ({ types }: TypeWeaknessProps) => {
           </div>
         </div>
       </div>
-
-      {/* Immunities */}
       <div className="mt-6">
         <h3 className="text-lg font-semibold mb-2">Immunities:</h3>
         <div className="overflow-x-auto">

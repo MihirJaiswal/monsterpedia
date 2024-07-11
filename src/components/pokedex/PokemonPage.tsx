@@ -94,10 +94,8 @@ const PokemonPage: React.FC<Props> = ({ pokemon }) => {
   const [loading, setLoading] = useState<boolean>(true);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-
-  // Simulate data fetching for demonstration
   useEffect(() => {
-    setTimeout(() => setLoading(false), 1000); // Simulate loading for 1 second
+    setTimeout(() => setLoading(false), 1000);
   }, []);
 
   const getStatColor = (stat: number) => {
@@ -118,16 +116,13 @@ const PokemonPage: React.FC<Props> = ({ pokemon }) => {
 
   const totalBaseStats = pokemon.stats.reduce((acc, stat) => acc + stat.base_stat, 0);
 
-  if (loading) return <Shimmer />; // Show shimmer while loading
-
+  if (loading) return <Shimmer />; 
   return (
     <div className="relative p-6 bg-hero bg-cover bg-center min-h-screen">
       <div className="absolute inset-0 bg-bg2 bg-repeat-round bg-contain opacity-5 pointer-events-none hidden md:block"></div>
       <div className="absolute inset-0 bg-bg4  bg-cover opacity-10 pointer-events-none md:hidden"></div>
       <div className="flex flex-col md:flex-row justify-around">
 
-
-        {/* Sidebar */}
         <>
       <div className="fixed top-0 left-0 h-full w-64 md:hidden z-50">
         <button
@@ -189,7 +184,6 @@ const PokemonPage: React.FC<Props> = ({ pokemon }) => {
         </div>
       </div>
 
-      {/* Sidebar for larger screens */}
       <div className="fixed top-0 left-0 h-full w-64 hidden md:block z-40">
         <aside className="flex flex-col p-6 border border-gray-200 rounded-lg shadow-lg text-black bg-white bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-40 h-full">
           <div className="absolute inset-0 bg-bg4 bg-contain opacity-5 pointer-events-none"></div>
@@ -238,8 +232,6 @@ const PokemonPage: React.FC<Props> = ({ pokemon }) => {
         </aside>
       </div>
     </>
-
-        {/* Main Content Area with margin */}
         <div className="md:ml-64 flex-1 mt-8 md:mt-2">
           {/* Content Sections */}
           {activeSection === 'section1' && (
@@ -266,7 +258,6 @@ const PokemonPage: React.FC<Props> = ({ pokemon }) => {
                 </div>
               </div>
               <div className="mx-4 w-full my-6 rounded-lg shadow-lg p-6 px-4 md:p-8 max-w-md text-center relative overflow-hidden bg-white bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-30 border border-gray-200">
-                {/* Stats Section */}
                 <div className="text-left mb-6">
                   <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-4">Stats</h2>
                   <ul className="space-y-4">
@@ -290,7 +281,6 @@ const PokemonPage: React.FC<Props> = ({ pokemon }) => {
                     </li>
                   </ul>
                 </div>
-                {/* Abilities Section */}
                 <div className="text-left mb-6">
                   <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-4">Abilities</h2>
                   <ul className="space-y-3">
@@ -312,7 +302,7 @@ const PokemonPage: React.FC<Props> = ({ pokemon }) => {
                   name={pokemon.name}
                   height={pokemon.height}
                   weight={pokemon.weight}
-                  spriteUrl={pokemon.sprites.other['official-artwork']?.front_default || pokemon.sprites.front_default} // Use optional chaining and fallback
+                  spriteUrl={pokemon.sprites.other['official-artwork']?.front_default || pokemon.sprites.front_default} 
                   base_experience={pokemon.base_experience}
                 />
               </div>
@@ -322,7 +312,7 @@ const PokemonPage: React.FC<Props> = ({ pokemon }) => {
             </div>
           )}
           {activeSection === 'section3' && (
-            <MovesSection moves={pokemon.moves} /> // Use the new MovesSection component
+            <MovesSection moves={pokemon.moves} />
           )}
           {activeSection === 'section4' && (
             <Evolution evolution={pokemon.evolution} />

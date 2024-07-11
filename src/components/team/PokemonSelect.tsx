@@ -13,7 +13,7 @@ interface PokemonSelectProps {
   searchQuery: string;
   setSearchQuery: React.Dispatch<React.SetStateAction<string>>;
   handleSelectChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
-  teamSize: number; // Add this prop
+  teamSize: number; 
 }
 
 const PokemonSelect: React.FC<PokemonSelectProps> = ({
@@ -22,10 +22,10 @@ const PokemonSelect: React.FC<PokemonSelectProps> = ({
   searchQuery,
   setSearchQuery,
   handleSelectChange,
-  teamSize, // Destructure the new prop
+  teamSize, 
 }) => {
   const [showSuggestions, setShowSuggestions] = useState(false);
-  const isDisabled = teamSize >= 6; // Determine if the input should be disabled
+  const isDisabled = teamSize >= 6;
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!isDisabled) {
@@ -55,7 +55,7 @@ const PokemonSelect: React.FC<PokemonSelectProps> = ({
           value={searchQuery}
           onChange={handleSearchChange}
           className={`bg-white bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-60 border-2 p-2 pl-10 rounded-full w-full max-w-6xl shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${isDisabled ? 'bg-gray-300 cursor-not-allowed' : ''}`}
-          disabled={isDisabled} // Disable input when needed
+          disabled={isDisabled} 
         />
         <FaSearch className="absolute left-2 md:left-32 top-1/2 transform -translate-y-1/2 text-gray-700" />
       </div>

@@ -11,7 +11,6 @@ const Shimmer = () => {
       <div className="absolute inset-0 bg-bg4 bg-repeat-round bg-contain opacity-10 pointer-events-none md:hidden"></div>
       
       <div className="flex flex-col items-center justify-center space-y-6">
-        {/* Spinner */}
         <div className="flex items-center justify-center">
           <Image
             src={gif}
@@ -21,8 +20,6 @@ const Shimmer = () => {
             className="animate-spin object-cover"
           />
         </div>
-        
-        {/* Optional Text */}
         <p className="text-white text-lg font-semibold">Loading...</p>
       </div>
     </div>

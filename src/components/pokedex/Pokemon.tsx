@@ -171,7 +171,7 @@ const Pokemon = () => {
     setFilterLoading(true);
     const timeoutId = setTimeout(() => {
       setFilterLoading(false);
-    }, 500); // Simulate a 500ms delay for loading effect
+    }, 500); 
 
     return () => clearTimeout(timeoutId);
   }, [searchTerm]);
@@ -199,14 +199,12 @@ const Pokemon = () => {
   const hasMorePokemons = displayedCount < filteredPokemonList.length;
 
   const handleFilterChange = (type: PokemonTypeName | '', generation: number | null) => {
-    setFilterLoading(true); // Set loading to true
+    setFilterLoading(true); 
     setSelectedType(type);
     setSelectedGeneration(generation);
-
-    // Use a timeout to simulate delay
     setTimeout(() => {
-      setFilterLoading(false); // Set loading to false after a short delay
-    }, 1000); // Adjust the delay as needed
+      setFilterLoading(false); 
+    }, 1000); 
   };
 
   return (
@@ -236,7 +234,6 @@ const Pokemon = () => {
               ))}
             </select>
           </div>
-          {/* Mobile Type Selector */}
           <div className="relative flex flex-col items-center md:hidden">
             <select
               className="w-full text-black p-3 rounded-lg border border-gray-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -253,8 +250,6 @@ const Pokemon = () => {
           </div>
         </div>
       </div>
-
-      {/* Desktop Type Selector */}
       <div className="relative hidden px-24 md:grid grid-cols-9 justify-center gap-4 mb-6">
         {types.map((type) => (
           <button

@@ -36,7 +36,7 @@ const PokemonCard: React.FC<PokemonCardProps> = ({ pokemon, onRemove }) => {
           {pokemon.types.map((type) => (
             <div key={type} className="flex items-center space-x-1">
               <img
-                src={`/types/${type}.png`} // Adjust the path according to your actual file structure
+                src={`/types/${type}.png`} 
                 alt={type}
                 className="w-6 h-6"
               />

@@ -4,29 +4,25 @@ import { FaArrowRight, FaArrowDown } from 'react-icons/fa';
 import { useRouter } from 'next/navigation';
 import gif from '../../../public/pokeball-loader.gif';
 
-// Define the Pokémon type interface
 interface PokemonType {
   type: {
     name: string;
   };
 }
 
-// Define the Evolution interface
 interface Evolution {
   species_name: string;
   min_level: number | null;
   trigger_name: string;
   item: string | null;
-  image_url: string; // URL of the Pokémon's image
-  types?: PokemonType[]; // Optional Pokémon types
+  image_url: string; 
+  types?: PokemonType[]; 
 }
 
-// Define the EvolutionProps interface
 interface EvolutionProps {
-  evolution: Evolution[]; // Array of evolution objects
+  evolution: Evolution[]; 
 }
 
-// Define the type images map
 const typeImages: { [key: string]: string } = {
   normal: '/types/normal.png',
   fire: '/types/fire.png',
@@ -48,7 +44,6 @@ const typeImages: { [key: string]: string } = {
   fairy: '/types/fairy.png',
 };
 
-// Define the item images map
 const itemImages: { [key: string]: string } = {
   "auspicious-armor": '/items/auspicious-armor.png',
   "berry-sweet": '/items/berrysweet.png',
@@ -111,13 +106,13 @@ const Evolution: React.FC<EvolutionProps> = ({ evolution }) => {
   const router = useRouter();
 
   const handleClick = (speciesName: string, imageUrl: string, event: React.MouseEvent<HTMLDivElement>) => {
-    event.preventDefault(); // Prevent default navigation behavior
-    setCurrentImageUrl(imageUrl); // Set the current Pokémon image URL
-    setIsNavigating(true); // Show shimmer effect
+    event.preventDefault(); 
+    setCurrentImageUrl(imageUrl); 
+    setIsNavigating(true); 
 
     setTimeout(() => {
-      router.push(`/pokedex/${speciesName.toLowerCase()}`); // Navigate to details page
-    }, 500); // Adjust delay for shimmer effect duration
+      router.push(`/pokedex/${speciesName.toLowerCase()}`); 
+    }, 500);
   };
 
   if (!evolution || evolution.length === 0) {
@@ -150,7 +145,7 @@ const Evolution: React.FC<EvolutionProps> = ({ evolution }) => {
               <div className="text-center">
                 
                 <Image
-                  src={itemImages[evo.item.toLowerCase()]} // Direct path and fallback
+                  src={itemImages[evo.item.toLowerCase()]} 
                   alt={evo.item}
                   width={96}
                   height={96}
@@ -164,10 +159,7 @@ const Evolution: React.FC<EvolutionProps> = ({ evolution }) => {
               {evo.trigger_name && <div>- {evo.trigger_name}</div>}
             </div>
             <div className="flex items-center">
-              {/* Icon visible on medium screens and above */}
               <FaArrowRight size={24} className="hidden md:block text-gray-800" />
-
-              {/* Icon visible on screens smaller than medium */}
               <FaArrowDown size={24} className="block md:hidden text-gray-800" />
             </div>
           </div>
@@ -205,8 +197,8 @@ const Evolution: React.FC<EvolutionProps> = ({ evolution }) => {
                 src={evo.image_url}
                 alt={evo.species_name}
                 className="w-48 h-auto object-cover rounded-lg relative"
-                width={192} // Adjust size as needed
-                height={192} // Adjust size as needed
+                width={192} 
+                height={192} 
                 loading="lazy"
               />
             )}
@@ -214,7 +206,6 @@ const Evolution: React.FC<EvolutionProps> = ({ evolution }) => {
           <div className="text-center">
             <div className="font-bold">{evo.species_name}</div>
           </div>
-          {/* Render type images if available */}
           {evo.types && (
             <div className="flex gap-2 mt-2">
               {evo.types.map((type, idx) => (
@@ -222,7 +213,7 @@ const Evolution: React.FC<EvolutionProps> = ({ evolution }) => {
                   key={idx}
                   width={20}
                   height={20}
-                  src={typeImages[type.type.name] || '/types/default.png'} // Fallback image
+                  src={typeImages[type.type.name] || '/types/default.png'} 
                   alt={type.type.name}
                   className="w-8 h-8 object-cover"
                   loading="lazy"
