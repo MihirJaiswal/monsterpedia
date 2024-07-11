@@ -14,21 +14,20 @@ const Hero = () => {
     useEffect(() => {
         const handleScroll = () => {
             const upcomingSection = document.getElementById('cards');
-            const supportSection = document.getElementById('support-section');
+            const supportSection = document.getElementById('dream-section');
             const upcomingSectionTop = upcomingSection?.getBoundingClientRect().top;
             const supportSectionTop = supportSection?.getBoundingClientRect().top;
             const windowHeight = window.innerHeight;
 
-            setScrollX(window.scrollY); // Update scroll position
+            setScrollX(window.scrollY); 
 
-            // Check if the upcoming section is in view
             if (upcomingSectionTop && upcomingSectionTop <= windowHeight) {
                 setIsScrolledToUpcoming(true);
             } else {
                 setIsScrolledToUpcoming(false);
             }
 
-            // Check if the support section is in view
+    
             if (supportSectionTop && supportSectionTop <= windowHeight) {
                 setIsScrolledToSupport(true);
             } else {
@@ -37,7 +36,7 @@ const Hero = () => {
         };
 
         window.addEventListener('scroll', handleScroll);
-        handleScroll(); // Call initially to set the correct scrollX value
+        handleScroll();
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
@@ -132,21 +131,38 @@ const Hero = () => {
 
                 {/* Ho-Oh */}
                 <motion.div
-    initial={{ opacity: 0, x: -150, y: 0 }}
-    animate={{ 
-        opacity: isScrolledToUpcoming && !isScrolledToSupport ? 1 : 0, 
-        x: scrollX * 0.1, // You can adjust this multiplier for horizontal movement
-        y: scrollY * 0.1 // Adjust this multiplier for vertical movement
-    }}
-    transition={{ 
-        x: { type: "spring", stiffness: 50, damping: 10 },
-        y: { type: "spring", stiffness: 50, damping: 10 },
-        opacity: { duration: 0.2 }
-    }}
-    className={`fixed top-24 left-24 opacity-90 hidden md:block`}
->
-    <img src="/ho-oh.png" alt="Ho-Oh" className='md:w-44 w-32' />
-</motion.div>
+                    initial={{ opacity: 0, x: -150, y: 0 }}
+                    animate={{ 
+                        opacity: isScrolledToUpcoming && !isScrolledToSupport ? 1 : 0, 
+                        x: scrollX * 0.1, 
+                        y: scrollY * 0.1 
+                    }}
+                    transition={{ 
+                        x: { type: "spring", stiffness: 50, damping: 10 },
+                        y: { type: "spring", stiffness: 50, damping: 10 },
+                        opacity: { duration: 0.2 }
+                    }}
+                    className={`fixed top-24 left-24 opacity-90 hidden md:block`}
+                >
+                    <img src="/ho-oh.png" alt="Ho-Oh" className='md:w-44 w-32' />
+                </motion.div>
+
+                <motion.div
+                    initial={{ opacity: 0, x: 150, y: 0 }}
+                    animate={{ 
+                        opacity: isScrolledToUpcoming && !isScrolledToSupport ? 1 : 0, 
+                        x: scrollX * -0.1, 
+                        y: scrollY * 0.1 
+                    }}
+                    transition={{ 
+                        x: { type: "spring", stiffness: 50, damping: 10 },
+                        y: { type: "spring", stiffness: 50, damping: 10 },
+                        opacity: { duration: 0.2 }
+                    }}
+                    className={`fixed top-28 right-20 opacity-90 hidden md:block`}
+                >
+                    <img src="/lugia.png" alt="lugia" className='md:w-44 w-32' />
+                </motion.div>
 
 
                

@@ -64,7 +64,7 @@ const UpcomingFeatures = () => {
         {features.map((feature) => (
           <motion.div
             key={feature.id}
-            className="relative md:w-72 p-4 h-full bg-gray-900 bg-clip-padding backdrop-filter backdrop-blur bg-opacity-40 border border-gray-300 rounded-md shadow-2xl overflow-hidden transform transition-transform duration-500 ease-in-out hover:scale-105 hover:bg-opacity-30"
+            className="relative md:w-72 p-4 h-full bg-gray-900 bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-50 border border-gray-300 rounded-md shadow-2xl overflow-hidden transform transition-transform duration-500 ease-in-out hover:scale-105 hover:bg-opacity-30"
             variants={itemVariants}
             whileHover={{ scale: 1.1, rotate: 2, }}
             whileTap={{ scale: 0.9 }}
