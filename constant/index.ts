@@ -20,7 +20,7 @@ export const navigation = [
       route: "/team",
     },{
       label: "4",
-      title: "Generate",
+      title: "Pokemon Generator",
       route: "/generate",
     }
   ];
