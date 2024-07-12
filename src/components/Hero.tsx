@@ -64,7 +64,7 @@ const Hero = () => {
             </div>
 
             <div className="relative text-white overflow-hidden h-screen flex flex-col items-center justify-center">
-            <div className="relative flex h-[500px] w-full flex-col items-center justify-center overflow-hidden rounded-lg md:h-[400px] sm:h-[300px]">
+            <div className="relative flex flex-col items-center justify-center h-[500px] w-full overflow-hidden rounded-lg md:h-[400px] sm:h-[300px]">
                 <div className="relative flex h-full w-full">
                     <Meteors number={7} />
                 </div>
