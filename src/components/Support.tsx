@@ -5,6 +5,7 @@ import UpcomingFeatures from '@/components/Upcoming'
 import Note from './Note';
 import { AlertDialogDemo } from './Alert';
 import { motion } from 'framer-motion';
+import Image from 'next/image';
 
 const SupportMe = () => {
   return (
@@ -61,7 +62,7 @@ const SupportMe = () => {
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 0.6 }}
       >
-        <img src="/thank.png" alt="" className='w-52 p-2' />
+        <Image src="/thank.png" alt="" width={200} height={200} className='w-52 p-2' />
       </motion.div>
     </motion.div>
   );

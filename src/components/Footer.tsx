@@ -1,4 +1,5 @@
 import { FaTwitter, FaLinkedinIn, FaInstagram, FaGithub } from 'react-icons/fa';
+import Image from 'next/image';
 
 const Footer = () => {
   return (
@@ -8,7 +9,7 @@ const Footer = () => {
           <div className="mb-6 md:mb-0">
             <div className='flex items-center justify-center md:justify-start'>
             <h3 className="text-lg font-bold text-center md:text-left">MonsterPédia</h3>
-            <img src="/logo.png" alt="" className='w-12' />
+            <Image src="/logo.png" alt="" height={130} width={130} className='w-12' />
             </div>
             <p className="text-gray-400">Your ultimate Pokémon resource.</p>
           </div>

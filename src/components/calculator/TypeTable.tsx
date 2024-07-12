@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from 'next/image';
 
 interface TypeData {
   weaknesses: string[];
@@ -37,9 +38,11 @@ const TypeTable: React.FC<TypeTableProps> = ({
             <div key={index} className="border-b border-gray-300 p-4">
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4">
                 <div className="flex items-center mb-4 sm:mb-0">
-                  <img
+                  <Image
                     src={`/types/${typeOptions[pokemonType.type1].toLowerCase()}.png`}
                     alt={typeOptions[pokemonType.type1]}
+                    width={32}
+                    height={32}
                     className="w-6 h-6 sm:w-8 sm:h-8 object-cover"
                   />
                   <select
@@ -53,9 +56,11 @@ const TypeTable: React.FC<TypeTableProps> = ({
                       </option>
                     ))}
                   </select>
-                  <img
+                  <Image
                     src={`/types/${typeOptions[pokemonType.type2].toLowerCase()}.png`}
                     alt={typeOptions[pokemonType.type2]}
+                    width={32}
+                    height={32}
                     className="ml-4 w-6 h-6 sm:w-8 sm:h-8 object-cover"
                   />
                   <select
@@ -77,9 +82,11 @@ const TypeTable: React.FC<TypeTableProps> = ({
                   <div className="flex flex-wrap gap-2">
                     {typeData.weaknesses.map((weakness, i) => (
                       <div key={i} className="flex items-center space-x-2 bg-red-100 text-red-700 rounded-full px-2 py-1 text-sm">
-                        <img
+                        <Image
                           src={`/types/${weakness.toLowerCase()}.png`}
                           alt={weakness}
+                          width={32}
+                          height={32}
                           className="w-4 h-4 sm:w-6 sm:h-6 object-cover"
                         />
                         <span>{weakness}</span>
@@ -92,9 +99,11 @@ const TypeTable: React.FC<TypeTableProps> = ({
                   <div className="flex flex-wrap gap-2">
                     {typeData.resistances.map((resistance, i) => (
                       <div key={i} className="flex items-center space-x-2 bg-green-100 text-green-700 rounded-full px-2 py-1 text-sm">
-                        <img
+                        <Image
                           src={`/types/${resistance.toLowerCase()}.png`}
                           alt={resistance}
+                          width={32}
+                          height={32}
                           className="w-4 h-4 sm:w-6 sm:h-6 object-cover"
                         />
                         <span>{resistance}</span>
@@ -107,9 +116,11 @@ const TypeTable: React.FC<TypeTableProps> = ({
                   <div className="flex flex-wrap gap-2">
                     {typeData.immunities.map((immunity, i) => (
                       <div key={i} className="flex items-center space-x-2 bg-blue-100 text-blue-700 rounded-full px-2 py-1 text-sm">
-                        <img
+                        <Image
                           src={`/types/${immunity.toLowerCase()}.png`}
                           alt={immunity}
+                          width={32}
+                          height={32}
                           className="w-4 h-4 sm:w-6 sm:h-6 object-cover"
                         />
                         <span>{immunity}</span>
@@ -140,9 +151,11 @@ const TypeTable: React.FC<TypeTableProps> = ({
                 <td className="py-3 px-4 border-r border-gray-300">
                   <div className="flex flex-col sm:flex-row space-x-0 sm:space-x-4 items-center space-y-4 sm:space-y-0">
                     <div className="flex items-center space-x-2">
-                      <img
+                      <Image
                         src={`/types/${typeOptions[pokemonType.type1].toLowerCase()}.png`}
                         alt={typeOptions[pokemonType.type1]}
+                        width={32}
+                        height={32}
                         className="w-6 h-6 sm:w-8 sm:h-8 object-cover"
                       />
                       <select
@@ -158,9 +171,11 @@ const TypeTable: React.FC<TypeTableProps> = ({
                       </select>
                     </div>
                     <div className="flex items-center space-x-2">
-                      <img
+                      <Image
                         src={`/types/${typeOptions[pokemonType.type2].toLowerCase()}.png`}
                         alt={typeOptions[pokemonType.type2]}
+                        width={32}
+                        height={32}
                         className="w-6 h-6 sm:w-8 sm:h-8 object-cover"
                       />
                       <select
@@ -181,9 +196,11 @@ const TypeTable: React.FC<TypeTableProps> = ({
                   <div className="flex flex-wrap gap-2">
                     {typeData.weaknesses.map((weakness, i) => (
                       <div key={i} className="flex items-center space-x-2 bg-red-100 text-red-700 rounded-full px-2 py-1 text-sm">
-                        <img
+                        <Image
                           src={`/types/${weakness.toLowerCase()}.png`}
                           alt={weakness}
+                          width={32}
+                          height={32}
                           className="w-4 h-4 sm:w-6 sm:h-6 object-cover"
                         />
                         <span>{weakness}</span>
@@ -195,9 +212,11 @@ const TypeTable: React.FC<TypeTableProps> = ({
                   <div className="flex flex-wrap gap-2">
                     {typeData.resistances.map((resistance, i) => (
                       <div key={i} className="flex items-center space-x-2 bg-green-100 text-green-700 rounded-full px-2 py-1 text-sm">
-                        <img
+                        <Image
                           src={`/types/${resistance.toLowerCase()}.png`}
                           alt={resistance}
+                          width={32}
+                          height={32}
                           className="w-4 h-4 sm:w-6 sm:h-6 object-cover"
                         />
                         <span>{resistance}</span>
@@ -209,9 +228,11 @@ const TypeTable: React.FC<TypeTableProps> = ({
                   <div className="flex flex-wrap gap-2">
                     {typeData.immunities.map((immunity, i) => (
                       <div key={i} className="flex items-center space-x-2 bg-blue-100 text-blue-700 rounded-full px-2 py-1 text-sm">
-                        <img
+                        <Image
                           src={`/types/${immunity.toLowerCase()}.png`}
                           alt={immunity}
+                          width={32}
+                          height={32}
                           className="w-4 h-4 sm:w-6 sm:h-6 object-cover"
                         />
                         <span>{immunity}</span>
@@ -234,9 +255,11 @@ const TypeTable: React.FC<TypeTableProps> = ({
               <div className="flex flex-wrap gap-2">
                 {weaknesses.map((weakness, index) => (
                   <div key={index} className="flex items-center space-x-2 bg-red-100 text-red-700 rounded-full px-3 py-1 text-sm">
-                    <img
+                    <Image
                       src={`/types/${weakness.toLowerCase()}.png`}
                       alt={weakness}
+                      width={32}
+                      height={32}
                       className="w-4 h-4 sm:w-6 sm:h-6 object-cover"
                     />
                     <span>{weakness}</span>
@@ -251,9 +274,11 @@ const TypeTable: React.FC<TypeTableProps> = ({
               <div className="flex flex-wrap gap-2">
                 {resistances.map((resistance, index) => (
                   <div key={index} className="flex items-center space-x-2 bg-green-100 text-green-700 rounded-full px-3 py-1 text-sm">
-                    <img
+                    <Image
                       src={`/types/${resistance.toLowerCase()}.png`}
                       alt={resistance}
+                      width={32}
+                      height={32}
                       className="w-4 h-4 sm:w-6 sm:h-6 object-cover"
                     />
                     <span>{resistance}</span>
@@ -268,9 +293,11 @@ const TypeTable: React.FC<TypeTableProps> = ({
               <div className="flex flex-wrap gap-2">
                 {immunities.map((immunity, index) => (
                   <div key={index} className="flex items-center space-x-2 bg-blue-100 text-blue-700 rounded-full px-3 py-1 text-sm">
-                    <img
+                    <Image
                       src={`/types/${immunity.toLowerCase()}.png`}
                       alt={immunity}
+                      width={32}
+                      height={32}
                       className="w-4 h-4 sm:w-6 sm:h-6 object-cover"
                     />
                     <span>{immunity}</span>
@@ -287,9 +314,11 @@ const TypeTable: React.FC<TypeTableProps> = ({
           <div className="flex flex-wrap gap-2">
             {recommended.map((type, index) => (
               <div key={index} className="flex items-center space-x-2 bg-yellow-200 text-yellow-800 rounded-full px-3 py-1 text-sm">
-                <img
+                <Image
                   src={`/types/${type.toLowerCase()}.png`}
                   alt={type}
+                  width={32}
+                  height={32}
                   className="w-4 h-4 sm:w-6 sm:h-6 object-cover"
                 />
                 <span>{type}</span>

@@ -28,16 +28,23 @@ const UpcomingFeatures = () => {
   return (
     <section id="upcoming-section" className="container mx-auto p-4 flex mb-12 flex-col items-center justify-center">
       <div className='flex flex-col items-center justify-center gap-4'>
-      <motion.img
-        src="/mega.png"
-        alt="Upcoming Features"
-        className="w-16"
+      <motion.div
         initial={{ filter: 'blur(10px)', opacity: 0.8 }}
         whileInView={{ filter: 'blur(0px)', opacity: 1 }}
         transition={{ duration: 0.4, delay: 0.3 }}
-      />
+        className="w-16"
+      >
+        <Image
+          src="/mega.png"
+          alt="Upcoming Features"
+          width={64} 
+          height={64} 
+          className="rounded-full" 
+        />
+      </motion.div>
+
       <motion.h2
-        className="text-3xl font-extrabold text-white mb-6"
+        className="md:text-3xl text-2xl font-extrabold text-white mb-6"
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 0.3 }}

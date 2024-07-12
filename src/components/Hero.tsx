@@ -40,17 +40,17 @@ const Hero = () => {
     }, []);
 
     const Icons = {
-        gitHub: () => (
-            <img src="/lifeorb.png" alt="" />
+        lifeorb: () => (
+            <Image src="/lifeorb.png" height={130} width={130} alt="" />
         ),
-        notion: () => (
-            <img src="/gym.png" alt="" />
+        gym: () => (
+            <Image src="/gym.png" height={130} width={130} alt="" />
         ),
-        googleDrive: () => (
-            <img src="/go.png" alt="" />
+        go: () => (
+            <Image src="/go.png" height={130} width={130} alt="" />
         ),
-        whatsapp: () => (
-            <img src="masterball.png" alt="" />
+        masterball: () => (
+            <Image src="/masterball.png" height={130} width={130} alt="" />
         ),
     };
 
@@ -71,16 +71,16 @@ const Hero = () => {
                         <Image src="/pokedex2.png" alt="" height={130} width={130} className='w-16 h-full' />
                     </a>
                     <OrbitingCircles className="size-[30px] border-none bg-transparent" duration={20} delay={20} radius={80}>
-                        <Icons.whatsapp />
+                        <Icons.masterball />
                     </OrbitingCircles>
                     <OrbitingCircles className="size-[30px] border-none bg-transparent" duration={20} delay={10} radius={80}>
-                        <Icons.notion />
+                        <Icons.gym />
                     </OrbitingCircles>
                     <OrbitingCircles className="size-[50px] border-none bg-transparent" radius={190} duration={20} reverse>
-                        <Icons.googleDrive />
+                        <Icons.go />
                     </OrbitingCircles>
                     <OrbitingCircles className="size-[50px] border-none bg-transparent" radius={190} duration={20} delay={20} reverse>
-                        <Icons.gitHub />
+                        <Icons.lifeorb />
                     </OrbitingCircles>
                 </div>
 

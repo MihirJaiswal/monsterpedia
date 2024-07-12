@@ -1,5 +1,6 @@
 import React from 'react';
 import { FaPaperclip } from 'react-icons/fa'; // Import the clip icon from react-icons
+import Image from 'next/image';
 
 const Note = () => {
   return (
@@ -14,8 +15,8 @@ const Note = () => {
               Hello Pokémon Trainers!
             </p>
            <div className='-mt-2'>
-           <img src="/underline.png" alt="" className='md:w-80 w-64 h-4' />
-           <img src="/underline.png" alt="" className='md:w-80 w-64 h-4 -mt-2' />
+           <Image src="/underline.png" alt="" height={130} width={130} className='md:w-80 w-64 h-4' />
+           <img src="/underline.png" alt="" height={130} width={130} className='md:w-80 w-64 h-4 -mt-2' />
            </div>
             </div>
             <p className="text-lg mb-6 text-gray-700 leading-relaxed">

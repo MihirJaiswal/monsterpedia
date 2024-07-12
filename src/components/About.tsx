@@ -7,6 +7,7 @@ import battle from '../../public/gym.png';
 import go from '../../public/go.png';
 import master from '../../public/masterball.png';
 import ShineBorder from './ui/shine-border';
+import Image from 'next/image';
 
 const About = () => {
   return (
@@ -121,7 +122,7 @@ const About = () => {
           whileInView={{ opacity: 1, x: 0 }}
           transition={{ duration: 1, delay: 0.5 }}
         >
-          <img src="/backgrounds/umbreon.png" alt="Umbreon" className='w-56' />
+          <Image src="/backgrounds/umbreon.png" alt="Umbreon" height={200} width={200} quality={100} className='w-56' />
         </motion.div>
       </ShineBorder>
     </section>
