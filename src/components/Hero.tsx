@@ -5,6 +5,7 @@ import Particles from './ui/Particles';
 import OrbitingCircles from './ui/orbiting-circles';
 import Meteors from './ui/meteors';
 import { motion } from 'framer-motion';
+import pokedex2 from '../../public/Pokedex2.png'
 
 const Hero = () => {
     const [isScrolledToUpcoming, setIsScrolledToUpcoming] = useState(false);
@@ -68,7 +69,7 @@ const Hero = () => {
                         <Meteors number={7} />
                     </div>
                     <a href='/pokedex' className='absolute flex flex-col items-center justify-center px-4'>
-                        <Image src="/pokedex2.png" alt="" height={130} width={130} className='w-16 h-full' />
+                        <Image src={pokedex2} alt="" height={130} width={130} className='w-16 h-full' />
                     </a>
                     <OrbitingCircles className="size-[30px] border-none bg-transparent" duration={20} delay={20} radius={80}>
                         <Icons.masterball />
@@ -143,7 +144,7 @@ const Hero = () => {
                     }}
                     className={`fixed top-24 left-24 opacity-90 hidden md:block`}
                 >
-                    <Image src="/ho-oh.png" alt="Ho-Oh" width={130} height={130} className='md:w-44 w-32' />
+                    <Image src="/Ho-Oh.png" alt="Ho-Oh" width={130} height={130} className='md:w-44 w-32' />
                 </motion.div>
 
                 {/* Lugia */}
@@ -170,7 +171,7 @@ const Hero = () => {
                         initial={{ opacity: 0}}
                         animate={{ opacity: 1}}
                     >
-                        <Image src="/ho-oh.png" alt="Jirachi" width={100} height={100} className={`md:hidden w-28 ${isScrolledToUpcoming ? '' : 'block'}`} />
+                        <Image src="/Ho-Oh.png" alt="Jirachi" width={100} height={100} className={`md:hidden w-28 ${isScrolledToUpcoming ? '' : 'block'}`} />
                     </motion.div>
                 </div>
             </div>

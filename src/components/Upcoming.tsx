@@ -2,6 +2,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
+import mega from '../../public/Mega.png'
 
 const features = [
   { id: 1, title: 'Game Maker', description: 'Create your own Pokémon games with custom rules, characters, and adventures using our intuitive game maker.', img: '/feature1.png' },
@@ -35,7 +36,7 @@ const UpcomingFeatures = () => {
         className="w-16"
       >
         <Image
-          src="/mega.png"
+          src={mega}
           alt="Upcoming Features"
           width={64} 
           height={64} 
