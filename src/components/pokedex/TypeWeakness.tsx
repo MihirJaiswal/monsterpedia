@@ -15,16 +15,20 @@ interface TypeData {
 }
 
 const TypeWeakness = ({ types }: TypeWeaknessProps) => {
+  // Define the typeEffectivenessMap with the correct type
   const typeEffectivenessMap: { [key: string]: number } = {};
 
   types.forEach(({ type }) => {
     const effectiveness = typeEffectiveness[type.name];
-    for (const [againstType, multiplier] of Object.entries(effectiveness)) {
-      if (againstType !== 'image') {
-        if (typeEffectivenessMap[againstType]) {
-          typeEffectivenessMap[againstType] *= multiplier;
-        } else {
-          typeEffectivenessMap[againstType] = multiplier;
+    if (effectiveness) {
+      for (const [againstType, multiplier] of Object.entries(effectiveness)) {
+        if (againstType !== 'image') {
+          // Ensure the value is a number before performing arithmetic operations
+          if (typeof typeEffectivenessMap[againstType] === 'number') {
+            typeEffectivenessMap[againstType] *= multiplier;
+          } else {
+            typeEffectivenessMap[againstType] = multiplier;
+          }
         }
       }
     }
