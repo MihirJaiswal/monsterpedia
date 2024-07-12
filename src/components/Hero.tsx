@@ -9,7 +9,7 @@ import { motion } from 'framer-motion';
 const Hero = () => {
     const [isScrolledToUpcoming, setIsScrolledToUpcoming] = useState(false);
     const [isScrolledToSupport, setIsScrolledToSupport] = useState(false);
-    const [scrollX, setScrollX] = useState(0);
+    const [scrollY, setScrollY] = useState(0);
 
     useEffect(() => {
         const handleScroll = () => {
@@ -19,7 +19,7 @@ const Hero = () => {
             const supportSectionTop = supportSection?.getBoundingClientRect().top;
             const windowHeight = window.innerHeight;
 
-            setScrollX(window.scrollY); 
+            setScrollY(window.scrollY);
 
             if (upcomingSectionTop && upcomingSectionTop <= windowHeight) {
                 setIsScrolledToUpcoming(true);
@@ -27,7 +27,6 @@ const Hero = () => {
                 setIsScrolledToUpcoming(false);
             }
 
-    
             if (supportSectionTop && supportSectionTop <= windowHeight) {
                 setIsScrolledToSupport(true);
             } else {
@@ -69,7 +68,7 @@ const Hero = () => {
                         <Meteors number={7} />
                     </div>
                     <a href='/pokedex' className='absolute flex flex-col items-center justify-center px-4'>
-                        <img src="/pokedex2.png" alt="" className='w-16 h-full' />
+                        <Image src="/pokedex2.png" alt="" height={130} width={130} className='w-16 h-full' />
                     </a>
                     <OrbitingCircles className="size-[30px] border-none bg-transparent" duration={20} delay={20} radius={80}>
                         <Icons.whatsapp />
@@ -109,7 +108,7 @@ const Hero = () => {
                     transition={{ duration: 0.7, delay: 0 }}
                     className='fixed bottom-0 right-0'
                 >
-                    <img src="/backgrounds/ash.png" alt="" className='w-full md:h-96' />
+                    <Image src="/backgrounds/ash.png" alt="" height={800} width={800} quality={100} className='w-full md:h-96' />
                 </motion.div>
 
                 {/* Jirachi */}
@@ -134,8 +133,8 @@ const Hero = () => {
                     initial={{ opacity: 0, x: -150, y: 0 }}
                     animate={{ 
                         opacity: isScrolledToUpcoming && !isScrolledToSupport ? 1 : 0, 
-                        x: scrollX * 0.1, 
-                        y: scrollY * 0.1 
+                        x: isScrolledToUpcoming && !isScrolledToSupport ? -50 : 'calc(-100vw + 150px)', 
+                        y: isScrolledToUpcoming && !isScrolledToSupport ? 100 : 'calc(100vh - 150px)' 
                     }}
                     transition={{ 
                         x: { type: "spring", stiffness: 50, damping: 10 },
@@ -144,15 +143,16 @@ const Hero = () => {
                     }}
                     className={`fixed top-24 left-24 opacity-90 hidden md:block`}
                 >
-                    <img src="/ho-oh.png" alt="Ho-Oh" className='md:w-44 w-32' />
+                    <Image src="/ho-oh.png" alt="Ho-Oh" width={130} height={130} className='md:w-44 w-32' />
                 </motion.div>
 
+                {/* Lugia */}
                 <motion.div
                     initial={{ opacity: 0, x: 150, y: 0 }}
                     animate={{ 
                         opacity: isScrolledToUpcoming && !isScrolledToSupport ? 1 : 0, 
-                        x: scrollX * -0.1, 
-                        y: scrollY * 0.1 
+                        x: isScrolledToUpcoming && !isScrolledToSupport ? 50 : 'calc(100vw - 150px)', 
+                        y: isScrolledToUpcoming && !isScrolledToSupport ? 100 : 'calc(100vh - 150px)' 
                     }}
                     transition={{ 
                         x: { type: "spring", stiffness: 50, damping: 10 },
@@ -161,19 +161,16 @@ const Hero = () => {
                     }}
                     className={`fixed top-28 right-20 opacity-90 hidden md:block`}
                 >
-                    <img src="/lugia.png" alt="lugia" className='md:w-44 w-32' />
+                    <Image src="/lugia.png" alt="Lugia" width={130} height={130} className='md:w-44 w-32 z-50' />
                 </motion.div>
 
 
-               
                 <div className={`fixed top-24 md:hidden left-2 md:left-44 opacity-90 ${isScrolledToUpcoming ? 'block' : 'hidden'}`}>
                     <motion.div
-                        key="robot-div"
-                        initial={{ y: isScrolledToUpcoming ? 0 : 5 }}
-                        animate={{ y: isScrolledToUpcoming ? 5 : 0 }}
-                        transition={{ duration: 1, repeat: Infinity, repeatType: "reverse" }}
+                        initial={{ opacity: 0}}
+                        animate={{ opacity: 1}}
                     >
-                        <img src="/ho-oh.png" alt="Pikachu" className='md:w-44 w-32' />
+                        <Image src="/ho-oh.png" alt="Jirachi" width={100} height={100} className={`md:hidden w-28 ${isScrolledToUpcoming ? '' : 'block'}`} />
                     </motion.div>
                 </div>
             </div>

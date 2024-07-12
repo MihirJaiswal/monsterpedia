@@ -2,7 +2,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import Card from './Card';
-import pokedex from '../../public/pokedex2.png';
+import pokedex2 from '../../public/Pokedex2.png'
 import battle from '../../public/gym.png';
 import go from '../../public/go.png';
 import master from '../../public/masterball.png';
@@ -51,7 +51,7 @@ const About = () => {
           <Card 
             title="Pokedex" 
             description="Explore detailed information on every Pokémon, including stats, abilities, and evolution."
-            icon={pokedex}
+            icon={pokedex2}
             href="/pokedex"
           />
         </motion.div>
