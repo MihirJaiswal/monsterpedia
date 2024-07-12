@@ -64,26 +64,27 @@ const Hero = () => {
             </div>
 
             <div className="relative text-white overflow-hidden h-screen flex flex-col items-center justify-center">
-                <div className="relative flex h-[500px] w-full flex-col items-center justify-center overflow-hidden rounded-lg">
-                    <div className="relative flex h-[500px] w-full">
-                        <Meteors number={7} />
-                    </div>
-                    <a href='/pokedex' className='absolute flex flex-col items-center justify-center px-4'>
-                        <Image src={pokedex2} alt="" height={130} width={130} className='w-16 h-full' />
-                    </a>
-                    <OrbitingCircles className="size-[30px] border-none bg-transparent" duration={20} delay={20} radius={80}>
-                        <Icons.masterball />
-                    </OrbitingCircles>
-                    <OrbitingCircles className="size-[30px] border-none bg-transparent" duration={20} delay={10} radius={80}>
-                        <Icons.gym />
-                    </OrbitingCircles>
-                    <OrbitingCircles className="size-[50px] border-none bg-transparent" radius={190} duration={20} reverse>
-                        <Icons.go />
-                    </OrbitingCircles>
-                    <OrbitingCircles className="size-[50px] border-none bg-transparent" radius={190} duration={20} delay={20} reverse>
-                        <Icons.lifeorb />
-                    </OrbitingCircles>
+            <div className="relative flex h-[500px] w-full flex-col items-center justify-center overflow-hidden rounded-lg md:h-[400px] sm:h-[300px]">
+                <div className="relative flex h-full w-full">
+                    <Meteors number={7} />
                 </div>
+                <a href='/pokedex' className='absolute flex flex-col items-center justify-center px-4'>
+                    <Image src={pokedex2} alt="" height={130} width={130} className='w-16 h-full' />
+                </a>
+                <OrbitingCircles className="size-[30px] border-none bg-transparent" duration={20} delay={20} radius={80}>
+                    <Icons.masterball />
+                </OrbitingCircles>
+                <OrbitingCircles className="size-[30px] border-none bg-transparent" duration={20} delay={10} radius={80}>
+                    <Icons.gym />
+                </OrbitingCircles>
+                <OrbitingCircles className="size-[50px] border-none bg-transparent" radius={190} duration={20} reverse>
+                    <Icons.go />
+                </OrbitingCircles>
+                <OrbitingCircles className="size-[50px] border-none bg-transparent" radius={190} duration={20} delay={20} reverse>
+                    <Icons.lifeorb />
+                </OrbitingCircles>
+            </div>
+
 
                 {/* Heading */}
                 <div className='absolute bottom-8 md:bottom-8 left-12 md:right-0 text-gray-300 flex flex-col justify-center items-center'>
