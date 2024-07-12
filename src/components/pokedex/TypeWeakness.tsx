@@ -15,7 +15,6 @@ interface TypeData {
 }
 
 const TypeWeakness = ({ types }: TypeWeaknessProps) => {
-  // Define the typeEffectivenessMap with the correct type
   const typeEffectivenessMap: { [key: string]: number } = {};
 
   types.forEach(({ type }) => {
@@ -23,12 +22,11 @@ const TypeWeakness = ({ types }: TypeWeaknessProps) => {
     if (effectiveness) {
       for (const [againstType, multiplier] of Object.entries(effectiveness)) {
         if (againstType !== 'image') {
-          // Ensure the value is a number before performing arithmetic operations
-          if (typeof typeEffectivenessMap[againstType] === 'number') {
-            typeEffectivenessMap[againstType] *= multiplier;
-          } else {
-            typeEffectivenessMap[againstType] = multiplier;
-          }
+          // Ensure multiplier is a number
+          const multiplierValue = Number(multiplier);
+          // Ensure currentMultiplier is a number
+          const currentMultiplier = typeEffectivenessMap[againstType] || 1;
+          typeEffectivenessMap[againstType] = (currentMultiplier as number) * multiplierValue;
         }
       }
     }
@@ -64,7 +62,12 @@ const TypeWeakness = ({ types }: TypeWeaknessProps) => {
                   weaknesses.map(({ type, multiplier }) => (
                     <tr key={type}>
                       <td className="border p-2 flex items-center">
-                        <Image src={typeEffectiveness[type].image} alt={type} width={24} height={24} />
+                        <Image
+                          src={typeEffectiveness[type].image as string}
+                          alt={type}
+                          width={24}
+                          height={24}
+                        />
                         <span className="capitalize ml-2">{type}</span>
                       </td>
                       <td className="border p-2 text-center">{multiplier}x</td>
@@ -94,7 +97,12 @@ const TypeWeakness = ({ types }: TypeWeaknessProps) => {
                   resistances.map(({ type, multiplier }) => (
                     <tr key={type}>
                       <td className="border p-2 flex items-center">
-                        <Image src={typeEffectiveness[type].image} alt={type} width={24} height={24} />
+                        <Image
+                          src={typeEffectiveness[type].image as string}
+                          alt={type}
+                          width={24}
+                          height={24}
+                        />
                         <span className="capitalize ml-2">{type}</span>
                       </td>
                       <td className="border p-2 text-center">{multiplier}x</td>
@@ -125,7 +133,12 @@ const TypeWeakness = ({ types }: TypeWeaknessProps) => {
                 immunities.map(({ type, multiplier }) => (
                   <tr key={type}>
                     <td className="border p-2 flex items-center">
-                      <Image src={typeEffectiveness[type].image} alt={type} width={24} height={24} />
+                      <Image
+                        src={typeEffectiveness[type].image as string}
+                        alt={type}
+                        width={24}
+                        height={24}
+                      />
                       <span className="capitalize ml-2">{type}</span>
                     </td>
                     <td className="border p-2 text-center">{multiplier}x</td>
