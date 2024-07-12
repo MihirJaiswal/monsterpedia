@@ -26,9 +26,11 @@ const Pokedex: React.FC<PokemonProps> = ({ name, height, weight, base_experience
         />
         <div className="absolute md:top-20 md:left-52 flex flex-col items-center">
           <div className="p-4">
-            <img
+            <Image
               src={spriteUrl}
               alt={name}
+              width={200}
+              height={200}
               className="md:w-32 md:h-32 w-24 h-24 mx-auto rounded-lg"
             />
           </div>
@@ -66,10 +68,12 @@ const Pokedex: React.FC<PokemonProps> = ({ name, height, weight, base_experience
       <div className="md:hidden px-12 py-10 bg-white bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-10 border border-gray-100 rounded-lg shadow-xl max-w-xs mx-auto my-4 relative overflow-hidden">
         <div className="absolute inset-0 -z-10 bg-white rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-30 border border-gray-100"></div>
         <div className="flex justify-center items-center">
-          <img
+          <Image
             src={spriteUrl}
             alt={name}
             loading="lazy"
+            width={200}
+            height={200}
             className="w-40 h-40"
           />
         </div>

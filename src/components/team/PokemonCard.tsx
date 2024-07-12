@@ -1,5 +1,6 @@
 import React from 'react';
 import { FaTimes } from 'react-icons/fa';
+import Image from 'next/image';
 
 interface Pokemon {
   id: number;
@@ -26,18 +27,22 @@ const PokemonCard: React.FC<PokemonCardProps> = ({ pokemon, onRemove }) => {
         </div>
       </div>
       <div className="relative flex flex-col items-center justify-center">
-        <img
+        <Image
           src={pokemon.image}
           alt={pokemon.name}
+          width={200}
+          height={200}
           className="mb-2 w-32 h-32 object-cover"
         />
         <h3 className="text-lg font-semibold mb-2 text-center">{pokemon.name}</h3>
         <div className="flex flex-wrap gap-2 mb-2 justify-center">
           {pokemon.types.map((type) => (
             <div key={type} className="flex items-center space-x-1">
-              <img
+              <Image
                 src={`/types/${type}.png`} 
                 alt={type}
+                width={40}
+                height={40}
                 className="w-6 h-6"
               />
               <span className="text-sm font-medium capitalize">{type}</span>

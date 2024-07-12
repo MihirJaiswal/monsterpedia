@@ -1,7 +1,7 @@
 'use client';
-
 import { useState } from 'react';
 import { FaBullseye, FaStar } from 'react-icons/fa';
+import Image from 'next/image';
 
 interface PokemonImageProps {
   sprites: {
@@ -44,9 +44,11 @@ const PokemonImage = ({ sprites, name }: PokemonImageProps) => {
             <p className="text-white text-lg">Loading...</p>
           </div>
         )}
-        <img
+        <Image
           src={isShiny ? sprites.other['official-artwork'].front_shiny : sprites.other['official-artwork'].front_default}
           alt={name}
+          width={200}
+          height={200}
           className={`w-52 h-52 object-cover object-center relative transition-transform duration-500 ${loading ? 'opacity-0' : 'opacity-100'}`}
           onLoad={handleImageLoad}
           onError={handleImageError}

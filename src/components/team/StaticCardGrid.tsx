@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from 'next/image';
 
 const StaticCard: React.FC = () => {
   return (
@@ -13,7 +14,12 @@ const StaticCard: React.FC = () => {
         </div>
       </div>
       <div className="relative flex flex-col items-center justify-center">
-        <img src="/go.png" alt="" className="w-24 md:w-32 mb-8 md:mb-12" />
+        <Image
+         src="/go.png"
+         alt="place holder"
+         width={200}
+         height={200}
+         className="w-24 md:w-32 mb-8 md:mb-12" />
         <div>
           <img src="/plus.png" alt="" className="w-8 md:w-12" />
         </div>

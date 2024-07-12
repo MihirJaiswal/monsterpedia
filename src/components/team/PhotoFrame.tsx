@@ -1,5 +1,6 @@
 'use client'
 import React, { useState } from 'react';
+import Image from 'next/image';
 
 interface Pokemon {
   id: number;
@@ -35,9 +36,11 @@ const PhotoFrame: React.FC<PhotoFrameProps> = ({ team, uploadedImage, photoFrame
               key={pokemon.id}
               className="relative w-32 h-32 overflow-hidden rounded-lg border border-gray-200 shadow-lg"
             >
-              <img
+              <Image
                 src={pokemon.image}
                 alt={pokemon.name}
+                width={130}
+                height={130}
                 className="w-full h-full object-cover transition-transform transform hover:scale-105"
               />
               <div className="absolute bottom-0 left-0 w-full bg-black bg-opacity-60 text-white text-xs text-center py-1 px-2 rounded-t-lg">

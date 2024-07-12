@@ -55,8 +55,8 @@ const Feature = () => {
               <Image
                 src="/mist4.png"
                 alt="Mist"
-                width={1000}
-                height={1000}
+                width={1200}
+                height={1200}
                 className='opacity-20 blur-md w-full'
               />
             </div>
@@ -64,8 +64,8 @@ const Feature = () => {
               <Image
                 src="/mist4.png"
                 alt="Mist"
-                height={1000}
-                width={1000}
+                height={1200}
+                width={1200}
                 className='opacity-15 blur-md w-2/3'
               />
             </div>
@@ -73,8 +73,8 @@ const Feature = () => {
               <Image
                 src="/mist.png"
                 alt="Mist"
-                height={1000}
-                width={1000}
+                height={1200}
+                width={1200}
                 className='opacity-10 blur-md w-96'
               />
             </div>
