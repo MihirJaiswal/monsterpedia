@@ -57,7 +57,7 @@ const UpcomingFeatures = () => {
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 0.3 }}
       >
-        Stay tuned for exciting new features! We're constantly working to enhance your experience with new tools, improved functionality, and innovative updates to make your Pokémon journey even more enjoyable.
+        Stay tuned for exciting new features. We are constantly working to enhance your experience with new tools, improved functionality, and innovative updates to make your Pokémon journey even more enjoyable.
       </motion.p>
     </div>
       <motion.div
