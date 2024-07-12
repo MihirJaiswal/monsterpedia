@@ -3,6 +3,7 @@ import React from 'react';
 import { Vortex } from './ui/vortex';
 import { FaGithub } from 'react-icons/fa';
 import { motion } from 'framer-motion';
+import Image from 'next/image';
 
 const PokemonGameFeature = () => {
   return (
@@ -54,7 +55,12 @@ const PokemonGameFeature = () => {
                 whileInView={{ opacity: 1, rotate: 0 }}
                 transition={{ duration: 0.6 }}
               >
-                <img src="/favicon.jpg" alt="" className='w-10' />
+                <Image src="/favicon.jpg"
+                 alt="dream mist icon"
+                 width={40}
+                 height={40}
+                 className='w-10'
+                  />
               </motion.div>
             </motion.div>
 
