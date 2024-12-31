@@ -4,8 +4,8 @@ import logo from '../../public/logo.webp'
 
 const Footer = () => {
   return (
-    <footer className="bg-blue-400 z-50 bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-20 text-gray-200 py-10 border-t border-gray-400">
-      <div className="container mx-auto px-6">
+    <footer className="bg-gray-900 md:bg-blue-400 z-50 md:bg-clip-padding md:backdrop-filter md:backdrop-blur-sm md:bg-opacity-20 text-gray-200 py-10 border-t border-gray-400">
+      <div className="container mx-auto px-6 relative">
         <div className="flex flex-col md:flex-row justify-between items-center">
           <div className="mb-6 md:mb-0">
             <div className='flex items-center justify-center md:justify-start'>
