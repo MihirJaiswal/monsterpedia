@@ -6,7 +6,7 @@ import logo from '../../public/logo.webp'
 
 const HomeHeader = () => {
   return (
-    <div className='fixed w-full top-0 z-50 bg-cyan-950 backdrop-blur-sm border-b border-gray-300 '>
+    <div className='fixed w-full top-0 z-50 bg-gray-900 md:bg-cyan-950 backdrop-blur-sm border-b border-gray-300 '>
       <div className='flex justify-between items-center px-5 lg:px-7.5 xl:px-10'>
         <a href="/" className='flex items-center w-[12rem] xl:mr-8'>
           <Image
