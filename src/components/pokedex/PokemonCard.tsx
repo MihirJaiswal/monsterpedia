@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import gif from '../../../public/pokeball-loader.gif'
@@ -57,7 +56,7 @@ const PokemonCard: React.FC<PokemonCardProps> = ({ name, spriteUrl, types = [], 
     >
       {isNavigating ? (
         <div className='flex flex-col items-center justify-center gap-4 mb-12'>
-          <div className="relative md:w-36 md:h-36 w-28 md:mx-auto mb-4">
+          <div className="relative md:w-36 md:h-36 h-28 w-28 md:mx-auto mb-4">
           <div className="absolute inset-0 flex justify-center items-center z-0 bg-card rounded-full bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-10 opacity-40">
                   <div className="md:w-36 md:h-36 rounded-full relative flex justify-center items-center">
                     <div className="md:w-32 md:h-32 rounded-full border border-gray-300 relative flex justify-center items-center">

@@ -1,5 +1,4 @@
 // components/Shimmer.js
-
 import React from 'react';
 import Image from 'next/image';
 import gif from '../../../public/pokeball-loader.gif';
