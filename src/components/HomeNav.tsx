@@ -7,7 +7,6 @@ import { navigation } from '../../constant';
 function HomeNav() {
     const pathname = usePathname();
     const [openNavigation, setOpenNavigation] = useState(false);
-
       const handleClick = () => {
         if (!openNavigation) return;
         setOpenNavigation(false);

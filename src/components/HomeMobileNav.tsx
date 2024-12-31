@@ -12,7 +12,7 @@ import{ usePathname } from 'next/navigation'
 import{ cn } from '@/lib/utils'
 import{ navigation } from '../../constant/index'
 import Hamburger from '../../public/hamburger.svg'
-import logo from '../../public/logo.png'
+import logo from '../../public/logo.webp'
 
 function HomeMobileNav() {
     const pathname = usePathname();
@@ -26,6 +26,8 @@ function HomeMobileNav() {
         width={36}
         height={36}
         alt="hamburger"
+        loading='lazy'
+        quality={100}
         className='cursor-pointer sm:hidden' 
         />
       </SheetTrigger>
@@ -36,6 +38,9 @@ function HomeMobileNav() {
       width={42}
       height={42}
       alt='logo'
+      loading='lazy'
+      placeholder='blur'
+      quality={100}
       className='max-sm:size-10'
       />
       <p className='text-[21px] font-bold text-white px-2 mt-1'>MonsterPédia</p>

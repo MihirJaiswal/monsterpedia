@@ -1,56 +1,55 @@
-'use client'
-import React from 'react';
 import { Vortex } from './ui/vortex';
 import { FaGithub } from 'react-icons/fa';
-import { motion } from 'framer-motion';
 import Image from 'next/image';
+import { MotionDiv } from './MotionDiv';
+import pokemon from '../../public/munna.webp';
 
 const PokemonGameFeature = () => {
   return (
-    <motion.div
+    <MotionDiv
       className="overflow-hidden"
       initial={{ opacity: 0 }}
       whileInView={{ opacity: 1 }}
       transition={{ duration: 1 }}
       id='dream-section'
     >
-      <motion.div
+      <MotionDiv
         className='flex items-center justify-center overflow-hidden mt-12 border bg-gray-900 bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-60 rounded-md'
         initial={{ y: 20 }}
         whileInView={{ y: 0 }}
         transition={{ duration: 0.6 }}
       >
         <Vortex>
-          <motion.div
+          <MotionDiv
             className='md:w-96 w-80 h-96 flex flex-col gap-8 justify-center items-center overflow-hidden bg-black bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-10 rounded-md'
             initial={{ scale: 0.9 }}
             whileInView={{ scale: 1 }}
             transition={{ duration: 0.8 }}
           >
-            <motion.div
+            <MotionDiv
               key="munna-div"
               initial={{ y: 0 }}
               animate={{ y: 8 }}
               transition={{ duration: 1, repeat: Infinity, repeatType: "reverse" }}
             >
-              <img src="/munna.png" alt="Munna" className='w-44' />
-            </motion.div>
+              <Image src={pokemon} alt="Munna" loading='lazy' placeholder='blur' className='w-44' quality={100} />
+            </MotionDiv>
 
-            <motion.div
+            <MotionDiv
               className='flex items-center justify-center gap-4'
               initial={{ opacity: 0, x: -20 }}
               whileInView={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6, ease: "easeOut" }}
             >
-              <motion.div
+              <MotionDiv
                 className="text-white font-bold text-2xl"
                 initial={{ opacity: 0 }}
                 whileInView={{ opacity: 1 }}
                 transition={{ duration: 1, repeat: Infinity, repeatType: "reverse" }}
               >
                 Dream Mist
-              </motion.div>
-              <motion.div
+              </MotionDiv>
+              <MotionDiv
                 initial={{ opacity: 0, rotate: -10 }}
                 whileInView={{ opacity: 1, rotate: 0 }}
                 transition={{ duration: 0.6 }}
@@ -58,13 +57,14 @@ const PokemonGameFeature = () => {
                 <Image src="/favicon.jpg"
                  alt="dream mist icon"
                  width={40}
+                 loading='lazy'
                  height={40}
                  className='w-10'
                   />
-              </motion.div>
-            </motion.div>
+              </MotionDiv>
+            </MotionDiv>
 
-            <motion.div
+            <MotionDiv
               className='flex items-center gap-4'
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -82,11 +82,11 @@ const PokemonGameFeature = () => {
               <a href="https://github.com/MihirJaiswal/DreamMist">
                 <FaGithub size={40} className='text-white' />
               </a>
-            </motion.div>
-          </motion.div>
+            </MotionDiv>
+          </MotionDiv>
         </Vortex>
-      </motion.div>
-    </motion.div>
+      </MotionDiv>
+    </MotionDiv>
   );
 };
 

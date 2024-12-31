@@ -2,7 +2,7 @@ import Image from 'next/image'
 import React from 'react'
 import HomeNav from './HomeNav'
 import HomeMobileNav from './HomeMobileNav'
-import logo from '../../public/logo.png'
+import logo from '../../public/logo.webp'
 
 const HomeHeader = () => {
   return (
@@ -14,6 +14,9 @@ const HomeHeader = () => {
             src={logo}
             width={52}
             height={42}
+            loading='lazy'
+            placeholder='blur'
+            quality={100}
             className='max-sm:size-10 m-2'
             />
             <p className='text-gray-200 font-bold text-2xl max-lg:hidden uppercase'>MonsterPédia</p>

@@ -1,4 +1,3 @@
-import React from 'react'
 import UpcomingFeatures from './Upcoming'
 
 const Final = () => {

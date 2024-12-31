@@ -1,57 +1,31 @@
-'use client';
-import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Particles from './ui/Particles';
 import OrbitingCircles from './ui/orbiting-circles';
 import Meteors from './ui/meteors';
-import { motion } from 'framer-motion';
-import pokedex2 from '../../public/Pokedex2.png'
+import pokedex2 from '../../public/About/Pokedex2.webp'
+import { MotionDiv } from './MotionDiv';
+import battle from '../../public/About/gym.webp';
+import go from '../../public/About/go.webp';
+import master from '../../public/About/masterball.webp';
+import orb from '../../public/About/lifeorb.png'
+import ScrollManager from './ScrollManager';
+import ash from '../../public/backgrounds/ash.webp'
 
 const Hero = () => {
-    const [isScrolledToUpcoming, setIsScrolledToUpcoming] = useState(false);
-    const [isScrolledToSupport, setIsScrolledToSupport] = useState(false);
-    const [scrollY, setScrollY] = useState(0);
-
-    useEffect(() => {
-        const handleScroll = () => {
-            const upcomingSection = document.getElementById('cards');
-            const supportSection = document.getElementById('dream-section');
-            const upcomingSectionTop = upcomingSection?.getBoundingClientRect().top;
-            const supportSectionTop = supportSection?.getBoundingClientRect().top;
-            const windowHeight = window.innerHeight;
-
-            setScrollY(window.scrollY);
-
-            if (upcomingSectionTop && upcomingSectionTop <= windowHeight) {
-                setIsScrolledToUpcoming(true);
-            } else {
-                setIsScrolledToUpcoming(false);
-            }
-
-            if (supportSectionTop && supportSectionTop <= windowHeight) {
-                setIsScrolledToSupport(true);
-            } else {
-                setIsScrolledToSupport(false);
-            }
-        };
-
-        window.addEventListener('scroll', handleScroll);
-        handleScroll();
-        return () => window.removeEventListener('scroll', handleScroll);
-    }, []);
+    
 
     const Icons = {
         lifeorb: () => (
-            <Image src="/lifeorb.png" height={130} width={130} alt="" />
+            <Image src={orb} height={130} width={130} alt="img" loading='lazy' />
         ),
         gym: () => (
-            <Image src="/gym.png" height={130} width={130} alt="" />
+            <Image src={battle} height={130} width={130} alt="img" loading='lazy' />
         ),
         go: () => (
-            <Image src="/go.png" height={130} width={130} alt="" />
+            <Image src={go} height={130} width={130} alt="img" loading='lazy' />
         ),
         masterball: () => (
-            <Image src="/masterball.png" height={130} width={130} alt="" />
+            <Image src={master} height={130} width={130} alt="img" loading='lazy' />
         ),
     };
 
@@ -64,7 +38,7 @@ const Hero = () => {
             </div>
 
             <div className="relative text-white overflow-hidden h-screen flex flex-col items-center justify-center">
-            <div className="relative flex flex-col items-center justify-center h-[500px] w-full overflow-hidden rounded-lg md:h-[400px] sm:h-[300px]">
+            <div className="relative flex flex-col items-center justify-center h-[500px] w-full overflow-hidden rounded-lg pt-6">
                 <div className="relative flex h-full w-full">
                     <Meteors number={7} />
                 </div>
@@ -100,81 +74,21 @@ const Hero = () => {
 
                 {/* Particles */}
                 <div className='fixed top-16 left-0 w-full h-full'>
-                    <Particles className={`absolute top-32 w-full h-full ${isScrolledToUpcoming ? 'absolute' : 'fixed'}`} quantity={500} />
+                    <Particles className='top-32 w-full h-full fixed' quantity={500} />
                 </div>
 
                 {/* Background Ash */}
-                <motion.div
+                <MotionDiv
                     initial={{ opacity: 1 }}
                     animate={{ opacity: 1 }}
                     transition={{ duration: 0.7, delay: 0 }}
                     className='fixed bottom-0 right-0'
                 >
-                    <Image src="/backgrounds/ash.png" alt="" height={800} width={800} quality={100} className='w-full md:h-96' />
-                </motion.div>
+                    <Image src={ash} alt="ash and pikachu" height={800} width={800} quality={100} className='w-full md:h-96' loading='lazy' placeholder='blur' />
+                </MotionDiv>
 
-                {/* Jirachi */}
-                <motion.div
-                    initial={{ opacity: 1, y: -200 }}
-                    animate={{ opacity: isScrolledToUpcoming ? 0 : 1, y: isScrolledToUpcoming ? -100 : 0 }}
-                    transition={{ duration: 1, delay: isScrolledToUpcoming ? 0 : 0.3 }}
-                    className={`fixed top-24 left-2 md:left-44 opacity-90`}
-                >
-                    <motion.div
-                        key="jirachi-div"
-                        initial={{ y: isScrolledToUpcoming ? 0 : 5 }}
-                        animate={{ y: isScrolledToUpcoming ? 5 : 0 }}
-                        transition={{ duration: 1, repeat: Infinity, repeatType: "reverse" }}
-                    >
-                        <Image src="/jirachi.png" alt="Jirachi" width={100} height={100} className={`md:w-16 w-12 ${isScrolledToUpcoming ? '' : 'block'}`} />
-                    </motion.div>
-                </motion.div>
-
-                {/* Ho-Oh */}
-                <motion.div
-                    initial={{ opacity: 0, x: -150, y: 0 }}
-                    animate={{ 
-                        opacity: isScrolledToUpcoming && !isScrolledToSupport ? 1 : 0, 
-                        x: isScrolledToUpcoming && !isScrolledToSupport ? -50 : 'calc(-100vw + 150px)', 
-                        y: isScrolledToUpcoming && !isScrolledToSupport ? 100 : 'calc(100vh - 150px)' 
-                    }}
-                    transition={{ 
-                        x: { type: "spring", stiffness: 50, damping: 10 },
-                        y: { type: "spring", stiffness: 50, damping: 10 },
-                        opacity: { duration: 0.2 }
-                    }}
-                    className={`fixed top-24 left-24 opacity-90 hidden md:block`}
-                >
-                    <Image src="/Ho-Oh.png" alt="Ho-Oh" width={130} height={130} className='md:w-44 w-32' />
-                </motion.div>
-
-                {/* Lugia */}
-                <motion.div
-                    initial={{ opacity: 0, x: 150, y: 0 }}
-                    animate={{ 
-                        opacity: isScrolledToUpcoming && !isScrolledToSupport ? 1 : 0, 
-                        x: isScrolledToUpcoming && !isScrolledToSupport ? 50 : 'calc(100vw - 150px)', 
-                        y: isScrolledToUpcoming && !isScrolledToSupport ? 100 : 'calc(100vh - 150px)' 
-                    }}
-                    transition={{ 
-                        x: { type: "spring", stiffness: 50, damping: 10 },
-                        y: { type: "spring", stiffness: 50, damping: 10 },
-                        opacity: { duration: 0.2 }
-                    }}
-                    className={`fixed top-28 right-20 opacity-90 hidden md:block`}
-                >
-                    <Image src="/lugia.png" alt="Lugia" width={130} height={130} className='md:w-44 w-32 z-50' />
-                </motion.div>
-
-
-                <div className={`fixed top-24 md:hidden left-2 md:left-44 opacity-90 ${isScrolledToUpcoming ? 'block' : 'hidden'}`}>
-                    <motion.div
-                        initial={{ opacity: 0}}
-                        animate={{ opacity: 1}}
-                    >
-                        <Image src="/Ho-Oh.png" alt="Jirachi" width={100} height={100} className={`md:hidden w-28 ${isScrolledToUpcoming ? '' : 'block'}`} />
-                    </motion.div>
-                </div>
+                <ScrollManager/>
+                
             </div>
         </div>
     );

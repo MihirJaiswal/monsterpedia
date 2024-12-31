@@ -9,7 +9,6 @@ import {
     AlertDialogTitle,
     AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { Button } from "@/components/ui/button";
 import { FaDonate } from "react-icons/fa";
 import Image from "next/image";
 
@@ -38,7 +37,7 @@ export function AlertDialogDemo() {
                     </AlertDialogDescription>
                 </AlertDialogHeader>
                 <div className="flex justify-center py-4">
-                    <Image src="/qr.png" alt="QR Code for Donations" width={200}  height={200} className="w-48" />
+                    <Image src="/qr.png" alt="QR Code for Donations" width={200} loading="lazy"  height={200} className="w-48" quality={100} />
                 </div>
                 <AlertDialogFooter>
                     <AlertDialogCancel className="text-gray-800 hover:text-gay-600">Close</AlertDialogCancel>

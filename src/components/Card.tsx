@@ -31,6 +31,8 @@ const Card = ({ title, description, icon, href }: CardProps) => {
           width={124}
           height={124}
           quality='100'
+          loading='lazy'
+          placeholder='blur'
           alt="icon"
           className='w-32 relative transition-transform duration-300 hover:animate-spinThreeTimes'
         />
