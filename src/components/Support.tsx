@@ -12,6 +12,7 @@ const SupportMe = () => {
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6 }}
+      viewport={{ once: true }}
     >
       <section id="support-section" className="mx-auto my-12 flex flex-col items-center justify-center bg-gray-900 backdrop-filter backdrop-blur-sm bg-opacity-50">
         <MotionDiv
@@ -19,6 +20,7 @@ const SupportMe = () => {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
+          viewport={{ once: true }}
         >
           <h2 className="text-4xl font-bold text-gray-100 bg-clip-padding mb-6">
             Support Me
@@ -32,6 +34,7 @@ const SupportMe = () => {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
+              viewport={{ once: true }}
             >
               <a href="https://www.linkedin.com/in/mihir-jaiswal-322898287/" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800">
                 <FaLinkedin size={40} />
@@ -47,6 +50,7 @@ const SupportMe = () => {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.4 }}
+              viewport={{ once: true }}
             >
               <AlertDialogDemo />
             </MotionDiv>
@@ -59,6 +63,7 @@ const SupportMe = () => {
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 0.6 }}
+        viewport={{ once: true }}
       >
         <Image src={img} alt="img" width={200} height={200} className='w-52 p-2' loading='lazy' quality={100} />
       </MotionDiv>

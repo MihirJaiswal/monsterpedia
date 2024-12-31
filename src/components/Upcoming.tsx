@@ -50,6 +50,7 @@ const UpcomingFeatures = () => {
           whileInView={{ filter: 'blur(0px)', opacity: 1 }}
           transition={{ duration: 0.4, delay: 0.3 }}
           className="w-16"
+          viewport={{ once: true }}
         >
           <Image
             src={mega}
@@ -68,6 +69,7 @@ const UpcomingFeatures = () => {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.3 }}
+          viewport={{ once: true }}
         >
           Upcoming Features
         </MotionH2>
@@ -77,6 +79,7 @@ const UpcomingFeatures = () => {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.3 }}
+          viewport={{ once: true }}
         >
           Stay tuned for exciting new features! We are constantly working to enhance your experience with new tools, improved functionality, and innovative updates to make your Pokémon journey even more enjoyable.
         </MotionP>
@@ -88,6 +91,7 @@ const UpcomingFeatures = () => {
         initial="hidden"
         whileInView="visible"
         transition={{ duration: 0.2 }}
+        viewport={{ once: true }}
         id="cards"
       >
         {features.map((feature) => (
@@ -98,6 +102,7 @@ const UpcomingFeatures = () => {
             whileHover={{ scale: 1.1, rotate: 2 }}
             whileTap={{ scale: 0.9 }}
             transition={{ duration: 0.1 }}
+            viewport={{ once: true }}
           >
             <div className="relative w-full h-36 flex items-center justify-center">
               <div className="absolute left-12 md:left-14 inset-0 w-36 h-36 flex justify-center border-2 border-gray-300 items-center z-0 bg-card2 rounded-full bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-10 opacity-30 transition-all duration-300">
@@ -130,6 +135,7 @@ const UpcomingFeatures = () => {
             <MotionDiv
               className="absolute inset-0 bg-black bg-opacity-80 flex items-center justify-center text-white text-center opacity-0 transition-opacity duration-500 p-4"
               whileHover={{ opacity: 1 }}
+              viewport={{ once: true }}
             >
               <p className="font-semibold">{feature.description}</p>
             </MotionDiv>

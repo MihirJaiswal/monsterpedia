@@ -12,12 +12,14 @@ const PokemonGameFeature = () => {
       whileInView={{ opacity: 1 }}
       transition={{ duration: 1 }}
       id='dream-section'
+      viewport={{ once: true }}
     >
       <MotionDiv
         className='flex items-center justify-center overflow-hidden mt-12 border bg-gray-900 bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-60 rounded-md'
         initial={{ y: 20 }}
         whileInView={{ y: 0 }}
         transition={{ duration: 0.6 }}
+        viewport={{ once: true }}
       >
         <Vortex>
           <MotionDiv
@@ -25,12 +27,14 @@ const PokemonGameFeature = () => {
             initial={{ scale: 0.9 }}
             whileInView={{ scale: 1 }}
             transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
           >
             <MotionDiv
               key="munna-div"
               initial={{ y: 0 }}
               animate={{ y: 8 }}
               transition={{ duration: 1, repeat: Infinity, repeatType: "reverse" }}
+              viewport={{ once: true }}
             >
               <Image src={pokemon} alt="Munna" loading='lazy' placeholder='blur' className='w-44' quality={100} />
             </MotionDiv>
@@ -40,12 +44,14 @@ const PokemonGameFeature = () => {
               initial={{ opacity: 0, x: -20 }}
               whileInView={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6, ease: "easeOut" }}
+              viewport={{ once: true }}
             >
               <MotionDiv
                 className="text-white font-bold text-2xl"
                 initial={{ opacity: 0 }}
                 whileInView={{ opacity: 1 }}
                 transition={{ duration: 1, repeat: Infinity, repeatType: "reverse" }}
+                viewport={{ once: true }}
               >
                 Dream Mist
               </MotionDiv>
@@ -53,6 +59,7 @@ const PokemonGameFeature = () => {
                 initial={{ opacity: 0, rotate: -10 }}
                 whileInView={{ opacity: 1, rotate: 0 }}
                 transition={{ duration: 0.6 }}
+                viewport={{ once: true }}
               >
                 <Image src="/favicon.jpg"
                  alt="dream mist icon"
@@ -60,7 +67,7 @@ const PokemonGameFeature = () => {
                  loading='lazy'
                  height={40}
                  className='w-10'
-                  />
+                />
               </MotionDiv>
             </MotionDiv>
 
@@ -69,6 +76,7 @@ const PokemonGameFeature = () => {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
+              viewport={{ once: true }}
             >
               <a
                 href="https://mihirjaiswal.github.io/DreamMist/"
