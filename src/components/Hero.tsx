@@ -85,7 +85,7 @@ const Hero = () => {
                     className='fixed bottom-0 right-0'
                     viewport={{ once: true }}
                 >
-                    <Image src={ash} alt="ash and pikachu" height={800} width={800} quality={100} className='w-full md:h-96' loading='lazy' placeholder='blur' />
+                    <Image src={ash} alt="ash and pikachu" height={800} width={800} quality={100} className='w-full md:h-96' loading='lazy' />
                 </MotionDiv>
 
                 <ScrollManager/>
