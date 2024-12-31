@@ -7,6 +7,7 @@ import {
   FaSkullCrossbones, FaMountain, FaFeather, FaBrain, FaBug, FaGem,
   FaGhost, FaDragon, FaMoon, FaCog, FaStar, FaBullseye
 } from 'react-icons/fa';
+import axios from 'axios';
 
 interface Pokemon {
   name: string;
@@ -145,17 +146,12 @@ const Pokemon = () => {
         const batchSize = 100;
 
         while (totalFetched < 1025) {
-          const listResponse = await fetch(`https://pokeapi.co/api/v2/pokemon?limit=${batchSize}&offset=${totalFetched}`);
-          if (!listResponse.ok) {
-            throw new Error(`Failed to fetch Pokémon list: ${listResponse.statusText}`);
-          }
-          const listData = await listResponse.json();
-          allPokemons = allPokemons.concat(listData.results);
+          const listResponse = await axios.get(`https://pokeapi.co/api/v2/pokemon?limit=${batchSize}&offset=${totalFetched}`); // Using axios here
+          allPokemons = allPokemons.concat(listResponse.data.results);
           totalFetched += batchSize;
         }
 
         setPokemonList(allPokemons);
-
         await fetchPokemonDetailsInBatches(allPokemons, 20);
       } catch (error) {
         console.error(error);
