@@ -4,7 +4,7 @@ const ShimmerCard: React.FC = () => {
   return (
     <div className="relative h-full w-full py-4 px-6 bg-white rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-30 border border-gray-100 transform transition-transform hover:scale-105">
       <div className="flex flex-col items-center justify-center">
-        <div className="relative md:w-36 md:h-36 w-28 md:mx-auto mb-4">
+        <div className="relative md:w-36 h-36 w-28 md:mx-auto mb-4">
           <div className="absolute inset-0 flex justify-center items-center z-0 bg-card rounded-full bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-10 opacity-40">
             <div className="md:w-36 md:h-36 rounded-full border border-gray-300 relative flex justify-center items-center">
               <div className="absolute w-full h-full flex items-center justify-center">
