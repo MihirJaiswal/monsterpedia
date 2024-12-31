@@ -133,7 +133,7 @@ const PokemonPage: React.FC<Props> = ({ pokemon }) => {
 
         
       <div className="fixed top-0 left-0 h-full w-full md:hidden z-50">
-        <div className='w-full bg-cyan-900 border-b border-gray-400 flex items-center justify-between p-4 h-16'>
+        <div className='w-full bg-gray-900 border-b border-gray-400 flex items-center justify-between p-4 h-16'>
           <button
           className="fixed bg-white top-4 left-4 z-50 p-2  text-black rounded-full shadow-md md:hidden "
           onClick={() => setIsSidebarOpen(!isSidebarOpen)}
