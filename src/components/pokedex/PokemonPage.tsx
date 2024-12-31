@@ -128,9 +128,7 @@ const PokemonPage: React.FC<Props> = ({ pokemon }) => {
   return (
     <div className='bg-hero bg-cover bg-center '>
     <div className='hidden lg:block '><HomeHeader/></div>
-    <div className="relative p-6 mt-20">
-      <div className="absolute inset-0 bg-bg2 bg-repeat-round bg-contain opacity-5 pointer-events-none hidden md:block"></div>
-      <div className="absolute inset-0 bg-bg4  bg-cover opacity-10 pointer-events-none md:hidden"></div>
+    <div className="relative p-6 mt-16 min-h-screen">
       <div className="flex flex-col md:flex-row justify-around">
 
         <>
@@ -194,7 +192,7 @@ const PokemonPage: React.FC<Props> = ({ pokemon }) => {
         </div>
       </div>
 
-      <div className="fixed top-0 mt-[85px] left-0 h-full w-64 hidden md:block z-40 ">
+      <div className="fixed top-0 mt-16 left-0 h-full w-64 hidden md:block z-40 ">
         <aside className="flex flex-col p-6 border border-gray-200 shadow-lg text-black bg-white bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-40 h-full">
           <div className="absolute inset-0 bg-bg4 bg-contain opacity-5 pointer-events-none"></div>
           <nav className="flex flex-col space-y-4">

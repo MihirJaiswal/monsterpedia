@@ -1,45 +1,43 @@
-'use client'
-import React from 'react'
-import { useState } from 'react';
+'use client';
+import React, { useState } from 'react';
 import { usePathname } from 'next/navigation';
 import { navigation } from '../../constant';
 
-function HomeNav() {
-    const pathname = usePathname();
-    const [openNavigation, setOpenNavigation] = useState(false);
-      const handleClick = () => {
-        if (!openNavigation) return;
-        setOpenNavigation(false);
-      };
+const HomeNav = () => {
+  const pathname = usePathname();
+  const [openNavigation, setOpenNavigation] = useState(false);
+
+  const handleClose = () => {
+    if (openNavigation) setOpenNavigation(false);
+  };
 
   return (
-    <div>
+    <div className="relative">
       <nav
-          className={`${
-            openNavigation ? "flex" : "hidden"
-          } fixed top-[5rem] left-0 right-0 bottom-0 bg-black lg:static lg:flex lg:mx-auto lg:bg-transparent`}
-        >
-          <div className="relative z-2 flex flex-col items-center justify-center m-auto lg:flex-row">
-            {navigation.map((item) => (
+        className={`${
+          openNavigation ? 'flex' : 'hidden'
+        } fixed top-[5rem] left-0 right-0 bottom-0 bg-black lg:static lg:flex lg:mx-auto lg:bg-transparent`}
+      >
+        <div className="relative z-2 flex flex-col items-center justify-center m-auto lg:flex-row">
+          {navigation.map((item) => {
+            const isActive = pathname === item.route;
+            return (
               <a
                 key={item.label}
                 href={item.route}
-                onClick={handleClick} 
-                className={`block relative font-code text-2xl uppercase text-n-1 transition-colors text-white hover:text-color-1 ${
-                  item.route === pathname ? "lg:hidden" : ""
-                } px-6 py-6 md:py-8 lg:-mr-0.25 lg:text-xs lg:font-semibold ${
-                  item.route === pathname
-                    ? "z-2 lg:text-n-1"
-                    : "lg:text-n-1/50"
-                } lg:leading-5 lg:hover:text-n-1 xl:px-12`}
+                onClick={handleClose}
+                className={`block relative font-code text-xl uppercase transition-colors ${
+                  isActive ? 'text-blue-500 font-bold' : 'text-white'
+                } hover:text-gray-300 px-4 py-4 lg:text-sm lg:font-semibold lg:leading-5 xl:px-8`}
               >
                 {item.title}
               </a>
-            ))}
-          </div>
-        </nav>
-      </div>   
-  )
-}
+            );
+          })}
+        </div>
+      </nav>
+    </div>
+  );
+};
 
-export default HomeNav
+export default HomeNav;

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Image from 'next/image';
 import { FaArrowRight, FaArrowDown } from 'react-icons/fa';
 import { useRouter } from 'next/navigation';
-import gif from '../../../public/pokeball-loader.gif';
+import gif from '../../../public/loader.webp';
 
 interface PokemonType {
   type: {
@@ -150,6 +150,7 @@ const Evolution: React.FC<EvolutionProps> = ({ evolution }) => {
                   width={96}
                   height={96}
                   quality={100}
+                  loading="lazy"
                   className="w-12 h-12 mx-auto mb-1"
                 />
                 <div>{evo.item}</div>

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import gif from '../../../public/pokeball-loader.gif'
+import gif from '../../../public/loader.webp'
 
 interface PokemonType {
   type: {
@@ -73,6 +73,7 @@ const PokemonCard: React.FC<PokemonCardProps> = ({ name, spriteUrl, types = [], 
             alt="Loading..."
             width={100}
             height={100}
+            quality={100}
             className="animate-spin w-full h-full object-cover object-center relative"
           />
           <p className='text-gray-800 text-center mt-4 text-lg font-bold'>Loading...</p>

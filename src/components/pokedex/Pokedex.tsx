@@ -1,6 +1,6 @@
 import React from 'react';
 import Image from 'next/image';
-import img from '../../../public/pokedex.png';
+import img from '../../../public/pokedex.webp';
 import { FaWeight, FaRuler, FaStar } from 'react-icons/fa';
 
 interface PokemonProps {
