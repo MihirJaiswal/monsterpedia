@@ -131,18 +131,19 @@ const PokemonPage: React.FC<Props> = ({ pokemon }) => {
     <div className="relative p-6 mt-16 min-h-screen">
       <div className="flex flex-col md:flex-row justify-around">
 
-        <>
-      <div className="fixed top-0 left-0 h-full w-64 md:hidden z-50">
-        <button
-          className="fixed top-4 left-4 z-50 p-2 bg-white text-black rounded-full shadow-md md:hidden"
+        
+      <div className="fixed top-0 left-0 h-full w-full md:hidden z-50">
+        <div className='w-full bg-cyan-900 border-b border-gray-400 flex items-center justify-between p-4 h-16'>
+          <button
+          className="fixed bg-white top-4 left-4 z-50 p-2  text-black rounded-full shadow-md md:hidden "
           onClick={() => setIsSidebarOpen(!isSidebarOpen)}
         >
           {isSidebarOpen ? <FaTimes/> : <FaBars/>}
-        </button>
+        </button></div>
         <div
           className={`fixed top-0 left-0 h-full w-64 transition-transform transform ${
             isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
-          } md:translate-x-0 bg-white border border-gray-200 shadow-lg text-black rounded-lg bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-40 z-40`}
+          } md:translate-x-0 bg-blue-200 border border-blue-400 shadow-lg text-black rounded-lg z-40`}
         >
           <div className="absolute inset-0 bg-bg4 bg-cover opacity-5 pointer-events-none"></div>
           <aside className="flex flex-col p-6 h-full">
@@ -240,7 +241,6 @@ const PokemonPage: React.FC<Props> = ({ pokemon }) => {
           </nav>
         </aside>
       </div>
-    </>
         <div className="md:ml-64 flex-1 mt-8 md:mt-2">
           {/* Content Sections */}
           {activeSection === 'section1' && (

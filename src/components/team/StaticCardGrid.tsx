@@ -1,5 +1,6 @@
 import React from 'react';
 import Image from 'next/image';
+import go from '../../../public/About/go.webp'
 
 const StaticCard: React.FC = () => {
   return (
@@ -15,10 +16,11 @@ const StaticCard: React.FC = () => {
       </div>
       <div className="relative flex flex-col items-center justify-center">
         <Image
-         src="/go.png"
+         src={go}
          alt="place holder"
          width={200}
          height={200}
+         loading='lazy'
          className="w-24 md:w-32 mb-8 md:mb-12" />
         <div>
           <img src="/plus.png" alt="" className="w-8 md:w-12" />
