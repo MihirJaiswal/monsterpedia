@@ -10,7 +10,8 @@ import Shimmer from './Shimmer'; // Import the shimmer component
 import { FaBars, FaTimes } from 'react-icons/fa';
 import Link from 'next/link';
 import { FaArrowAltCircleLeft } from 'react-icons/fa';
-
+import HomeHeader from '../HomeHeader';
+import { useRouter } from 'next/navigation';
 
 interface PokemonDetail {
   id: number;
@@ -89,6 +90,7 @@ interface Props {
   pokemon: PokemonDetail;
 }
 
+
 const PokemonPage: React.FC<Props> = ({ pokemon }) => {
   const [activeSection, setActiveSection] = useState<'section1' | 'section2' | 'section3' | 'section4'>('section1');
   const [loading, setLoading] = useState<boolean>(true);
@@ -107,6 +109,12 @@ const PokemonPage: React.FC<Props> = ({ pokemon }) => {
     return 'bg-red-600';
   };
 
+  const router = useRouter();
+
+  const handleBack = () => {
+    router.back(); // Navigate to the previous page
+  };
+
   const getTotalStatColor = (total: number) => {
     if (total > 500) return 'bg-blue-600';
     if (total > 400) return 'bg-purple-600';
@@ -118,7 +126,9 @@ const PokemonPage: React.FC<Props> = ({ pokemon }) => {
 
   if (loading) return <Shimmer />; 
   return (
-    <div className="relative p-6 bg-hero bg-cover bg-center min-h-screen">
+    <div className='bg-hero bg-cover bg-center '>
+    <div className='hidden lg:block '><HomeHeader/></div>
+    <div className="relative p-6 mt-20">
       <div className="absolute inset-0 bg-bg2 bg-repeat-round bg-contain opacity-5 pointer-events-none hidden md:block"></div>
       <div className="absolute inset-0 bg-bg4  bg-cover opacity-10 pointer-events-none md:hidden"></div>
       <div className="flex flex-col md:flex-row justify-around">
@@ -184,8 +194,8 @@ const PokemonPage: React.FC<Props> = ({ pokemon }) => {
         </div>
       </div>
 
-      <div className="fixed top-0 left-0 h-full w-64 hidden md:block z-40">
-        <aside className="flex flex-col p-6 border border-gray-200 rounded-lg shadow-lg text-black bg-white bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-40 h-full">
+      <div className="fixed top-0 mt-[85px] left-0 h-full w-64 hidden md:block z-40 ">
+        <aside className="flex flex-col p-6 border border-gray-200 shadow-lg text-black bg-white bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-40 h-full">
           <div className="absolute inset-0 bg-bg4 bg-contain opacity-5 pointer-events-none"></div>
           <nav className="flex flex-col space-y-4">
             <button
@@ -220,14 +230,15 @@ const PokemonPage: React.FC<Props> = ({ pokemon }) => {
             >
               Evolution
             </button>
-            <Link href='/pokedex'>
+            <div>
             <button
+              onClick={handleBack}
               className={`py-3 px-5 rounded-lg text-left transition-transform transform hover:scale-105 focus:outline-none '
               }`}
             >
                <div className='flex items-center justify-center gap-2'><span>Pokedex</span><p className='text-gray-800 text-lg'><FaArrowAltCircleLeft/></p></div>
             </button>
-            </Link>
+            </div>
           </nav>
         </aside>
       </div>
@@ -319,6 +330,7 @@ const PokemonPage: React.FC<Props> = ({ pokemon }) => {
           )}
         </div>
       </div>
+    </div>
     </div>
   );
 };
