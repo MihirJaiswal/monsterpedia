@@ -89,4 +89,8 @@
     border: 3px solid #1c1f2e;
   }
 
-  
+  @media (max-width: 768px) {
+    * {
+      backdrop-filter: none !important;
+    }
+  }
