@@ -14,10 +14,12 @@ const page = () => {
       <div className='fixed inset-0 bg-black bg-contain bg-repeat-x bg-center opacity-50 pointer-events-none'></div>
       <HomeHeader/>
       <Hero/>
-      <About/>
+     <div className='px-4'>
+     <About/>
       <Final/>
       <Feature/>
       <SupportMe/>
+     </div>
       <Footer/>
     </div>
   )
