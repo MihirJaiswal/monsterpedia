@@ -260,7 +260,7 @@ const Pokemon = () => {
       </div>
 
       <div className="relative grid grid-cols-2 gap-6 md:grid-cols-6 md:gap-6 py-10 mb-6 md:px-24">
-        {filterLoading ? (
+        {loading ||filterLoading ? (
           Array.from({ length: displayedCount }).map((_, index) => (
             <ShimmerCard key={index} />
           ))
