@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { notFound } from 'next/navigation';
 import PokemonDetailClient from '../../../components/pokedex/PokemonPage';
 
@@ -116,9 +117,8 @@ interface Props {
 
 const fetchMoveDetails = async (url: string) => {
   try {
-    const response = await fetch(url);
-    if (!response.ok) throw new Error(`Failed to fetch move details: ${response.statusText}`);
-    return await response.json();
+    const response = await axios.get(url);
+    return response.data;
   } catch (error) {
     console.error('Error fetching move details:', error);
     return null;
@@ -127,9 +127,8 @@ const fetchMoveDetails = async (url: string) => {
 
 const fetchPokemonData = async (name: string): Promise<PokemonDetail | null> => {
   try {
-    const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${name}`);
-    if (!response.ok) throw new Error(`Failed to fetch Pokémon data: ${response.statusText}`);
-    const pokemonData = await response.json();
+    const response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${name}`);
+    const pokemonData = response.data;
 
     const moves = await Promise.all(
       pokemonData.moves.map(async (moveEntry: any) => {
@@ -163,9 +162,8 @@ const fetchPokemonData = async (name: string): Promise<PokemonDetail | null> => 
 
 const fetchSpeciesData = async (url: string) => {
   try {
-    const response = await fetch(url);
-    if (!response.ok) throw new Error(`Failed to fetch species data: ${response.statusText}`);
-    return await response.json();
+    const response = await axios.get(url);
+    return response.data;
   } catch (error) {
     console.error('Error fetching species data:', error);
     return null;
@@ -178,11 +176,9 @@ const extractEvolutionPaths = async (chain: EvolutionChain): Promise<EvolutionPa
   const traverseChain = async (currentChain: EvolutionChain | null, currentPath: EvolutionPath[]) => {
     if (!currentChain) return;
 
-    // Fetch Pokémon data
     const pokemonData = await fetchPokemonData(currentChain.species.name);
     if (!pokemonData) return;
 
-    // Create new path with the current Pokémon
     const newPath = [
       ...currentPath,
       {
@@ -195,19 +191,15 @@ const extractEvolutionPaths = async (chain: EvolutionChain): Promise<EvolutionPa
       },
     ];
 
-    // If there are no further evolutions, finalize this path
     if (currentChain.evolves_to.length === 0) {
       paths.push(newPath);
     } else {
-      // Recurse for each evolution
       await Promise.all(currentChain.evolves_to.map(evolution => traverseChain(evolution, newPath)));
     }
   };
 
-  // Start traversing from the base chain
   await traverseChain(chain, []);
 
-  // Ensure uniqueness of evolution paths
   const uniquePaths = paths.map(path => {
     const seenSpecies = new Set<string>();
     return path.filter(evo => {
@@ -222,10 +214,8 @@ const extractEvolutionPaths = async (chain: EvolutionChain): Promise<EvolutionPa
 
 export default async function PokemonPage({ params }: Props) {
   try {
-    const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${params.id}`);
-    if (!response.ok) throw new Error(`Failed to fetch Pokémon data: ${response.statusText}`);
-
-    const pokemon: PokemonDetail = await response.json();
+    const response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${params.id}`);
+    const pokemon: PokemonDetail = response.data;
     const species: SpeciesDetail = await fetchSpeciesData(pokemon.species.url);
 
     if (!species) {
@@ -235,16 +225,12 @@ export default async function PokemonPage({ params }: Props) {
 
     const descriptionEntry = species.flavor_text_entries.find(entry => entry.language.name === 'en');
     const description = descriptionEntry ? descriptionEntry.flavor_text : 'No description available.';
-    const evolutionChainResponse = await fetch(species.evolution_chain.url);
-    if (!evolutionChainResponse.ok) throw new Error(`Failed to fetch evolution chain: ${evolutionChainResponse.statusText}`);
-    const evolutionChain: EvolutionChainDetail = await evolutionChainResponse.json();
-    console.log("rhe evo chain",evolutionChain)
-
-    const seenPokemon = new Set<string>();
+    const evolutionChainResponse = await axios.get(species.evolution_chain.url);
+    const evolutionChain: EvolutionChainDetail = evolutionChainResponse.data;
 
     const evolutionPaths = await extractEvolutionPaths(evolutionChain.chain);
     if (species.evolves_from_species) {
-      const preEvolutionResponse = await fetch(species.evolves_from_species.url);
+      await axios.get(species.evolves_from_species.url);
     }
 
     const detailedPokemon = await fetchPokemonData(pokemon.name);
@@ -252,8 +238,6 @@ export default async function PokemonPage({ params }: Props) {
       console.error('No detailed Pokémon data found.');
       notFound();
     }
-
-    console.log('Evolution Paths:', evolutionPaths);
 
     return <PokemonDetailClient pokemon={{ ...detailedPokemon, description, evolution: evolutionPaths.flat() }} />;
   } catch (error) {

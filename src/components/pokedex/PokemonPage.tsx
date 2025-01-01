@@ -132,8 +132,8 @@ const PokemonPage: React.FC<Props> = ({ pokemon }) => {
       <div className="flex flex-col md:flex-row justify-around">
 
         
-      <div className="fixed top-0 left-0 h-full w-full md:hidden z-50">
-        <div className='w-full bg-gradient-to-b from-gray-900 to-blue-900  border-b border-gray-400 flex items-center justify-between p-4 h-16'>
+      <div className="fixed top-0 left-0 h-max z-50 w-full md:hidden ">
+        <div className='w-full bg-gradient-to-b from-gray-900 to-blue-900 border-b border-gray-400 flex items-center justify-between p-4 h-16'>
           <button
           className="fixed bg-white top-4 left-4 z-50 p-2  text-black rounded-full shadow-md md:hidden "
           onClick={() => setIsSidebarOpen(!isSidebarOpen)}
@@ -244,7 +244,7 @@ const PokemonPage: React.FC<Props> = ({ pokemon }) => {
         <div className="md:ml-64 flex-1 mt-8 md:mt-2">
           {/* Content Sections */}
           {activeSection === 'section1' && (
-            <div className="section1 flex flex-col md:flex-row justify-between items-center mt-4">
+            <div className="section1 flex flex-col md:flex-row justify-between items-center mt-4 ">
               <div>
                 <PokemonImage sprites={pokemon.sprites} name={pokemon.name} />
                 <h1 className="text-4xl font-bold text-gray-950 mb-4 text-center">
@@ -262,11 +262,11 @@ const PokemonPage: React.FC<Props> = ({ pokemon }) => {
                     />
                   ))}
                 </div>
-                <div className="md:px-32 px-2 flex items-center justify-center">
+                <div className="md:px-32 px-2 flex items-center justify-center pointer-events-none">
                   <p className="text-center text-white mt-2 p-4 border border-white rounded-lg">{pokemon.description}</p>
                 </div>
               </div>
-              <div className="mx-4 w-full my-6 rounded-lg shadow-lg p-6 px-4 md:p-8 max-w-md text-center relative overflow-hidden bg-white bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-30 border border-gray-200">
+              <div className="mx-4 w-full my-6 rounded-lg shadow-lg p-6 px-4 md:p-8 max-w-md text-center relative overflow-hidden bg-white bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-90 lg:bg-opacity-70 border border-gray-200">
                 <div className="text-left mb-6">
                   <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-4">Stats</h2>
                   <ul className="space-y-4">

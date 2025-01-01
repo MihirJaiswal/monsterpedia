@@ -26,9 +26,9 @@ const PokemonImage = ({ sprites, name }: PokemonImageProps) => {
   const handleImageError = () => setLoading(false); 
 
   return (
-    <div className="flex flex-col items-center z-50">
+    <div className="flex flex-col items-center relative">
       <div className="relative w-52 h-52 mx-auto mb-4">
-        <div className="absolute inset-0 flex justify-center border-2 border-gray-300 items-center z-0 bg-card2 rounded-full bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-10 opacity-40">
+        <div className="absolute pointer-events-none inset-0 flex justify-center border-2 border-gray-300 items-center z-0 bg-card2 rounded-full bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-10 opacity-40">
           <div className="w-36 h-36 rounded-full border-2 border-gray-300 relative flex justify-center items-center">
             <div className="w-32 h-32 rounded-full border-2 border-gray-300 relative flex justify-center items-center">
               <div className="absolute w-full h-full flex items-center justify-center">
@@ -40,7 +40,7 @@ const PokemonImage = ({ sprites, name }: PokemonImageProps) => {
           </div>
         </div>
         {loading && (
-          <div className="absolute inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 rounded-full">
+          <div className="absolute inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 rounded-full pointer-events-none">
             <p className="text-white text-lg">Loading...</p>
           </div>
         )}
@@ -49,7 +49,7 @@ const PokemonImage = ({ sprites, name }: PokemonImageProps) => {
           alt={name}
           width={200}
           height={200}
-          className={`w-52 h-52 object-cover object-center relative transition-transform duration-500 ${loading ? 'opacity-0' : 'opacity-100'}`}
+          className={`w-52 h-52 object-cover object-center relative transition-transform pointer-events-none duration-500 ${loading ? 'opacity-0' : 'opacity-100'}`}
           onLoad={handleImageLoad}
           onError={handleImageError}
         />
@@ -57,7 +57,7 @@ const PokemonImage = ({ sprites, name }: PokemonImageProps) => {
       <div className="flex justify-center ">
         <button
           onClick={toggleShiny}
-          className="text-white border border-white p-2 rounded-lg flex items-center gap-2 mb-6"
+          className="text-white border border-white p-2 rounded-lg flex items-center gap-2 mb-6 hover:bg-white hover:text-black transition-colors duration-300"
         >
           {isShiny ? 'Original' : 'Shiny'}
           {isShiny ? <FaBullseye /> : <FaStar />}

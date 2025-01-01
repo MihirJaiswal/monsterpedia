@@ -146,7 +146,7 @@ const Pokemon = () => {
         const batchSize = 100;
 
         while (totalFetched < 1025) {
-          const listResponse = await axios.get(`https://pokeapi.co/api/v2/pokemon?limit=${batchSize}&offset=${totalFetched}`); // Using axios here
+          const listResponse = await axios.get(`https://pokeapi.co/api/v2/pokemon?limit=${batchSize}&offset=${totalFetched}`); 
           allPokemons = allPokemons.concat(listResponse.data.results);
           totalFetched += batchSize;
         }
