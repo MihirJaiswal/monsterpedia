@@ -281,11 +281,16 @@ const Pokemon = () => {
       {hasMorePokemons && (
         <div className="relative text-center">
           <button
-            onClick={loadMorePokemons}
-            className="bg-blue-500 text-white py-2 px-6 rounded-lg shadow-md hover:bg-blue-600 transition duration-300"
-          >
-            Load More
-          </button>
+  onClick={loadMorePokemons}
+  className={`${
+    selectedType
+      ? typeGradients[selectedType] // Using the selected type's gradient
+      : 'bg-gradient-to-r from-blue-400 to-blue-600' // Default blue for all types
+  } text-white py-2 px-6 rounded-lg border border-black shadow-md hover:opacity-80 transition duration-300`}
+>
+  Load More
+</button>
+
         </div>
       )}
     </div>
