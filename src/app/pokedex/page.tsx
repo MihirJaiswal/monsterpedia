@@ -5,8 +5,7 @@ import Pokemon from "@/components/pokedex/Pokemon";
 
 export default function Home() {
   return (
-    <main className="bg-hero relative">
-      <div className='absolute inset-0 bg-black bg-cover bg-repeat-x bg-center opacity-5 pointer-events-none'></div>
+    <main className="relative">
       <HomeHeader/>
       <Pokemon/>
       <Footer/>

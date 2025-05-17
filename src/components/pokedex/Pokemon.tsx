@@ -1,13 +1,12 @@
 'use client';
 import { useState, useEffect, useCallback } from 'react';
-import PokemonCard from './PokemonCard';
-import ShimmerCard from './ShimmerCard';
 import {
   FaSearch, FaLeaf, FaFire, FaTint, FaBolt, FaSnowflake, FaFistRaised,
   FaSkullCrossbones, FaMountain, FaFeather, FaBrain, FaBug, FaGem,
   FaGhost, FaDragon, FaMoon, FaCog, FaStar, FaBullseye
 } from 'react-icons/fa';
-import axios from 'axios';
+import PokemonCard from './PokemonCard';
+import ShimmerCard from './ShimmerCard';
 
 interface Pokemon {
   name: string;
@@ -97,116 +96,341 @@ const typeGradients: Record<PokemonTypeName, string> = {
   fairy: 'bg-gradient-to-r from-pink-300 to-pink-500'
 };
 
+const dataCache = new Map();
+const CACHE_DURATION = 30 * 60 * 1000;
+
 const Pokemon = () => {
+  // State variables
   const [pokemonList, setPokemonList] = useState<Pokemon[]>([]);
   const [pokemonDetails, setPokemonDetails] = useState<{ [key: string]: PokemonDetail }>({});
-  const [loading, setLoading] = useState<boolean>(true);
+  const [initialLoading, setInitialLoading] = useState<boolean>(true);
+  const [loadingPokemon, setLoadingPokemon] = useState<Set<string>>(new Set());
   const [searchTerm, setSearchTerm] = useState<string>('');
-  const [displayedCount, setDisplayedCount] = useState<number>(30);
+  const [displayedCount, setDisplayedCount] = useState<number>(32);
   const [selectedGeneration, setSelectedGeneration] = useState<number | null>(null);
   const [selectedType, setSelectedType] = useState<PokemonTypeName | ''>('');
-  const [filterLoading, setFilterLoading] = useState<boolean>(false); // New state for filter loading
+  const [filterLoading, setFilterLoading] = useState<boolean>(false);
+  const [currentlyDisplayedPokemons, setCurrentlyDisplayedPokemons] = useState<Pokemon[]>([]);
+  const [totalFilteredCount, setTotalFilteredCount] = useState<number>(0);
+  const [showNoResultsMessage, setShowNoResultsMessage] = useState<boolean>(false);
+  
+  const isCacheValid = (key: string) => {
+    const cacheEntry = dataCache.get(key);
+    if (!cacheEntry) return false;
+    return (Date.now() - cacheEntry.timestamp) < CACHE_DURATION;
+  };
 
-  const fetchPokemonDetailsInBatches = useCallback(async (pokemons: Pokemon[], batchSize: number) => {
-    let detailsMap: { [key: string]: PokemonDetail } = {};
-
-    for (let i = 0; i < pokemons.length; i += batchSize) {
-      const batch = pokemons.slice(i, i + batchSize);
-      const detailsPromises = batch.map(async (pokemon: Pokemon) => {
-        try {
-          const detailResponse = await fetch(pokemon.url);
-          if (!detailResponse.ok) {
-            throw new Error(`Failed to fetch details for ${pokemon.name}: ${detailResponse.statusText}`);
-          }
-          const detail = await detailResponse.json();
-          return detail;
-        } catch (error) {
-          console.error(error);
-          return null;
-        }
-      });
-
-      const details = await Promise.all(detailsPromises);
-      details.forEach((detail) => {
-        if (detail) {
-          detailsMap[detail.name] = detail;
-        }
-      });
-
-      setPokemonDetails((prevDetails) => ({ ...prevDetails, ...detailsMap }));
+  const fetchWithCache = async (url: string, cacheKey: string) => {
+    // Check cache first
+    if (isCacheValid(cacheKey)) {
+      return dataCache.get(cacheKey).data;
     }
-  }, []);
+
+    const res = await fetch(url, {
+      next: { revalidate: CACHE_DURATION / 1000 } 
+    });
+    
+    if (!res.ok) {
+      throw new Error(`Failed to fetch from ${url}`);
+    }
+    
+    const data = await res.json();
+    dataCache.set(cacheKey, {
+      data,
+      timestamp: Date.now()
+    });
+    
+    return data;
+  };
 
   useEffect(() => {
-    async function fetchData() {
+    async function fetchAllPokemon() {
       try {
-        setLoading(true);
-        let allPokemons: Pokemon[] = [];
-        let totalFetched = 0;
-        const batchSize = 100;
-
-        while (totalFetched < 1025) {
-          const listResponse = await axios.get(`https://pokeapi.co/api/v2/pokemon?limit=${batchSize}&offset=${totalFetched}`); 
-          allPokemons = allPokemons.concat(listResponse.data.results);
-          totalFetched += batchSize;
+        setInitialLoading(true);
+        const cacheKey = 'all-pokemon-list';
+        
+        if (isCacheValid(cacheKey)) {
+          setPokemonList(dataCache.get(cacheKey).data);
+          setInitialLoading(false);
+          return;
         }
-
-        setPokemonList(allPokemons);
-        await fetchPokemonDetailsInBatches(allPokemons, 20);
+        
+        const totalPokemon = 1025;
+        const data = await fetchWithCache(
+          `https://pokeapi.co/api/v2/pokemon?limit=${totalPokemon}&offset=0`,
+          cacheKey
+        );
+        
+        const newList: Pokemon[] = new Array(totalPokemon).fill({ name: "", url: "" });
+        data.results.forEach((pokemon: Pokemon, index: number) => {
+          newList[index] = pokemon;
+        });
+        
+        setPokemonList(newList);
+        
+        generations.forEach((gen, index) => {
+          const genData = data.results.slice(gen.offset, gen.offset + gen.limit);
+          dataCache.set(`generation-${index}`, {
+            data: genData,
+            timestamp: Date.now()
+          });
+        });
       } catch (error) {
-        console.error(error);
+        console.error("Error fetching all Pokemon:", error);
       } finally {
-        setLoading(false);
+        setInitialLoading(false);
       }
     }
 
-    fetchData();
-  }, [fetchPokemonDetailsInBatches]);
+    fetchAllPokemon();
+  }, []);
 
-  useEffect(() => {
-    setFilterLoading(true);
-    const timeoutId = setTimeout(() => {
-      setFilterLoading(false);
-    }, 500); 
-
-    return () => clearTimeout(timeoutId);
-  }, [searchTerm]);
-
-  const filteredPokemonList = pokemonList
-    .filter(pokemon => pokemon.name.toLowerCase().includes(searchTerm.toLowerCase()))
-    .filter(pokemon => {
-      if (!selectedType) return true;
-      const detail = pokemonDetails[pokemon.name];
-      return detail?.types.some(type => type.type.name === selectedType);
-    })
-    .filter(pokemon => {
-      if (selectedGeneration === null) return true;
-      const { offset, limit } = generations[selectedGeneration];
-      const index = pokemonList.findIndex(p => p.name === pokemon.name);
-      return index >= offset && index < offset + limit;
+  const fetchPokemonDetails = useCallback(async (pokemonToFetch: Pokemon[]) => {
+    if (pokemonToFetch.length === 0) return {};
+    
+    setLoadingPokemon(prev => {
+      const newLoading = new Set(prev);
+      pokemonToFetch.forEach(pokemon => newLoading.add(pokemon.name));
+      return newLoading;
     });
-
-  const displayedPokemonList = filteredPokemonList.slice(0, displayedCount);
-
-  const loadMorePokemons = () => {
-    setDisplayedCount(prevCount => prevCount + 30);
+    
+    const priorityBatch = pokemonToFetch.slice(0, Math.min(30, pokemonToFetch.length));
+    const remainingBatch = pokemonToFetch.slice(priorityBatch.length);
+    
+    const newDetails: { [key: string]: PokemonDetail } = {};
+    const controllers: AbortController[] = [];
+    
+    try {
+      const batchSize = 10;
+      for (let i = 0; i < priorityBatch.length; i += batchSize) {
+        const batch = priorityBatch.slice(i, i + batchSize);
+        const promises = batch.map(pokemon => {
+          const cacheKey = `pokemon-detail-${pokemon.name}`;
+          if (isCacheValid(cacheKey)) {
+            return Promise.resolve({
+              name: pokemon.name,
+              data: dataCache.get(cacheKey).data
+            });
+          }
+          
+          const controller = new AbortController();
+          controllers.push(controller);
+          
+          return fetch(pokemon.url, { signal: controller.signal })
+            .then(res => res.json())
+            .then(data => {
+              dataCache.set(cacheKey, {
+                data,
+                timestamp: Date.now()
+              });
+              return { name: pokemon.name, data };
+            });
+        });
+        
+        const results = await Promise.allSettled(promises);
+        
+        results.forEach(result => {
+          if (result.status === 'fulfilled' && result.value?.data?.name) {
+            newDetails[result.value.data.name] = result.value.data;
+            setLoadingPokemon(prev => {
+              const newLoading = new Set(prev);
+              newLoading.delete(result.value.name);
+              return newLoading;
+            });
+          }
+        });
+      }
+      
+      if (remainingBatch.length > 0) {
+        setTimeout(() => {
+          fetchRemainingDetails(remainingBatch);
+        }, 100);
+      }
+    } catch (error:any) {
+      if (error.name !== 'AbortError') {
+        console.error("Error fetching Pokemon details:", error);
+      }
+    }
+    
+    return newDetails;
+  }, []);
+  
+  const fetchRemainingDetails = async (pokemonList: Pokemon[]) => {
+    const batchSize = 10;
+    const newDetails: { [key: string]: PokemonDetail } = {};
+    
+    for (let i = 0; i < pokemonList.length; i += batchSize) {
+      const batch = pokemonList.slice(i, i + batchSize);
+      const promises = batch.map(pokemon => {
+        const cacheKey = `pokemon-detail-${pokemon.name}`;
+        if (isCacheValid(cacheKey)) {
+          return Promise.resolve({
+            name: pokemon.name,
+            data: dataCache.get(cacheKey).data
+          });
+        }
+        
+        return fetch(pokemon.url)
+          .then(res => res.json())
+          .then(data => {
+            dataCache.set(cacheKey, {
+              data,
+              timestamp: Date.now()
+            });
+            return { name: pokemon.name, data };
+          });
+      });
+      
+      try {
+        const results = await Promise.allSettled(promises);
+        
+        results.forEach(result => {
+          if (result.status === 'fulfilled' && result.value?.data?.name) {
+            newDetails[result.value.data.name] = result.value.data;
+            setLoadingPokemon(prev => {
+              const newLoading = new Set(prev);
+              newLoading.delete(result.value.name);
+              return newLoading;
+            });
+          }
+        });
+        
+        if (Object.keys(newDetails).length > 0) {
+          setPokemonDetails(prev => ({...prev, ...newDetails}));
+        }
+      } catch (error) {
+        console.error("Error fetching remaining Pokemon details:", error);
+      }
+    }
   };
 
-  const hasMorePokemons = displayedCount < filteredPokemonList.length;
+  useEffect(() => {
+    setShowNoResultsMessage(false);
+    
+    const performFiltering = async () => {
+      setFilterLoading(true);
+      
+      try {
+        let filtered = pokemonList.filter(pokemon => pokemon.name);
+        
+        if (searchTerm) {
+          filtered = filtered.filter(pokemon => 
+            pokemon.name.toLowerCase().includes(searchTerm.toLowerCase())
+          );
+        }
+        
+        if (selectedGeneration !== null) {
+          const { offset, limit } = generations[selectedGeneration];
+          
+          const cacheKey = `generation-${selectedGeneration}`;
+          
+          if (isCacheValid(cacheKey)) {
+            const genPokemon = dataCache.get(cacheKey).data;
+            filtered = genPokemon;
+            
+            if (searchTerm) {
+              filtered = filtered.filter(pokemon => 
+                pokemon.name.toLowerCase().includes(searchTerm.toLowerCase())
+              );
+            }
+          } else {
+            filtered = filtered.filter(pokemon => {
+              const position = pokemonList.findIndex(p => p.name === pokemon.name);
+              return position >= offset && position < offset + limit;
+            });
+          }
+        }
+        
+        setTotalFilteredCount(filtered.length);
+        
+        if (selectedType) {
+          const needDetails = filtered.filter(pokemon => !pokemonDetails[pokemon.name]);
+          
+          if (needDetails.length > 0) {
+            const visiblePokemon = needDetails.slice(0, displayedCount + 20);
+            const newDetails = await fetchPokemonDetails(visiblePokemon);
+            
+            if (Object.keys(newDetails).length > 0) {
+              setPokemonDetails(prev => ({...prev, ...newDetails}));
+            }
+            
+            const allDetails = {...pokemonDetails, ...newDetails};
+            filtered = filtered.filter(pokemon => {
+              const detail = allDetails[pokemon.name];
+              return detail?.types?.some(type => type.type.name === selectedType);
+            });
+          } else {
+            filtered = filtered.filter(pokemon => {
+              const detail = pokemonDetails[pokemon.name];
+              return detail?.types?.some(type => type.type.name === selectedType);
+            });
+          }
+        }
+        
+        setCurrentlyDisplayedPokemons(filtered.slice(0, displayedCount));
+        
+        if (selectedType) {
+          setTotalFilteredCount(filtered.length);
+        }
+        
+        setTimeout(() => {
+          if (filtered.length === 0) {
+            setShowNoResultsMessage(true);
+          }
+        }, 2500);
+      } catch (error) {
+        console.error("Error applying filters:", error);
+      } finally {
+        setFilterLoading(false);
+      }
+    };
+    
+    const debounceTimer = setTimeout(performFiltering, 300);
+    
+    return () => clearTimeout(debounceTimer);
+  }, [searchTerm, selectedType, selectedGeneration, displayedCount, pokemonList, pokemonDetails, fetchPokemonDetails]);
+
+  useEffect(() => {
+    async function fetchDetailsForDisplayed() {
+      if (currentlyDisplayedPokemons.length === 0 || initialLoading) return;
+      
+      const pokemonToFetch = currentlyDisplayedPokemons.filter(
+        pokemon => !pokemonDetails[pokemon.name]
+      );
+      
+      if (pokemonToFetch.length === 0) return;
+      
+      try {
+        const newDetails = await fetchPokemonDetails(pokemonToFetch);
+        if (Object.keys(newDetails).length > 0) {
+          setPokemonDetails(prev => ({...prev, ...newDetails}));
+        }
+      } catch (error) {
+        console.error("Error fetching Pokemon details:", error);
+      }
+    }
+
+    fetchDetailsForDisplayed();
+  }, [currentlyDisplayedPokemons, pokemonDetails, initialLoading, fetchPokemonDetails]);
+
+  const loadMorePokemons = () => {
+    setDisplayedCount(prevCount => prevCount + 32);
+  };
+
+  const hasMoreToDisplay = currentlyDisplayedPokemons.length < totalFilteredCount;
 
   const handleFilterChange = (type: PokemonTypeName | '', generation: number | null) => {
-    setFilterLoading(true); 
+    setFilterLoading(true);
+    setShowNoResultsMessage(false);
     setSelectedType(type);
     setSelectedGeneration(generation);
-    setTimeout(() => {
-      setFilterLoading(false); 
-    }, 1000); 
+    setDisplayedCount(30);
   };
 
   return (
     <div className="relative p-6 min-h-screen mt-16">
-      <div className="relative mb-6 flex flex-col items-center justify-center gap-4 md:flex-row md:gap-6">
-        <div className="relative w-full max-w-5xl ">
+      <div className="relative mb-6 flex flex-col items-center justify-center gap-4 md:flex-row md:gap-6 mt-6">
+        <div className="relative w-full max-w-5xl">
           <input
             type="text"
             placeholder="Search Pokémon..."
@@ -229,7 +453,7 @@ const Pokemon = () => {
               ))}
             </select>
           </div>
-          <div className="relative flex flex-col items-center md:hidden">
+          <div className="relative flex flex-col items-center lg:hidden">
             <select
               className="w-full text-black p-3 rounded-lg border border-gray-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
               value={selectedType}
@@ -245,7 +469,7 @@ const Pokemon = () => {
           </div>
         </div>
       </div>
-      <div className="relative hidden px-24 md:grid grid-cols-9 justify-center gap-4 mb-6">
+      <div className="relative hidden px-28 lg:grid grid-cols-9 justify-center gap-4 mb-6">
         {types.map((type) => (
           <button
             key={type}
@@ -258,39 +482,53 @@ const Pokemon = () => {
         ))}
       </div>
 
-      <div className="relative grid grid-cols-2 gap-6 md:grid-cols-6 md:gap-6 py-10 mb-6 md:px-24">
-        {loading ||filterLoading ? (
-          Array.from({ length: displayedCount }).map((_, index) => (
+      <div className="relative grid grid-cols-2 gap-6 md:grid-cols-3 lg:grid-cols-4 md:gap-6 py-10 mb-6 lg:px-24">
+        {initialLoading ? (
+          Array.from({ length: 30 }).map((_, index) => (
             <ShimmerCard key={index} />
           ))
-        ) : (
-          displayedPokemonList.map((p, index) => {
-            const pokemonDetail = pokemonDetails[p.name];
+        ) : currentlyDisplayedPokemons.length > 0 ? (
+          currentlyDisplayedPokemons.map((pokemon, index) => {
+            const pokemonDetail = pokemonDetails[pokemon.name];
+            const isLoading = loadingPokemon.has(pokemon.name);
+            if (isLoading || !pokemonDetail) {
+              return <ShimmerCard key={`shimmer-${pokemon.name}-${index}`} />;
+            }
+        
             return (
               <PokemonCard
-                key={index}
-                name={p.name}
-                spriteUrl={pokemonDetail?.sprites.other['official-artwork'].front_default}
+                key={`pokemon-${pokemon.name}-${index}`}
+                name={pokemon.name}
+                spriteUrl={pokemonDetail?.sprites?.other?.['official-artwork']?.front_default}
                 types={pokemonDetail?.types}
                 index={index}
               />
             );
           })
+        ) : (
+          filterLoading || !showNoResultsMessage ? (
+            Array.from({ length: 8 }).map((_, index) => (
+              <ShimmerCard key={`loading-shimmer-${index}`} />
+            ))
+          ) : (
+            <div className="col-span-6 text-center py-10">
+              <p className="text-xl">No Pokémon found matching your filters</p>
+            </div>
+          )
         )}
       </div>
-      {hasMorePokemons && (
+      {hasMoreToDisplay && currentlyDisplayedPokemons.length > 0 && (
         <div className="relative text-center">
           <button
-  onClick={loadMorePokemons}
-  className={`${
-    selectedType
-      ? typeGradients[selectedType] // Using the selected type's gradient
-      : 'bg-gradient-to-r from-blue-400 to-blue-600' // Default blue for all types
-  } text-white py-2 px-6 rounded-lg border border-black shadow-md hover:opacity-80 transition duration-300`}
->
-  Load More
-</button>
-
+            onClick={loadMorePokemons}
+            className={`${
+              selectedType
+                ? typeGradients[selectedType]
+                : 'bg-gradient-to-r from-blue-400 to-blue-600'
+            } text-white py-2 px-6 rounded-lg border border-black shadow-md hover:opacity-80 transition duration-300`}
+          >
+            Load More ({currentlyDisplayedPokemons.length} of {totalFilteredCount})
+          </button>
         </div>
       )}
     </div>
