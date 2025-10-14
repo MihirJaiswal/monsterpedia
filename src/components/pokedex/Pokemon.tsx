@@ -1,10 +1,18 @@
 'use client';
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
+import React from 'react';
 import {
   FaSearch, FaLeaf, FaFire, FaTint, FaBolt, FaSnowflake, FaFistRaised,
   FaSkullCrossbones, FaMountain, FaFeather, FaBrain, FaBug, FaGem,
   FaGhost, FaDragon, FaMoon, FaCog, FaStar, FaBullseye
 } from 'react-icons/fa';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import PokemonCard from './PokemonCard';
 import ShimmerCard from './ShimmerCard';
 
@@ -97,10 +105,14 @@ const typeGradients: Record<PokemonTypeName, string> = {
 };
 
 const dataCache = new Map();
-const CACHE_DURATION = 30 * 60 * 1000;
+const CACHE_DURATION = 60 * 60 * 1000;
+
+const getPokemonIdFromUrl = (url: string): number => {
+  const match = url.match(/\/(\d+)\//);
+  return match ? parseInt(match[1]) : 0;
+};
 
 const Pokemon = () => {
-  // State variables
   const [pokemonList, setPokemonList] = useState<Pokemon[]>([]);
   const [pokemonDetails, setPokemonDetails] = useState<{ [key: string]: PokemonDetail }>({});
   const [initialLoading, setInitialLoading] = useState<boolean>(true);
@@ -110,38 +122,26 @@ const Pokemon = () => {
   const [selectedGeneration, setSelectedGeneration] = useState<number | null>(null);
   const [selectedType, setSelectedType] = useState<PokemonTypeName | ''>('');
   const [filterLoading, setFilterLoading] = useState<boolean>(false);
-  const [currentlyDisplayedPokemons, setCurrentlyDisplayedPokemons] = useState<Pokemon[]>([]);
-  const [totalFilteredCount, setTotalFilteredCount] = useState<number>(0);
   const [showNoResultsMessage, setShowNoResultsMessage] = useState<boolean>(false);
   
-  const isCacheValid = (key: string) => {
+  const isCacheValid = useCallback((key: string) => {
     const cacheEntry = dataCache.get(key);
     if (!cacheEntry) return false;
     return (Date.now() - cacheEntry.timestamp) < CACHE_DURATION;
-  };
+  }, []);
 
-  const fetchWithCache = async (url: string, cacheKey: string) => {
-    // Check cache first
+  const fetchWithCache = useCallback(async (url: string, cacheKey: string) => {
     if (isCacheValid(cacheKey)) {
       return dataCache.get(cacheKey).data;
     }
 
-    const res = await fetch(url, {
-      next: { revalidate: CACHE_DURATION / 1000 } 
-    });
-    
-    if (!res.ok) {
-      throw new Error(`Failed to fetch from ${url}`);
-    }
+    const res = await fetch(url);
+    if (!res.ok) throw new Error(`Failed to fetch from ${url}`);
     
     const data = await res.json();
-    dataCache.set(cacheKey, {
-      data,
-      timestamp: Date.now()
-    });
-    
+    dataCache.set(cacheKey, { data, timestamp: Date.now() });
     return data;
-  };
+  }, [isCacheValid]);
 
   useEffect(() => {
     async function fetchAllPokemon() {
@@ -149,24 +149,11 @@ const Pokemon = () => {
         setInitialLoading(true);
         const cacheKey = 'all-pokemon-list';
         
-        if (isCacheValid(cacheKey)) {
-          setPokemonList(dataCache.get(cacheKey).data);
-          setInitialLoading(false);
-          return;
-        }
-        
-        const totalPokemon = 1025;
         const data = await fetchWithCache(
-          `https://pokeapi.co/api/v2/pokemon?limit=${totalPokemon}&offset=0`,
+          `https://pokeapi.co/api/v2/pokemon?limit=1025&offset=0`,
           cacheKey
         );
-        
-        const newList: Pokemon[] = new Array(totalPokemon).fill({ name: "", url: "" });
-        data.results.forEach((pokemon: Pokemon, index: number) => {
-          newList[index] = pokemon;
-        });
-        
-        setPokemonList(newList);
+        setPokemonList(data.results);
         
         generations.forEach((gen, index) => {
           const genData = data.results.slice(gen.offset, gen.offset + gen.limit);
@@ -183,293 +170,252 @@ const Pokemon = () => {
     }
 
     fetchAllPokemon();
-  }, []);
+  }, [fetchWithCache]);
+
+  const fetchingRef = React.useRef(new Set<string>());
 
   const fetchPokemonDetails = useCallback(async (pokemonToFetch: Pokemon[]) => {
     if (pokemonToFetch.length === 0) return {};
     
-    setLoadingPokemon(prev => {
-      const newLoading = new Set(prev);
-      pokemonToFetch.forEach(pokemon => newLoading.add(pokemon.name));
-      return newLoading;
-    });
+    const toFetch = pokemonToFetch.filter(p => !fetchingRef.current.has(p.name));
+    if (toFetch.length === 0) return {};
     
-    const priorityBatch = pokemonToFetch.slice(0, Math.min(30, pokemonToFetch.length));
-    const remainingBatch = pokemonToFetch.slice(priorityBatch.length);
+    toFetch.forEach(p => fetchingRef.current.add(p.name));
+    
+    const newLoading = new Set(loadingPokemon);
+    toFetch.forEach(p => newLoading.add(p.name));
+    setLoadingPokemon(newLoading);
     
     const newDetails: { [key: string]: PokemonDetail } = {};
-    const controllers: AbortController[] = [];
     
-    try {
-      const batchSize = 10;
-      for (let i = 0; i < priorityBatch.length; i += batchSize) {
-        const batch = priorityBatch.slice(i, i + batchSize);
-        const promises = batch.map(pokemon => {
+    const batchSize = 20;
+    const batches = [];
+    
+    for (let i = 0; i < toFetch.length; i += batchSize) {
+      batches.push(toFetch.slice(i, i + batchSize));
+    }
+    
+    await Promise.all(
+      batches.map(async (batch) => {
+        const promises = batch.map(async (pokemon) => {
           const cacheKey = `pokemon-detail-${pokemon.name}`;
+          
           if (isCacheValid(cacheKey)) {
-            return Promise.resolve({
-              name: pokemon.name,
-              data: dataCache.get(cacheKey).data
-            });
+            return { name: pokemon.name, data: dataCache.get(cacheKey).data };
           }
           
-          const controller = new AbortController();
-          controllers.push(controller);
-          
-          return fetch(pokemon.url, { signal: controller.signal })
-            .then(res => res.json())
-            .then(data => {
-              dataCache.set(cacheKey, {
-                data,
-                timestamp: Date.now()
-              });
-              return { name: pokemon.name, data };
-            });
+          try {
+            const data = await fetchWithCache(pokemon.url, cacheKey);
+            console.log(`Fetched details for`, data);
+            return { name: pokemon.name, data };
+          } catch (error) {
+            console.error(`Error fetching ${pokemon.name}:`, error);
+            return null;
+          }
         });
         
         const results = await Promise.allSettled(promises);
         
-        results.forEach(result => {
+        results.forEach((result) => {
           if (result.status === 'fulfilled' && result.value?.data?.name) {
             newDetails[result.value.data.name] = result.value.data;
-            setLoadingPokemon(prev => {
-              const newLoading = new Set(prev);
-              newLoading.delete(result.value.name);
-              return newLoading;
-            });
           }
         });
-      }
-      
-      if (remainingBatch.length > 0) {
-        setTimeout(() => {
-          fetchRemainingDetails(remainingBatch);
-        }, 100);
-      }
-    } catch (error:any) {
-      if (error.name !== 'AbortError') {
-        console.error("Error fetching Pokemon details:", error);
-      }
+      })
+    );
+    
+    toFetch.forEach(p => fetchingRef.current.delete(p.name));
+    
+    setLoadingPokemon(prev => {
+      const updated = new Set(prev);
+      toFetch.forEach(p => updated.delete(p.name));
+      return updated;
+    });
+    
+    if (Object.keys(newDetails).length > 0) {
+      setPokemonDetails(prev => ({...prev, ...newDetails}));
     }
     
     return newDetails;
-  }, []);
-  
-  const fetchRemainingDetails = async (pokemonList: Pokemon[]) => {
-    const batchSize = 10;
-    const newDetails: { [key: string]: PokemonDetail } = {};
+  }, [loadingPokemon, isCacheValid, fetchWithCache]);
+
+  const baseFilteredPokemons = useMemo(() => {
+    let filtered = pokemonList;
     
-    for (let i = 0; i < pokemonList.length; i += batchSize) {
-      const batch = pokemonList.slice(i, i + batchSize);
-      const promises = batch.map(pokemon => {
-        const cacheKey = `pokemon-detail-${pokemon.name}`;
-        if (isCacheValid(cacheKey)) {
-          return Promise.resolve({
-            name: pokemon.name,
-            data: dataCache.get(cacheKey).data
-          });
-        }
-        
-        return fetch(pokemon.url)
-          .then(res => res.json())
-          .then(data => {
-            dataCache.set(cacheKey, {
-              data,
-              timestamp: Date.now()
-            });
-            return { name: pokemon.name, data };
-          });
-      });
+    if (searchTerm) {
+      const lowerSearch = searchTerm.toLowerCase();
+      filtered = filtered.filter(p => p.name.toLowerCase().includes(lowerSearch));
+    }
+    
+    if (selectedGeneration !== null) {
+      const { offset, limit } = generations[selectedGeneration];
+      filtered = filtered.slice(offset, offset + limit);
       
-      try {
-        const results = await Promise.allSettled(promises);
-        
-        results.forEach(result => {
-          if (result.status === 'fulfilled' && result.value?.data?.name) {
-            newDetails[result.value.data.name] = result.value.data;
-            setLoadingPokemon(prev => {
-              const newLoading = new Set(prev);
-              newLoading.delete(result.value.name);
-              return newLoading;
-            });
-          }
-        });
-        
-        if (Object.keys(newDetails).length > 0) {
-          setPokemonDetails(prev => ({...prev, ...newDetails}));
-        }
-      } catch (error) {
-        console.error("Error fetching remaining Pokemon details:", error);
+      if (searchTerm) {
+        const lowerSearch = searchTerm.toLowerCase();
+        filtered = filtered.filter(p => p.name.toLowerCase().includes(lowerSearch));
       }
     }
-  };
+    
+    return filtered;
+  }, [pokemonList, searchTerm, selectedGeneration]);
+
+  const filteredPokemons = useMemo(() => {
+    if (!selectedType) return baseFilteredPokemons;
+    
+    return baseFilteredPokemons.filter(pokemon => {
+      const detail = pokemonDetails[pokemon.name];
+      if (!detail) return false;
+      return detail.types?.some(t => t.type.name === selectedType);
+    });
+  }, [baseFilteredPokemons, selectedType, pokemonDetails]);
+
+  const currentlyDisplayedPokemons = useMemo(() => {
+    return filteredPokemons.slice(0, displayedCount);
+  }, [filteredPokemons, displayedCount]);
+  
+  const shouldShowShimmer = useMemo(() => {
+    if (initialLoading) return true;
+    
+    const missingDetails = currentlyDisplayedPokemons.filter(
+      p => !pokemonDetails[p.name]
+    );
+    
+    return missingDetails.length > 0;
+  }, [initialLoading, currentlyDisplayedPokemons, pokemonDetails]);
+
+  useEffect(() => {
+    if (initialLoading) return;
+    
+    const pokemonToCheck = selectedType 
+      ? baseFilteredPokemons.slice(0, Math.min(baseFilteredPokemons.length, 200))
+      : currentlyDisplayedPokemons;
+    
+    const pokemonToFetch = pokemonToCheck.filter(
+      p => !pokemonDetails[p.name] && !loadingPokemon.has(p.name) && !fetchingRef.current.has(p.name)
+    );
+    
+    if (pokemonToFetch.length > 0) {
+      fetchPokemonDetails(pokemonToFetch);
+    }
+  }, [currentlyDisplayedPokemons, baseFilteredPokemons, initialLoading, selectedType]);
 
   useEffect(() => {
     setShowNoResultsMessage(false);
     
-    const performFiltering = async () => {
-      setFilterLoading(true);
-      
-      try {
-        let filtered = pokemonList.filter(pokemon => pokemon.name);
-        
-        if (searchTerm) {
-          filtered = filtered.filter(pokemon => 
-            pokemon.name.toLowerCase().includes(searchTerm.toLowerCase())
-          );
-        }
-        
-        if (selectedGeneration !== null) {
-          const { offset, limit } = generations[selectedGeneration];
-          
-          const cacheKey = `generation-${selectedGeneration}`;
-          
-          if (isCacheValid(cacheKey)) {
-            const genPokemon = dataCache.get(cacheKey).data;
-            filtered = genPokemon;
-            
-            if (searchTerm) {
-              filtered = filtered.filter(pokemon => 
-                pokemon.name.toLowerCase().includes(searchTerm.toLowerCase())
-              );
-            }
-          } else {
-            filtered = filtered.filter(pokemon => {
-              const position = pokemonList.findIndex(p => p.name === pokemon.name);
-              return position >= offset && position < offset + limit;
-            });
-          }
-        }
-        
-        setTotalFilteredCount(filtered.length);
-        
-        if (selectedType) {
-          const needDetails = filtered.filter(pokemon => !pokemonDetails[pokemon.name]);
-          
-          if (needDetails.length > 0) {
-            const visiblePokemon = needDetails.slice(0, displayedCount + 20);
-            const newDetails = await fetchPokemonDetails(visiblePokemon);
-            
-            if (Object.keys(newDetails).length > 0) {
-              setPokemonDetails(prev => ({...prev, ...newDetails}));
-            }
-            
-            const allDetails = {...pokemonDetails, ...newDetails};
-            filtered = filtered.filter(pokemon => {
-              const detail = allDetails[pokemon.name];
-              return detail?.types?.some(type => type.type.name === selectedType);
-            });
-          } else {
-            filtered = filtered.filter(pokemon => {
-              const detail = pokemonDetails[pokemon.name];
-              return detail?.types?.some(type => type.type.name === selectedType);
-            });
-          }
-        }
-        
-        setCurrentlyDisplayedPokemons(filtered.slice(0, displayedCount));
-        
-        if (selectedType) {
-          setTotalFilteredCount(filtered.length);
-        }
-        
-        setTimeout(() => {
-          if (filtered.length === 0) {
-            setShowNoResultsMessage(true);
-          }
-        }, 2500);
-      } catch (error) {
-        console.error("Error applying filters:", error);
-      } finally {
-        setFilterLoading(false);
-      }
-    };
-    
-    const debounceTimer = setTimeout(performFiltering, 300);
-    
-    return () => clearTimeout(debounceTimer);
-  }, [searchTerm, selectedType, selectedGeneration, displayedCount, pokemonList, pokemonDetails, fetchPokemonDetails]);
+    if (filteredPokemons.length === 0 && !filterLoading && !initialLoading) {
+      const timer = setTimeout(() => setShowNoResultsMessage(true), 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [filteredPokemons, filterLoading, initialLoading]);
 
   useEffect(() => {
-    async function fetchDetailsForDisplayed() {
-      if (currentlyDisplayedPokemons.length === 0 || initialLoading) return;
+    if (currentlyDisplayedPokemons.length === 0 || selectedType) return;
+    
+    const nextBatch = filteredPokemons.slice(
+      displayedCount,
+      displayedCount + 32
+    ).filter(p => !pokemonDetails[p.name] && !loadingPokemon.has(p.name) && !fetchingRef.current.has(p.name));
+    
+    if (nextBatch.length > 0) {
+      const timer = setTimeout(() => {
+        fetchPokemonDetails(nextBatch);
+      }, 500);
       
-      const pokemonToFetch = currentlyDisplayedPokemons.filter(
-        pokemon => !pokemonDetails[pokemon.name]
-      );
-      
-      if (pokemonToFetch.length === 0) return;
-      
-      try {
-        const newDetails = await fetchPokemonDetails(pokemonToFetch);
-        if (Object.keys(newDetails).length > 0) {
-          setPokemonDetails(prev => ({...prev, ...newDetails}));
-        }
-      } catch (error) {
-        console.error("Error fetching Pokemon details:", error);
-      }
+      return () => clearTimeout(timer);
     }
-
-    fetchDetailsForDisplayed();
-  }, [currentlyDisplayedPokemons, pokemonDetails, initialLoading, fetchPokemonDetails]);
+  }, [currentlyDisplayedPokemons.length, filteredPokemons.length, displayedCount, selectedType]);
 
   const loadMorePokemons = () => {
-    setDisplayedCount(prevCount => prevCount + 32);
+    setDisplayedCount(prev => prev + 32);
   };
 
-  const hasMoreToDisplay = currentlyDisplayedPokemons.length < totalFilteredCount;
+  const hasMoreToDisplay = currentlyDisplayedPokemons.length < filteredPokemons.length;
 
   const handleFilterChange = (type: PokemonTypeName | '', generation: number | null) => {
     setFilterLoading(true);
     setShowNoResultsMessage(false);
     setSelectedType(type);
     setSelectedGeneration(generation);
-    setDisplayedCount(30);
+    setDisplayedCount(32);
+    setTimeout(() => setFilterLoading(false), 300);
   };
 
   return (
-    <div className="relative p-6 min-h-screen mt-16">
-      <div className="relative mb-6 flex flex-col items-center justify-center gap-4 md:flex-row md:gap-6 mt-6">
-        <div className="relative w-full max-w-5xl">
+    <div className="relative p-6 min-h-screen mt-16 bg-blue-500">
+      <div className="relative mb-8 flex flex-col lg:flex-row items-center justify-center gap-4 mt-6 px-4 max-w-7xl mx-auto">
+        {/* Search Bar */}
+        <div className="relative w-full group">
           <input
             type="text"
-            placeholder="Search Pokémon..."
-            className="w-full text-black bg-white bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-30 p-3 pl-10 rounded-full border border-white shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="Search Pokémon by name or number..."
+            className="w-full text-gray-800 bg-white/90 backdrop-blur-xl p-4 pl-12 pr-4 rounded-2xl border-2 border-white/50 shadow-lg hover:shadow-xl focus:shadow-2xl transition-all duration-300 placeholder:text-gray-500 focus:outline-none focus:border-blue-400"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
-          <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-700" />
+          <FaSearch className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-600 text-lg group-focus-within:text-blue-500 transition-colors duration-300" />
         </div>
-        <div className='flex gap-6'>
-          <div className="relative w-40 md:w-56 max-w-1/2">
-            <select
-              className="w-full text-black p-3 rounded-lg border border-gray-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-              value={selectedGeneration === null ? 'all' : selectedGeneration}
-              onChange={(e) => handleFilterChange(selectedType, e.target.value === 'all' ? null : parseInt(e.target.value))}
+
+        {/* Filter Selects */}
+        <div className="flex flex-col sm:flex-row gap-4 w-full lg:w-auto lg:min-w-[500px]">
+          {/* Generation Select */}
+          <div className="flex-1">
+            <Select
+              value={selectedGeneration === null ? 'all' : String(selectedGeneration)}
+              onValueChange={(value) => handleFilterChange(selectedType, value === 'all' ? null : parseInt(value))}
             >
-              <option value="all">All Generations</option>
-              {generations.map((gen, index) => (
-                <option key={index} value={index}>{gen.name}</option>
-              ))}
-            </select>
+              <SelectTrigger className="w-full bg-white/90 backdrop-blur-xl border-2 border-white/50 shadow-lg hover:shadow-xl focus:shadow-2xl transition-all duration-300 rounded-2xl h-14 text-gray-800 font-medium focus:ring-2 focus:ring-purple-400 focus:ring-offset-0">
+                <SelectValue placeholder="Select Generation" />
+              </SelectTrigger>
+              <SelectContent className="bg-white/95 backdrop-blur-xl border-2 border-white/50 rounded-xl shadow-2xl">
+                <SelectItem value="all" className="cursor-pointer hover:bg-purple-50 focus:bg-purple-100 rounded-lg">
+                  All Generations
+                </SelectItem>
+                {generations.map((gen, index) => (
+                  <SelectItem 
+                    key={index} 
+                    value={String(index)}
+                    className="cursor-pointer hover:bg-purple-50 focus:bg-purple-100 rounded-lg"
+                  >
+                    {gen.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
-          <div className="relative flex flex-col items-center lg:hidden">
-            <select
-              className="w-full text-black p-3 rounded-lg border border-gray-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-              value={selectedType}
-              onChange={(e) => handleFilterChange(e.target.value as PokemonTypeName | '', selectedGeneration)}
+
+          {/* Type Select */}
+          <div className="flex-1 xl:hidden">
+            <Select
+              value={selectedType || 'all'}
+              onValueChange={(value) => handleFilterChange(value === 'all' ? '' : value as PokemonTypeName, selectedGeneration)}
             >
-              <option value="">All Types</option>
-              {types.map((type, index) => (
-                <option key={index} value={type}>
-                  {type.charAt(0).toUpperCase() + type.slice(1)}
-                </option>
-              ))}
-            </select>
+              <SelectTrigger className="w-full bg-white/90 backdrop-blur-xl border-2 border-white/50 shadow-lg hover:shadow-xl focus:shadow-2xl transition-all duration-300 rounded-2xl h-14 text-gray-800 font-medium focus:ring-2 focus:ring-pink-400 focus:ring-offset-0">
+                <SelectValue placeholder="Select Type" />
+              </SelectTrigger>
+              <SelectContent className="bg-white/95 backdrop-blur-xl border-2 border-white/50 rounded-xl shadow-2xl max-h-[400px]">
+                <SelectItem value="all" className="cursor-pointer hover:bg-pink-50 focus:bg-pink-100 rounded-lg">
+                  All Types
+                </SelectItem>
+                {types.map((type) => (
+                  <SelectItem 
+                    key={type} 
+                    value={type}
+                    className="cursor-pointer hover:bg-pink-50 focus:bg-pink-100 rounded-lg"
+                  >
+                    <div className="flex items-center gap-2">
+                      {typeIcons[type]}
+                      <span>{type.charAt(0).toUpperCase() + type.slice(1)}</span>
+                    </div>
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
         </div>
       </div>
-      <div className="relative hidden px-28 lg:grid grid-cols-9 justify-center gap-4 mb-6">
+      
+      <div className="relative hidden px-28 xl:grid grid-cols-9 justify-center gap-4 mb-6">
         {types.map((type) => (
           <button
             key={type}
@@ -482,41 +428,44 @@ const Pokemon = () => {
         ))}
       </div>
 
-      <div className="relative grid grid-cols-2 gap-6 md:grid-cols-3 lg:grid-cols-4 md:gap-6 py-10 mb-6 lg:px-24">
+      <div className="relative grid sm:grid-cols-2 gap-6 md:grid-cols-3 xl:grid-cols-4 md:gap-6 py-10 mb-6 xl:px-24">
         {initialLoading ? (
-          Array.from({ length: 30 }).map((_, index) => (
+          Array.from({ length: 32 }).map((_, index) => (
             <ShimmerCard key={index} />
           ))
         ) : currentlyDisplayedPokemons.length > 0 ? (
-          currentlyDisplayedPokemons.map((pokemon, index) => {
-            const pokemonDetail = pokemonDetails[pokemon.name];
-            const isLoading = loadingPokemon.has(pokemon.name);
-            if (isLoading || !pokemonDetail) {
-              return <ShimmerCard key={`shimmer-${pokemon.name}-${index}`} />;
-            }
-        
-            return (
-              <PokemonCard
-                key={`pokemon-${pokemon.name}-${index}`}
-                name={pokemon.name}
-                spriteUrl={pokemonDetail?.sprites?.other?.['official-artwork']?.front_default}
-                types={pokemonDetail?.types}
-                index={index}
-              />
-            );
-          })
+          <>
+            {currentlyDisplayedPokemons.map((pokemon, index) => {
+              const pokemonDetail = pokemonDetails[pokemon.name];
+              
+              if (!pokemonDetail) {
+                return <ShimmerCard key={`shimmer-${pokemon.name}-${index}`} />;
+              }
+          
+              return (
+                <PokemonCard
+                  key={`pokemon-${pokemon.name}-${index}`}
+                  name={pokemon.name}
+                  spriteUrl={pokemonDetail?.sprites?.other?.['official-artwork']?.front_default}
+                  types={pokemonDetail?.types}
+                  index={index}
+                />
+              );
+            })}
+          </>
         ) : (
-          filterLoading || !showNoResultsMessage ? (
+          showNoResultsMessage ? (
+            <div className="col-span-full text-center py-10">
+              <p className="text-xl">No Pokémon found matching your filters</p>
+            </div>
+          ) : (
             Array.from({ length: 8 }).map((_, index) => (
               <ShimmerCard key={`loading-shimmer-${index}`} />
             ))
-          ) : (
-            <div className="col-span-6 text-center py-10">
-              <p className="text-xl">No Pokémon found matching your filters</p>
-            </div>
           )
         )}
       </div>
+      
       {hasMoreToDisplay && currentlyDisplayedPokemons.length > 0 && (
         <div className="relative text-center">
           <button
@@ -524,10 +473,10 @@ const Pokemon = () => {
             className={`${
               selectedType
                 ? typeGradients[selectedType]
-                : 'bg-gradient-to-r from-blue-400 to-blue-600'
-            } text-white py-2 px-6 rounded-lg border border-black shadow-md hover:opacity-80 transition duration-300`}
+                : 'bg-blue-600'
+            } text-white py-2 px-6 rounded-lg border border-blue-800 shadow-md hover:opacity-80 transition duration-300`}
           >
-            Load More ({currentlyDisplayedPokemons.length} of {totalFilteredCount})
+            Load More
           </button>
         </div>
       )}

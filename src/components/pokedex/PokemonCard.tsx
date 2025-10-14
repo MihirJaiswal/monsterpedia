@@ -41,112 +41,182 @@ const PokemonCard: React.FC<PokemonCardProps> = ({ name, spriteUrl, types = [], 
     fairy: '/types/fairy.png',
   };
 
+  const typeColors: { [key: string]: string } = {
+    normal: '#A8A878',
+    fire: '#FDB564',
+    water: '#449CDF',
+    grass: '#70C67A',
+    electric: '#F8D030',
+    ice: '#59D5C6',
+    fighting: '#E34078',
+    poison: '#B76CC0',
+    ground: '#EA8752',
+    flying: '#98AFDF',
+    psychic: '#F85888',
+    bug: '#A8B820',
+    rock: '#B8A038',
+    ghost: '#697ABC',
+    dragon: '#197FC6',
+    dark: '#705848',
+    steel: '#6496A9',
+    fairy: '#FA94ED',
+  };
+
+  const getGradientForTypes = () => {
+    if (types.length === 0) return 'from-gray-400 to-gray-600';
+    if (types.length === 1) {
+      const color = typeColors[types[0].type.name] || '#A8A878';
+      return `bg-gradient-to-br from-[${color}] to-[${color}]`;
+    }
+    const color1 = typeColors[types[0].type.name] || '#A8A878';
+    const color2 = typeColors[types[1].type.name] || '#A8A878';
+    return `bg-gradient-to-br from-[${color1}] via-[${color1}] to-[${color2}]`;
+  };
+
   const handleClick = (event: React.MouseEvent<HTMLDivElement>) => {
-    event.preventDefault(); 
-    setIsNavigating(true); 
+    event.preventDefault();
+    setIsNavigating(true);
     setTimeout(() => {
-      router.push(`/pokedex/${name.toLowerCase()}`); 
+      router.push(`/pokedex/${name.toLowerCase()}`);
     }, 200);
   };
 
+  const formattedNumber = String(index).padStart(3, '0');
+
   return (
     <div
-      className="relative h-full w-full py-4 px-6 bg-white rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-30 border border-gray-100 transform transition-transform hover:scale-105 cursor-pointer"
+      className="relative h-full w-full bg-white/30 backdrop-blur-2xl border border-white/30 rounded-2xl shadow-lg  hover:shadow-2xl transform transition-all duration-300 hover:scale-102 hover:-translate-y-2 cursor-pointer overflow-hidden group"
       onClick={handleClick}
     >
+      {/* Animated background gradient */}
+      <div className={`absolute inset-0 ${getGradientForTypes()} opacity-10 group-hover:opacity-20 transition-opacity duration-300`} />
+      
+      {/* Pokédex number badge */}
+      <div className="absolute top-3 right-3 bg-black bg-opacity-30 text-white px-3 py-1 rounded-full text-xs font-bold z-10">
+        #{formattedNumber}
+      </div>
+
       {isNavigating ? (
-        <div className='flex flex-col items-center justify-center gap-4 mb-12'>
-          <div className="relative md:w-36 md:h-36 h-28 w-28 md:mx-auto mb-4">
-          <div className="absolute inset-0 flex justify-center items-center z-0 bg-card rounded-full bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-10 opacity-40">
-                  <div className="md:w-36 md:h-36 rounded-full relative flex justify-center items-center">
-                    <div className="md:w-32 md:h-32 rounded-full border border-gray-300 relative flex justify-center items-center">
-                      <div className="absolute w-full h-full flex items-center justify-center">
-                        <div className="absolute w-full h-[1px] bg-gray-300 transform rotate-45 left-2"></div>
-                        <div className="absolute w-10 h-10 rounded-full border border-white flex justify-center items-center"></div>
-                        <div className="absolute w-full h-[1px] bg-gray-300 transform rotate-45 right-2"></div>
-                      </div>
-                    </div>
-                  </div>
+        <div className='flex flex-col items-center justify-center gap-4 py-8'>
+          <div className="relative md:w-36 md:h-36 h-28 w-28 md:mx-auto">
+            <div className="relative flex items-center justify-center rounded-full md:h-36 md:w-36">
+              <div className="relative flex items-center justify-center rounded-full border border-gray-300 md:h-32 md:w-32">
+                <div className="absolute flex h-full w-full items-center justify-center">
+                  <div className="absolute top-14 left-2 h-[1px] w-full rotate-45 transform bg-gray-300"></div>
+                  <div className="absolute flex h-10 w-10 items-center justify-center rounded-full border border-white"></div>
+                  <div className="absolute top-16 h-[1px] w-full rotate-45 transform bg-gray-300"></div>
                 </div>
-          <Image
-            src={gif}
-            alt="Loading..."
-            width={100}
-            height={100}
-            quality={100}
-            className="animate-spin w-full h-full object-cover object-center relative"
-          />
-          <p className='text-gray-800 text-center mt-4 text-lg font-bold'>Loading...</p>
+              </div>
+            </div>
+            <Image
+              src={gif}
+              alt="Loading..."
+              width={100}
+              height={100}
+              quality={100}
+              className="animate-spin w-full h-full object-cover object-center relative"
+            />
+            <p className='text-gray-800 text-center mt-4 text-sm font-semibold'>Loading...</p>
           </div>
-        </div> 
+        </div>
       ) : (
         <>
           {spriteUrl ? (
-            <div className="flex flex-col items-center justify-center">
-              <div className="relative md:w-36 md:h-36 w-28 md:mx-auto mb-4">
-                <div className="absolute inset-0 flex justify-center items-center z-0 bg-card rounded-full bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-10 opacity-40">
-                  <div className="md:w-36 md:h-36 rounded-full relative flex justify-center items-center">
-                    <div className="md:w-32 md:h-32 rounded-full border border-gray-300 relative flex justify-center items-center">
+            <div className="flex flex-col items-center justify-center p-6 pb-4">
+              {/* Pokemon Image Container */}
+              <div className="relative md:w-40 md:h-40 w-32 h-32 mb-3">
+                {/* Pokéball background design */}
+                <div className="absolute inset-0 flex justify-center items-center z-0 bg-gradient-to-br from-gray-100 to-gray-200 rounded-full opacity-30 group-hover:opacity-50 transition-opacity duration-300">
+                  <div 
+                    className={`md:w-40 md:h-40 w-32 h-32 rounded-full relative flex justify-center items-center transition-all duration-300`} 
+                    style={{ 
+                      backgroundColor: types.length > 0 ? typeColors[types[0].type.name] || '#A8A878' : '#A8A878',
+                    }}
+                  >
+                    <div className="md:w-36 md:h-36 w-28 h-28 rounded-full border-2 border-gray-300 relative flex justify-center items-center">
                       <div className="absolute w-full h-full flex items-center justify-center">
-                        <div className="absolute w-full h-[1px] bg-gray-300 transform rotate-45 left-2"></div>
-                        <div className="absolute w-10 h-10 rounded-full border border-white flex justify-center items-center"></div>
-                        <div className="absolute w-full h-[1px] bg-gray-300 transform rotate-45 right-2"></div>
+                        <div className="absolute w-full h-[2px] bg-gray-400 transform rotate-0"></div>
+                        <div className="absolute w-12 h-12 rounded-full border-4 border-gray-400 bg-white flex justify-center items-center">
+                          <div className="w-6 h-6 rounded-full bg-gray-300"></div>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
+                
+                {/* Pokemon sprite with hover effect */}
                 <Image
                   src={spriteUrl}
                   alt={name}
-                  width={144} 
-                  height={144} 
-                  className="w-full h-full object-cover object-center relative"
+                  width={160}
+                  height={160}
+                  className="w-full h-full object-contain relative z-10 group-hover:scale-110 transition-transform duration-300"
                   loading="lazy"
                 />
               </div>
-              <p
-                className={`text-center font-bold text-[#011434] uppercase ${
-                  name.length > 10 ? 'text-xs' : 'text-base'
-                }`}
-              >
+
+              {/* Pokemon Name */}
+              <h3 className={`text-center font-bold text-gray-800 uppercase tracking-wide mb-3 ${
+                name.length > 10 ? 'text-sm' : 'text-lg'
+              }`}>
                 {name}
-              </p>
-              <div className="flex gap-2 mt-2">
+              </h3>
+
+              {/* Type badges with improved styling */}
+              <div className="flex gap-2 flex-wrap justify-center">
                 {types.map((type, idx) => (
-                  <Image
+                  <div 
                     key={idx}
-                    src={typeImages[type.type.name] || '/types/default.png'}
-                    alt={type.type.name}
-                    width={32} 
-                    height={32}
-                    className="w-8 h-8 object-cover"
-                    loading="lazy"
-                    title={type.type.name}
-                  />
+                    className="relative group/type"
+                  >
+                    <div 
+                      className="flex items-center gap-1.5 px-3 py-1 rounded-full shadow-sm transition-all duration-200 hover:shadow-md"
+                      style={{ 
+                        backgroundColor: typeColors[type.type.name] || '#A8A878',
+                      }}
+                    >
+                      <Image
+                        src={typeImages[type.type.name] || '/types/default.png'}
+                        alt={type.type.name}
+                        width={16}
+                        height={16}
+                        quality={100}
+                        unoptimized
+                        className="w-6 h-6 object-contain"
+                        loading="lazy"
+                      />
+                      <span className="text-white [text-shadow:2px_2px_4px_rgba(0,0,0,0.5)] text-xs font-semibold uppercase tracking-wider">
+                        {type.type.name}
+                      </span>
+                    </div>
+                  </div>
                 ))}
               </div>
             </div>
           ) : (
-            <div className='flex flex-col items-center justify-center gap-4 mb-12'>
-          <div className="relative md:w-36 md:h-36 w-28 md:mx-auto mb-4">
-          <div className="inset-0 flex justify-center items-center z-0 bg-card rounded-full bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-10 opacity-40">
-                  <div className="md:w-36 md:h-36 rounded-full relative flex justify-center items-center">
-                    <div className="md:w-32 md:h-32 rounded-full border border-gray-300 relative flex justify-center items-center">
+            <div className='flex flex-col items-center justify-center gap-4 py-8'>
+              <div className="relative md:w-36 md:h-36 w-28 h-28 md:mx-auto">
+                <div className="flex justify-center items-center bg-gradient-to-br from-gray-100 to-gray-200 rounded-full opacity-30">
+                  <div className="md:w-36 md:h-36 w-28 h-28 rounded-full relative flex justify-center items-center">
+                    <div className="md:w-32 md:h-32 w-24 h-24 rounded-full border-2 border-gray-300 relative flex justify-center items-center">
                       <div className="absolute w-full h-full flex items-center justify-center">
-                        <div className="absolute w-full h-[1px] bg-gray-300 transform rotate-45 left-2"></div>
-                        <div className="absolute w-10 h-10 rounded-full border border-white flex justify-center items-center"></div>
-                        <div className="absolute w-full h-[1px] bg-gray-300 transform rotate-45 right-2"></div>
+                        <div className="absolute w-full h-[2px] bg-gray-400"></div>
+                        <div className="absolute w-12 h-12 rounded-full border-4 border-gray-400 bg-white flex justify-center items-center">
+                          <div className="w-6 h-6 rounded-full bg-gray-300 animate-pulse"></div>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
-          <p className='text-gray-800 text-center mt-4 text-lg font-bold'>Loading...</p>
-          </div>
-        </div>
+                <p className='text-gray-600 text-center mt-4 text-sm font-semibold'>Loading...</p>
+              </div>
+            </div>
           )}
         </>
       )}
-      <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-t from-gray-500 to-transparent opacity-20 pointer-events-none" />
+      
+      {/* Subtle bottom gradient */}
+      <div className="absolute bottom-0 left-0 w-full h-24 bg-gradient-to-t from-gray-100 via-transparent to-transparent opacity-30 pointer-events-none" />
     </div>
   );
 };
