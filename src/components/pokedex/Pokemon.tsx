@@ -301,14 +301,21 @@ const Pokemon = () => {
 
     if (selectedType) {
       const alreadyMatched = typeFilteredPokemons.length;
+      const alreadyFetched = baseFilteredPokemons.filter(p => pokemonDetails[p.name]).length;
 
       const unfetchedCount = baseFilteredPokemons.filter(
         p => !pokemonDetails[p.name] && !loadingPokemon.has(p.name) && !fetchingRef.current.has(p.name)
       ).length;
+      
+      // Fetch more Pokémon if we don't have enough matches yet
+      // Increase batch size and keep fetching until we have at least 40 matches or run out of Pokémon
       if (alreadyMatched < 40 && unfetchedCount > 0) {
+        // Calculate how many to fetch based on progress
+        const fetchSize = Math.min(100, unfetchedCount);
+        
         const pokemonToFetch = baseFilteredPokemons
           .filter(p => !pokemonDetails[p.name] && !loadingPokemon.has(p.name) && !fetchingRef.current.has(p.name))
-          .slice(0, 50);
+          .slice(0, fetchSize);
 
         if (pokemonToFetch.length > 0) {
           fetchPokemonDetails(pokemonToFetch);
@@ -355,6 +362,8 @@ const Pokemon = () => {
     setDisplayedCount(prev => prev + 32);
   }, []);
 
+  
+
   const hasMoreToDisplay = useMemo(() => {
     const source = selectedType ? typeFilteredPokemons : filteredPokemons;
 
@@ -370,6 +379,25 @@ const Pokemon = () => {
 
     return hasMoreInCurrentList;
   }, [currentlyDisplayedPokemons, filteredPokemons, typeFilteredPokemons, selectedType, baseFilteredPokemons, pokemonDetails]);
+
+
+  useEffect(() => {
+    const handleScroll = () => {
+      // Check if user is near bottom of page (within 500px)
+      const scrollTop = window.scrollY || document.documentElement.scrollTop;
+      const scrollHeight = document.documentElement.scrollHeight;
+      const clientHeight = document.documentElement.clientHeight;
+      
+      const isNearBottom = scrollTop + clientHeight >= scrollHeight - 500;
+      
+      if (isNearBottom && hasMoreToDisplay && !initialLoading && !filterLoading) {
+        loadMorePokemons();
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [hasMoreToDisplay, initialLoading, filterLoading, loadMorePokemons]);
 
   // Intersection Observer for infinite scroll
   useEffect(() => {
