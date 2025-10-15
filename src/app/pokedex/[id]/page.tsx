@@ -2,158 +2,94 @@ import axios from 'axios';
 import { notFound } from 'next/navigation';
 import PokemonDetailClient from '../../../components/pokedex/PokemonPage';
 
-enum MoveMethod {
-  LEVEL_UP = 'level-up',
-  EGG = 'egg',
-  MACHINE = 'machine',
-}
+// Add caching
+const cache = new Map<string, { data: any; timestamp: number }>();
+const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
 
-enum MoveType {
-  PHYSICAL = 'physical',
-  SPECIAL = 'special',
-  STATUS = 'status',
-}
-
-interface PokemonType {
-  type: {
-    name: string;
-  };
-}
-
-interface PokemonDetail {
-  id: number;
-  species: {
-    url: string;
-  };
-  name: string;
-  height: number;
-  weight: number;
-  base_experience: number;
-  sprites: {
-    front_default: string;
-    front_shiny: string;
-    other: {
-      'official-artwork': {
-        front_default: string;
-        front_shiny: string;
-      };
-    };
-  };
-  stats: {
-    base_stat: number;
-    stat: {
-      name: string;
-    };
-  }[];
-  abilities: {
-    ability: {
-      name: string;
-    };
-    is_hidden: boolean;
-  }[];
-  types: PokemonType[];
-  moves: {
-    move: {
-      name: string;
-      method: MoveMethod;
-      type: MoveType;
-      moveType: string;
-      level?: number;
-    };
-  }[];
-  evolution: EvolutionPath[];
-}
-
-interface EvolutionPath {
-  species_name: string;
-  min_level: number | null;
-  trigger_name: string;
-  item: string | null;
-  image_url: string;
-  types: PokemonType[];
-}
-
-interface SpeciesDetail {
-  evolution_chain: {
-    url: string;
-  };
-  flavor_text_entries: {
-    flavor_text: string;
-    language: {
-      name: string;
-    };
-  }[];
-  evolves_from_species: {
-    name: string;
-    url: string;
-  } | null;
-}
-
-interface EvolutionChainDetail {
-  chain: EvolutionChain;
-}
-
-interface EvolutionChain {
-  species: {
-    name: string;
-  };
-  evolution_details: {
-    min_level: number | null;
-    trigger: {
-      name: string;
-    };
-    item: {
-      name: string;
-    } | null;
-  }[];
-  evolves_to: EvolutionChain[];
-}
-
-interface Props {
-  params: {
-    id: string;
-  };
-}
-
-const fetchMoveDetails = async (url: string) => {
-  try {
-    const response = await axios.get(url);
-    return response.data;
-  } catch (error) {
-    console.error('Error fetching move details:', error);
-    return null;
+const getCached = (key: string) => {
+  const cached = cache.get(key);
+  if (cached && Date.now() - cached.timestamp < CACHE_DURATION) {
+    return cached.data;
   }
+  return null;
 };
 
-const fetchPokemonData = async (name: string): Promise<PokemonDetail | null> => {
+const setCache = (key: string, data: any) => {
+  cache.set(key, { data, timestamp: Date.now() });
+};
+
+// Batch fetch move details with concurrency limit
+const fetchMoveDetailsBatch = async (urls: string[], batchSize = 20) => {
+  const results: any[] = [];
+  
+  for (let i = 0; i < urls.length; i += batchSize) {
+    const batch = urls.slice(i, i + batchSize);
+    const batchResults = await Promise.allSettled(
+      batch.map(async (url) => {
+        const cached = getCached(url);
+        if (cached) return cached;
+        
+        try {
+          const response = await axios.get(url);
+          setCache(url, response.data);
+          return response.data;
+        } catch (error) {
+          console.error('Error fetching move:', error);
+          return null;
+        }
+      })
+    );
+    
+    results.push(...batchResults.map(r => r.status === 'fulfilled' ? r.value : null));
+  }
+  
+  return results.filter(Boolean);
+};
+
+const fetchPokemonData = async (name: string, includeMoves = true) => {
   try {
+    const cacheKey = `pokemon-${name}`;
+    const cached = getCached(cacheKey);
+    if (cached) return cached;
+
     const response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${name}`);
     const pokemonData = response.data;
 
-    const moves = await Promise.all(
-      pokemonData.moves.map(async (moveEntry: any) => {
-        const moveDetails = await fetchMoveDetails(moveEntry.move.url);
-        if (!moveDetails) return null;
+    if (!includeMoves) {
+      setCache(cacheKey, pokemonData);
+      return pokemonData;
+    }
 
-        const method = moveEntry.version_group_details[0]?.move_learn_method.name;
-        const type = moveDetails.damage_class.name;
-        const level = moveEntry.version_group_details[0]?.level_learned_at;
-        return {
-          move: {
-            name: moveEntry.move.name,
-            method: method as MoveMethod,
-            type: type as MoveType,
-            moveType: moveDetails.type.name,
-            level: method === MoveMethod.LEVEL_UP ? level : undefined,
-          },
-        };
-      })
-    );
+    const limitedMoves = pokemonData.moves.slice(0, 50); 
+    const moveUrls = limitedMoves.map((m: any) => m.move.url);
+    
+    const moveDetails = await fetchMoveDetailsBatch(moveUrls);
+    
+    const movesWithDetails = limitedMoves.map((moveEntry: any, index: number) => {
+      const moveDetail = moveDetails[index];
+      if (!moveDetail) return null;
 
-    return {
+      const method = moveEntry.version_group_details[0]?.move_learn_method.name;
+      const level = moveEntry.version_group_details[0]?.level_learned_at;
+      
+      return {
+        move: {
+          name: moveEntry.move.name,
+          method: method,
+          type: moveDetail.damage_class.name,
+          moveType: moveDetail.type.name,
+          level: method === 'level-up' ? level : undefined,
+        },
+      };
+    }).filter(Boolean);
+
+    const result = {
       ...pokemonData,
-      moves: moves.filter(move => move !== null) as PokemonDetail['moves'],
+      moves: movesWithDetails,
     };
+    
+    setCache(cacheKey, result);
+    return result;
   } catch (error) {
     console.error('Error fetching Pokémon data:', error);
     return null;
@@ -162,7 +98,11 @@ const fetchPokemonData = async (name: string): Promise<PokemonDetail | null> => 
 
 const fetchSpeciesData = async (url: string) => {
   try {
+    const cached = getCached(url);
+    if (cached) return cached;
+    
     const response = await axios.get(url);
+    setCache(url, response.data);
     return response.data;
   } catch (error) {
     console.error('Error fetching species data:', error);
@@ -170,13 +110,24 @@ const fetchSpeciesData = async (url: string) => {
   }
 };
 
-const extractEvolutionPaths = async (chain: EvolutionChain): Promise<EvolutionPath[][]> => {
-  const paths: EvolutionPath[][] = [];
+// Cache Pokemon data during evolution chain traversal
+const pokemonCache = new Map<string, any>();
 
-  const traverseChain = async (currentChain: EvolutionChain | null, currentPath: EvolutionPath[]) => {
+const extractEvolutionPaths = async (chain: any) => {
+  const paths: any[][] = [];
+
+  const traverseChain = async (currentChain: any, currentPath: any[]) => {
     if (!currentChain) return;
 
-    const pokemonData = await fetchPokemonData(currentChain.species.name);
+    // Check cache first
+    let pokemonData = pokemonCache.get(currentChain.species.name);
+    if (!pokemonData) {
+      pokemonData = await fetchPokemonData(currentChain.species.name, false); 
+      if (pokemonData) {
+        pokemonCache.set(currentChain.species.name, pokemonData);
+      }
+    }
+    
     if (!pokemonData) return;
 
     const newPath = [
@@ -194,12 +145,13 @@ const extractEvolutionPaths = async (chain: EvolutionChain): Promise<EvolutionPa
     if (currentChain.evolves_to.length === 0) {
       paths.push(newPath);
     } else {
-      await Promise.all(currentChain.evolves_to.map(evolution => traverseChain(evolution, newPath)));
+      await Promise.all(currentChain.evolves_to.map((evolution: any) => traverseChain(evolution, newPath)));
     }
   };
 
   await traverseChain(chain, []);
 
+  // Remove duplicates
   const uniquePaths = paths.map(path => {
     const seenSpecies = new Set<string>();
     return path.filter(evo => {
@@ -212,36 +164,51 @@ const extractEvolutionPaths = async (chain: EvolutionChain): Promise<EvolutionPa
   return uniquePaths;
 };
 
-export default async function PokemonPage({ params }: Props) {
+export default async function PokemonPage({ params }: { params: { id: string } }) {
   try {
-    const response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${params.id}`);
-    const pokemon: PokemonDetail = response.data;
-    const species: SpeciesDetail = await fetchSpeciesData(pokemon.species.url);
-
-    if (!species) {
-      console.error('No species data found.');
-      notFound();
-    }
-
-    const descriptionEntry = species.flavor_text_entries.find(entry => entry.language.name === 'en');
-    const description = descriptionEntry ? descriptionEntry.flavor_text : 'No description available.';
-    const evolutionChainResponse = await axios.get(species.evolution_chain.url);
-    const evolutionChain: EvolutionChainDetail = evolutionChainResponse.data;
-
-    const evolutionPaths = await extractEvolutionPaths(evolutionChain.chain);
-    if (species.evolves_from_species) {
-      await axios.get(species.evolves_from_species.url);
-    }
-
-    const detailedPokemon = await fetchPokemonData(pokemon.name);
+    // Parallel fetch basic data
+    const [pokemonResponse, detailedPokemon] = await Promise.all([
+      axios.get(`https://pokeapi.co/api/v2/pokemon/${params.id}`),
+      fetchPokemonData(params.id, true) // Fetch with moves
+    ]);
+    
+    const pokemon = pokemonResponse.data;
+    
     if (!detailedPokemon) {
       console.error('No detailed Pokémon data found.');
       notFound();
     }
 
-    return <PokemonDetailClient pokemon={{ ...detailedPokemon, description, evolution: evolutionPaths.flat() }} />;
+    // Fetch species data
+    const species = await fetchSpeciesData(pokemon.species.url);
+    if (!species) {
+      console.error('No species data found.');
+      notFound();
+    }
+
+    const descriptionEntry = species.flavor_text_entries.find(
+      (entry: any) => entry.language.name === 'en'
+    );
+    const description = descriptionEntry ? descriptionEntry.flavor_text : 'No description available.';
+
+    // Fetch evolution chain
+    const evolutionChainResponse = await axios.get(species.evolution_chain.url);
+    const evolutionPaths = await extractEvolutionPaths(evolutionChainResponse.data.chain);
+
+    return (
+      <PokemonDetailClient 
+        pokemon={{ 
+          ...detailedPokemon, 
+          description, 
+          evolution: evolutionPaths.flat() 
+        }} 
+      />
+    );
   } catch (error) {
     console.error('Error fetching Pokémon data:', error);
     notFound();
   }
 }
+
+// Add revalidation for Next.js caching
+export const revalidate = 3600; // Revalidate every hour

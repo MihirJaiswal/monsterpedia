@@ -43,14 +43,14 @@ const PokemonCard: React.FC<PokemonCardProps> = ({ name, spriteUrl, types = [], 
 
   const typeColors: { [key: string]: string } = {
     normal: '#A8A878',
-    fire: '#FDB564',
+    fire: '#FEA059',
     water: '#449CDF',
-    grass: '#70C67A',
+    grass: '#65BC58',
     electric: '#F8D030',
     ice: '#59D5C6',
     fighting: '#E34078',
     poison: '#B76CC0',
-    ground: '#EA8752',
+    ground: '#E9793C',
     flying: '#98AFDF',
     psychic: '#F85888',
     bug: '#A8B820',
@@ -90,7 +90,7 @@ const PokemonCard: React.FC<PokemonCardProps> = ({ name, spriteUrl, types = [], 
     >
       {/* Animated background gradient */}
       <div className={`absolute inset-0 ${getGradientForTypes()} opacity-10 group-hover:opacity-20 transition-opacity duration-300`} />
-      
+
       {/* Pokédex number badge */}
       <div className="absolute top-3 right-3 bg-black bg-opacity-30 text-white px-3 py-1 rounded-full text-xs font-bold z-10">
         #{formattedNumber}
@@ -98,9 +98,10 @@ const PokemonCard: React.FC<PokemonCardProps> = ({ name, spriteUrl, types = [], 
 
       {isNavigating ? (
         <div className='flex flex-col items-center justify-center gap-4 py-8'>
-          <div className="relative md:w-36 md:h-36 h-28 w-28 md:mx-auto">
-            <div className="relative flex items-center justify-center rounded-full md:h-36 md:w-36">
-              <div className="relative flex items-center justify-center rounded-full border border-gray-300 md:h-32 md:w-32">
+          <div className="relative md:w-36 md:h-36 h-28 w-28">
+            {/* Pokeball Background */}
+            <div className="absolute inset-0 flex items-center justify-center rounded-full">
+              <div className="relative flex items-center justify-center rounded-full border border-gray-300 md:h-32 md:w-32 h-24 w-24">
                 <div className="absolute flex h-full w-full items-center justify-center">
                   <div className="absolute top-14 left-2 h-[1px] w-full rotate-45 transform bg-gray-300"></div>
                   <div className="absolute flex h-10 w-10 items-center justify-center rounded-full border border-white"></div>
@@ -108,16 +109,21 @@ const PokemonCard: React.FC<PokemonCardProps> = ({ name, spriteUrl, types = [], 
                 </div>
               </div>
             </div>
-            <Image
-              src={gif}
-              alt="Loading..."
-              width={100}
-              height={100}
-              quality={100}
-              className="animate-spin w-full h-full object-cover object-center relative"
-            />
-            <p className='text-gray-800 text-center mt-4 text-sm font-semibold'>Loading...</p>
+
+            {/* Spinning Pokemon Image - Overlaid on top */}
+            <div className="absolute inset-0 flex items-center justify-center">
+              <Image
+                src={gif}
+                alt="Loading..."
+                width={100}
+                height={100}
+                quality={100}
+                className="animate-spin md:w-32 md:h-32 w-24 h-24 object-contain"
+              />
+            </div>
           </div>
+
+          <p className='text-gray-800 text-center text-2xl font-semibold'>Loading...</p>
         </div>
       ) : (
         <>
@@ -127,9 +133,9 @@ const PokemonCard: React.FC<PokemonCardProps> = ({ name, spriteUrl, types = [], 
               <div className="relative md:w-40 md:h-40 w-32 h-32 mb-3">
                 {/* Pokéball background design */}
                 <div className="absolute inset-0 flex justify-center items-center z-0 bg-gradient-to-br from-gray-100 to-gray-200 rounded-full opacity-30 group-hover:opacity-50 transition-opacity duration-300">
-                  <div 
-                    className={`md:w-40 md:h-40 w-32 h-32 rounded-full relative flex justify-center items-center transition-all duration-300`} 
-                    style={{ 
+                  <div
+                    className={`md:w-40 md:h-40 w-32 h-32 rounded-full relative flex justify-center items-center transition-all duration-300`}
+                    style={{
                       backgroundColor: types.length > 0 ? typeColors[types[0].type.name] || '#A8A878' : '#A8A878',
                     }}
                   >
@@ -143,7 +149,7 @@ const PokemonCard: React.FC<PokemonCardProps> = ({ name, spriteUrl, types = [], 
                     </div>
                   </div>
                 </div>
-                
+
                 {/* Pokemon sprite with hover effect */}
                 <Image
                   src={spriteUrl}
@@ -156,22 +162,21 @@ const PokemonCard: React.FC<PokemonCardProps> = ({ name, spriteUrl, types = [], 
               </div>
 
               {/* Pokemon Name */}
-              <h3 className={`text-center font-bold text-gray-800 uppercase tracking-wide mb-3 ${
-                name.length > 10 ? 'text-sm' : 'text-lg'
-              }`}>
+              <h3 className={`text-center font-bold text-gray-800 uppercase tracking-wide mb-3 ${name.length > 10 ? 'text-sm' : 'text-lg'
+                }`}>
                 {name}
               </h3>
 
               {/* Type badges with improved styling */}
               <div className="flex gap-2 flex-wrap justify-center">
                 {types.map((type, idx) => (
-                  <div 
+                  <div
                     key={idx}
                     className="relative group/type"
                   >
-                    <div 
+                    <div
                       className="flex items-center gap-1.5 px-3 py-1 rounded-full shadow-sm transition-all duration-200 hover:shadow-md"
-                      style={{ 
+                      style={{
                         backgroundColor: typeColors[type.type.name] || '#A8A878',
                       }}
                     >
@@ -214,7 +219,7 @@ const PokemonCard: React.FC<PokemonCardProps> = ({ name, spriteUrl, types = [], 
           )}
         </>
       )}
-      
+
       {/* Subtle bottom gradient */}
       <div className="absolute bottom-0 left-0 w-full h-24 bg-gradient-to-t from-gray-100 via-transparent to-transparent opacity-30 pointer-events-none" />
     </div>
