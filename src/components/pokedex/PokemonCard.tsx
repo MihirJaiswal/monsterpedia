@@ -85,7 +85,7 @@ const PokemonCard: React.FC<PokemonCardProps> = ({ name, spriteUrl, types = [], 
 
   return (
     <div
-      className="relative h-full w-full bg-white/30 backdrop-blur-2xl border border-white/30 rounded-2xl shadow-lg  hover:shadow-2xl transform transition-all duration-300 hover:scale-102 hover:-translate-y-2 cursor-pointer overflow-hidden group"
+      className="relative h-full w-full bg-white/50 backdrop-blur-2xl border border-white/30 rounded-2xl shadow-lg  hover:shadow-2xl transform transition-all duration-300 hover:scale-102 hover:-translate-y-2 cursor-pointer overflow-hidden group"
       onClick={handleClick}
     >
       {/* Animated background gradient */}

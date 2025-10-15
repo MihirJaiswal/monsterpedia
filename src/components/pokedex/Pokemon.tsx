@@ -420,7 +420,7 @@ const Pokemon = () => {
   };
 
   return (
-    <div className="relative p-6 min-h-screen mt-16 bg-blue-500">
+    <div className="relative p-6 min-h-screen mt-16 bg-cyan-950">
       <div className="relative mb-8 flex flex-col lg:flex-row items-center justify-center gap-4 mt-6 px-4 max-w-7xl mx-auto">
         {/* Search Bar */}
         <div className="relative w-full group">
