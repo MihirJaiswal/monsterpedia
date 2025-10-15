@@ -426,7 +426,7 @@ const Pokemon = () => {
         <div className="relative w-full group">
           <input
             type="text"
-            placeholder="Search Pokémon by name or number..."
+            placeholder="Search Pokémon by name"
             className="w-full text-gray-800 bg-white/90 backdrop-blur-xl p-4 pl-12 pr-4 rounded-2xl border-2 border-white/50 shadow-lg hover:shadow-xl focus:shadow-2xl transition-all duration-300 placeholder:text-gray-500 focus:outline-none focus:border-blue-400"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
